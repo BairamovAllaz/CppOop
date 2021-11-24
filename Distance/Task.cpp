@@ -5,7 +5,7 @@ class M
 {
     double x, y;
 public:
-    ///constructor
+    ///constructor!
     M(double x, double y)
     {
         this->x = x;
