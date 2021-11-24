@@ -5,7 +5,6 @@ using namespace std;
 class M
 {
     int x1, x2, y1, y2;
-   
     public:
         M(int x1, int x2, int y1, int y2)
         {
@@ -23,6 +22,9 @@ class M
         int distance()
         {
             return sqrt(pow((x2 - x1) + pow(y2 - y1)));
+        }
+        ~M(){ 
+            cout << "I am desctructor: " << endl;
         }
 };
 
