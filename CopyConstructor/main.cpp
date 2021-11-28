@@ -35,10 +35,11 @@ public:
         cout << "Descturctor " << this << endl;
     }
 
-    void operator=(const Point &other)
+    Point operator=(const Point &other)
     {
         this->x = other.x;
         this->y = other.y;
+        return *this;
     }
 };
 
@@ -46,10 +47,8 @@ int main()
 {
 
     Point A, B, C;
-    A = Point(2,3);
-    B = A;
-    C = B;
-
+    A = B = C =  Point(2,3);
+ 
     A.Print();
     B.Print();
     C.Print();
