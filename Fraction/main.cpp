@@ -7,7 +7,7 @@ class Fraction
     int x, y;
 
 public:
-    //////constructors////////
+    /////constructors////////
     ////default constructor
     Fraction()
     {
