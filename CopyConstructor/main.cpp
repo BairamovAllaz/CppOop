@@ -42,18 +42,13 @@ public:
         return *this;
     }
 };
-
 int main()
 {
 
     Point A, B, C;
     A = B = C =  Point(2,3);
- 
     A.Print();
     B.Print();
     C.Print();
-
-    cout << "Hello world" << endl;
-
     return 0;
 }
