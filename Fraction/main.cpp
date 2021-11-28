@@ -161,6 +161,14 @@ Fraction operator*(const Fraction &left, const Fraction &right)
     return n;
 }
 
+Fraction operator%(const Fraction &left, const Fraction &right)
+{
+    Fraction n;
+    n.set_x(left.get_x() % right.get_x());
+    n.set_y(left.get_y() % right.get_y());
+    return n;
+}
+
 int main()
 {
     //default constructor
@@ -214,6 +222,13 @@ int main()
     Fraction FX = Fraction(1, 1) * Fraction(2, 2);
     cout << "Operator * " << endl;
     FX.print();
+    cout << PATH << endl;
+    //////
+
+    /////////
+    Fraction NX = Fraction(4, 6) % Fraction(3, 7);
+    cout << "Operator % " << endl;
+    NX.print();
     cout << PATH << endl;
     //////
 
