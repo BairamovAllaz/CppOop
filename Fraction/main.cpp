@@ -4,24 +4,24 @@ using namespace std;
 #define PATH "\n ------------------- \n"
 class Fraction
 {
-    int x, y;
+    double x, y;
 
 public:
     /////constructors////////
     ////default constructor
     Fraction()
     {
-        this->x = int();
-        this->y = int();
+        this->x = double();
+        this->y = double();
     }
 
-    Fraction(int x)
+    Fraction(double x)
     {
         this->x = x;
-        this->y = int();
+        this->y = double();
     }
 
-    Fraction(int x, int y)
+    Fraction(double x, double y)
     {
         this->x = x;
         this->y = y;
@@ -36,19 +36,19 @@ public:
     }
 
     ////////get set methods
-    int get_x() const
+    double get_x() const
     {
         return x;
     }
-    int get_y() const
+    double get_y() const
     {
         return y;
     }
-    void set_x(int x)
+    void set_x(double x)
     {
         this->x = x;
     }
-    void set_y(int y)
+    void set_y(double y)
     {
         this->y = y;
     }
@@ -161,13 +161,6 @@ Fraction operator*(const Fraction &left, const Fraction &right)
     return n;
 }
 
-Fraction operator%(const Fraction &left, const Fraction &right)
-{
-    Fraction n;
-    n.set_x(left.get_x() % right.get_x());
-    n.set_y(left.get_y() % right.get_y());
-    return n;
-}
 
 int main()
 {
@@ -222,13 +215,6 @@ int main()
     Fraction FX = Fraction(1, 1) * Fraction(2, 2);
     cout << "Operator * " << endl;
     FX.print();
-    cout << PATH << endl;
-    //////
-
-    /////////
-    Fraction NX = Fraction(4, 6) % Fraction(3, 7);
-    cout << "Operator % " << endl;
-    NX.print();
     cout << PATH << endl;
     //////
 
