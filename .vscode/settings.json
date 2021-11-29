@@ -1,5 +1,7 @@
 {
-    "files.associations": {
-        "iostream": "cpp"
-    }
+  "files.associations": {
+    "iostream": "cpp",
+    "iosfwd": "cpp",
+    "istream": "cpp"
+  }
 }
