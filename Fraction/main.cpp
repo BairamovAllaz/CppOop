@@ -5,7 +5,6 @@ using namespace std;
 class Fraction
 {
     double x, y;
-
 public:
     /////constructors////////
     ////default constructor
