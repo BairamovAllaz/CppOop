@@ -1,13 +1,12 @@
 #include <iostream>
 using namespace std;
-
 class Fraction
 {
     int integer;
     int numerator;
     int denominator;
+
 public:
-    //Encasilpation
     int get_integer() const
     {
         return integer;
@@ -28,111 +27,118 @@ public:
     {
         this->numerator = numerator;
     }
-    void set_denominator(int demoinator)
+    void set_denominator(int denominator)
     {
-        if (demoinator = 0)
-            demoinator = 1;
-        this->denominator = demoinator;
+        if (denominator == 0)
+            denominator = 1;
+        this->denominator = denominator;
     }
-    //default constructor
+    //Constructors:
     Fraction()
     {
-        this->integer = int();
+        this->integer = 0;
+        this->numerator = 0;
         this->denominator = 1;
-        this->numerator = int();
-        cout << "Default constructor" << endl;
+        cout << "DefaultConstruct:\t" << this << endl;
     }
     Fraction(int integer)
     {
         this->integer = integer;
-        this->numerator = int();
+        this->numerator = 0;
         this->denominator = 1;
-        cout << "1agrconsturctor" << endl;
+        cout << "1argConstructor:\t" << this << endl;
     }
-
-    Fraction(int numerator, int denomantor)
+    Fraction(int numerator, int denominator)
     {
-        this->integer = int();
+        this->integer = 0;
         this->numerator = numerator;
-        set_denominator(denomantor);
+        set_denominator(denominator);
+        cout << "Constructor:\t" << this << endl;
     }
-
     Fraction(int integer, int numerator, int denominator)
     {
         this->integer = integer;
-        this->denominator = denominator;
         this->numerator = numerator;
-        cout << "Constructor" << endl;
+        set_denominator(denominator);
+        cout << "Constructor:\t" << this << endl;
     }
-    ///Methods
-    void to_improrer()
+    ~Fraction()
+    {
+        cout << "Destructor:\t" << this << endl;
+    }
+
+    //Methods:
+    void to_improper()
     {
         numerator += integer * denominator;
         integer = 0;
     }
-
     void to_proper()
     {
         integer += numerator / denominator;
         numerator %= denominator;
     }
 
+    void reduce()
+    {
+        for (int i = 1; i < denominator * numerator; ++i)
+        {
+            if ((denominator % i == 0) && (numerator % i == 0))
+            {
+                denominator /= i;
+                numerator /= i;
+            }
+        }
+    }
     void print()
     {
         if (integer)
+        {
             cout << integer;
-
+        }
         if (numerator)
         {
             if (integer)
+            {
                 cout << "(";
+            }
             cout << numerator << "/" << denominator;
             if (integer)
+            {
                 cout << ")";
+            }
         }
         else if (integer == 0)
+        {
             cout << 0;
+        }
         cout << endl;
     }
-    ~Fraction()
-    {
-        cout << "Desctructor" << endl;
-    }
 };
+
 Fraction operator*(Fraction left, Fraction right)
 {
-    left.to_improrer();
-    right.to_improrer();
-    Fraction copy(
-        left.get_numerator() * right.get_numerator(),
-        left.get_denominator() * right.get_denominator()
-        );
-    // copy.set_numerator(left.get_numerator() * right.get_numerator());
-    // copy.set_denominator(left.get_denominator() * right.get_denominator());
-    // copy.to_proper();
-    return copy;
+    left.to_improper();
+    right.to_improper();
+    Fraction result;
+    result.set_numerator(left.get_numerator() * right.get_numerator());
+    result.set_denominator(left.get_denominator() * right.get_denominator());
+    result.to_proper();
+    return result;
 }
-// #define CONSTUCTORCHECK
+
 int main()
 {
-#ifdef CONSTUCTORCHECK
-    Fraction A;
-    A.print();
-
-    Fraction B = 5;
-    B.print();
-
-    Fraction C(3, 4);
-    C.print();
-
-    Fraction D(2, 3, 4);
-    D.print();
-#endif
-
     Fraction A(2, 1, 2);
     Fraction B(3, 2, 5);
     Fraction C = A * B;
+    cout << "First value: ";
     C.print();
-
+    cout << "First value: ";
+    C.to_improper();    
+    C.print();
+    cout << "With reduce method: ";
+    C.reduce();
+    C.print();
     return 0;
 }
