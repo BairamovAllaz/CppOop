@@ -1,5 +1,8 @@
 #include <iostream>
 using namespace std;
+
+class Fraction;
+Fraction operator*(Fraction left, Fraction right);
 class Fraction
 {
     int integer;
@@ -77,7 +80,6 @@ public:
         integer += numerator / denominator;
         numerator %= denominator;
     }
-
     void reduce()
     {
         for (int i = 1; i < denominator * numerator; ++i)
@@ -89,36 +91,43 @@ public:
             }
         }
     }
-    /* 
-void reduce()
-{
-if (numerator == 0) return;
+    Fraction &operator*=(const Fraction &other)
+    {
+        return *this = *this * other;
+    }
+    /*
+                void reduce()
+                {
+                if (numerator == 0) return;
 
- int more, less;
-int rest;
-if (numerator > denominator)
-{
-more = numerator;
-less = denominator;
-}
-else
-{
-less = numerator;
-more = denominator;
-}
-do
-{
-rest = more % less;
-more = less;
-less = rest;
-} while (rest);
-int GCD = more; // GCD - greatest common divisor
-numerator /= GCD;
-denominator /= GCD;
+                int more, less;
+                int rest;
+                if (numerator > denominator)
+                {
+                more = numerator;
+                less = denominator;
+                }
+                else
+                {
+                less = numerator;
+                more = denominator;
+                }
+                do
+                {
+                rest = more % less;
+                more = less;
+                less = rest;
+                } while (rest);
+                int GCD = more; // GCD - greatest common divisor
+                numerator /= GCD;
+                denominator /= GCD;
 
- }
-
- */
+                }
+                */
+    Fraction inverted()
+    {
+        return Fraction(this->denominator, this->numerator);
+    }
     void print()
     {
         if (integer)
@@ -149,20 +158,22 @@ Fraction operator*(Fraction left, Fraction right)
 {
     left.to_improper();
     right.to_improper();
-    // Fraction result;
-    // result.set_numerator(left.get_numerator() * right.get_numerator());
-    // result.set_denominator(left.get_denominator() * right.get_denominator());
-    // result.to_proper();
-    // return result;
     return Fraction(
         left.get_numerator() * right.get_numerator(),
-        left.get_denominator() * right.get_denominator()
-    );
+        left.get_denominator() * right.get_denominator());
 };
+
+Fraction operator/(Fraction left, Fraction right)
+{
+    return left * right.inverted();
+};
+
 int main()
 {
     Fraction A(2, 1, 2);
     Fraction B(3, 2, 5);
+    A *= B;
+    A.print();
     Fraction C = A * B;
     cout << "First value: ";
     C.print();
@@ -176,5 +187,8 @@ int main()
     Fraction G(840, 3600);
     G.reduce();
     G.print();
+    Fraction T = A / B;
+    T.print();
+
     return 0;
 }
