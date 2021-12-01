@@ -52,7 +52,7 @@ public:
         cout << "I am desctructor: " << endl;
     }
 };
-//global distance function
+//global distance function!
 double distance2(M a, M b)
 {
     return sqrt(a.pow((a.get_x() - b.get_x())) + a.pow((a.get_y() - b.get_y())));
