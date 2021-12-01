@@ -90,6 +90,36 @@ public:
             }
         }
     }
+    /* 
+void reduce()
+{
+if (numerator == 0) return;
+
+ int more, less;
+int rest;
+if (numerator > denominator)
+{
+more = numerator;
+less = denominator;
+}
+else
+{
+less = numerator;
+more = denominator;
+}
+do
+{
+rest = more % less;
+more = less;
+less = rest;
+} while (rest);
+int GCD = more; // GCD - greatest common divisor
+numerator /= GCD;
+denominator /= GCD;
+
+ }
+
+ */
     void print()
     {
         if (integer)
@@ -135,10 +165,14 @@ int main()
     cout << "First value: ";
     C.print();
     cout << "First value: ";
-    C.to_improper();    
+    C.to_improper();
     C.print();
     cout << "With reduce method: ";
     C.reduce();
     C.print();
+
+    Fraction G(840, 3600);
+    G.reduce();
+    G.print();
     return 0;
 }
