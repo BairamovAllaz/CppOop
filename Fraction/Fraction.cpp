@@ -66,7 +66,6 @@ public:
     {
         cout << "Destructor:\t" << this << endl;
     }
-
     //Methods:
     void to_improper()
     {
