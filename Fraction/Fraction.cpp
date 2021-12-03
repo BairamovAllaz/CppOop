@@ -1,8 +1,15 @@
 #include <iostream>
 using namespace std;
-
+#define PATH "------------"
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
+Fraction operator+(Fraction left, Fraction right);
+Fraction operator-(Fraction left, Fraction right);
+Fraction operator/(Fraction left, Fraction right);
+bool operator==(const Fraction &left, const Fraction &right);
+bool operator!=(const Fraction &left, const Fraction &right);
+bool operator<(const Fraction &left, const Fraction &right);
+bool operator>(const Fraction &left, const Fraction &right);
 class Fraction
 {
     int integer;
@@ -42,32 +49,24 @@ public:
         this->integer = 0;
         this->numerator = 0;
         this->denominator = 1;
-        cout << "DefaultConstruct:\t" << this << endl;
     }
     Fraction(int integer)
     {
         this->integer = integer;
         this->numerator = 0;
         this->denominator = 1;
-        cout << "1argConstructor:\t" << this << endl;
     }
     Fraction(int numerator, int denominator)
     {
         this->integer = 0;
         this->numerator = numerator;
         set_denominator(denominator);
-        cout << "Constructor:\t" << this << endl;
     }
     Fraction(int integer, int numerator, int denominator)
     {
         this->integer = integer;
         this->numerator = numerator;
         set_denominator(denominator);
-        cout << "Constructor:\t" << this << endl;
-    }
-    ~Fraction()
-    {
-        cout << "Destructor:\t" << this << endl;
     }
     //Methods:
     void to_improper()
@@ -80,6 +79,7 @@ public:
         integer += numerator / denominator;
         numerator %= denominator;
     }
+
     void reduce()
     {
         for (int i = 1; i < denominator * numerator; ++i)
@@ -95,36 +95,28 @@ public:
     {
         return *this = *this * other;
     }
-    /*
-                void reduce()
-                {
-                if (numerator == 0) return;
 
-                int more, less;
-                int rest;
-                if (numerator > denominator)
-                {
-                more = numerator;
-                less = denominator;
-                }
-                else
-                {
-                less = numerator;
-                more = denominator;
-                }
-                do
-                {
-                rest = more % less;
-                more = less;
-                less = rest;
-                } while (rest);
-                int GCD = more; // GCD - greatest common divisor
-                numerator /= GCD;
-                denominator /= GCD;
+    Fraction &operator+=(const Fraction &other)
+    {
+        return *this = *this + other;
+    }
 
-                }
-                */
+    Fraction &operator-=(const Fraction &other)
+    {
+        return *this = *this - other;
+    }
+
+    Fraction &operator/=(const Fraction &other)
+    {
+        return *this = *this / other;
+    }
+
     Fraction inverted()
+    {
+        return Fraction(this->denominator, this->numerator);
+    }
+
+    Fraction SumFunc()
     {
         return Fraction(this->denominator, this->numerator);
     }
@@ -168,27 +160,166 @@ Fraction operator/(Fraction left, Fraction right)
     return left * right.inverted();
 };
 
+Fraction operator+(Fraction left, Fraction right)
+{
+    left.to_improper();
+    right.to_improper();
+    return Fraction(
+        left.get_numerator() * right.get_denominator() +
+            right.get_numerator() * left.get_denominator(),
+        left.get_denominator() * right.get_denominator());
+}
+
+Fraction operator-(Fraction left, Fraction right)
+{
+    left.to_improper();
+    right.to_improper();
+    return Fraction(
+        left.get_numerator() * right.get_denominator() -
+            right.get_numerator() * left.get_denominator(),
+        left.get_denominator() * right.get_denominator());
+}
+
+bool operator==(const Fraction &left, const Fraction &right)
+{
+    return (left.get_numerator() == right.get_numerator()) &&
+           (left.get_denominator() == right.get_denominator());
+}
+
+bool operator!=(const Fraction &left, const Fraction &right)
+{
+    return (left.get_numerator() != right.get_numerator()) &&
+           (left.get_denominator() != right.get_denominator());
+}
+
+bool operator>(const Fraction &left, const Fraction &right)
+{
+    int n1 = left.get_numerator() * right.get_denominator();
+    int n2 = right.get_numerator() * left.get_denominator();
+    return (n1 > n2);
+}
+
+bool operator<(const Fraction &left, const Fraction &right)
+{
+    int n1 = left.get_numerator() * right.get_denominator();
+    int n2 = right.get_numerator() * left.get_denominator();
+    return (n1 < n2);
+}
+
+bool operator>=(const Fraction &left, const Fraction &right)
+{
+    return (left == right) || (left > right);
+}
+
+bool operator<=(const Fraction &left, const Fraction &right)
+{
+    return (left == right) || (left < right);
+}
+
 int main()
 {
+    bool value1, value2;
     Fraction A(2, 1, 2);
     Fraction B(3, 2, 5);
+    ///*=
     A *= B;
     A.print();
-    Fraction C = A * B;
-    cout << "First value: ";
-    C.print();
-    cout << "First value: ";
-    C.to_improper();
-    C.print();
-    cout << "With reduce method: ";
-    C.reduce();
-    C.print();
+    cout << "*=" << endl;
+    B.print();
+    cout << "Value: " << endl;
+    A.print();
+    cout << PATH << endl;
+    ///*=
 
-    Fraction G(840, 3600);
-    G.reduce();
-    G.print();
-    Fraction T = A / B;
+    ///*
+    Fraction BA(2, 1, 2);
+    Fraction BB(3, 2, 5);
+    Fraction C = BA * BB;
+    BA.print();
+    cout << " * " << endl;
+    BB.print();
+    cout << "Value: " << endl;
+    C.print();
+    cout << PATH << endl;
+    ////*
+
+    // /// /
+
+    Fraction CA(2, 1, 2);
+    Fraction CB(3, 2, 5);
+    Fraction T = CA / CB;
+    CA.print();
+    cout << " / " << endl;
+    CB.print();
     T.print();
+    cout << PATH << endl;
+    /// +
+
+    Fraction DA(3, 1);
+    Fraction DB(5, 2);
+    DA.print();
+    cout << " + " << endl;
+    DB.print();
+    Fraction h = DA + DB;
+    h.print();
+    cout << "Operator == " << endl;
+    value1 = DA == DB;
+    cout << "VALUE 1: == " << boolalpha << value1 << endl;
+    value2 = DA != DB;
+    cout << "VALUE 2: != " << boolalpha << value2 << endl;
+    cout << PATH << endl;
+    /// +
+
+    /// +=
+    Fraction J(3, 1);
+    Fraction CD(3, 2);
+    J.print();
+    cout << "+=" << endl;
+    CD.print();
+    J += CD;
+    J.print();
+    value1 = J > CD;
+    cout << "Value1 : > " << boolalpha << value1 << endl;
+    value2 = J < CD;
+    cout << "Value2 < " << boolalpha << value2 << endl;
+    cout << PATH << endl;
+    ///+=
+
+    ///-
+    Fraction FA(3, 1);
+    Fraction FB(5, 2);
+    FA.print();
+    cout << " - " << endl;
+    FB.print();
+    Fraction L = FA - FB;
+    L.print();
+    value1 = FA >= FB;
+    cout << "Value1: >= " << boolalpha << value1 << endl;
+    cout << PATH << endl;
+    ///-
+
+    /// +=
+    Fraction G(3, 1);
+    Fraction F(3, 2);
+    G.print();
+    cout << "+=" << endl;
+    F.print();
+    value1 = G <= F;
+    cout << "Value: <= " << boolalpha << value1 << endl;
+    G -= F;
+    G.print();
+    cout << PATH << endl;
+    ///+=
+
+    /// /=
+    Fraction K(3, 1);
+    Fraction N(3, 2);
+    K.print();
+    cout << "/=" << endl;
+    N.print();
+    K /= N;
+    K.print();
+    ////=
 
     return 0;
 }
