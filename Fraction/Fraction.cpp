@@ -185,25 +185,20 @@ bool operator==(const Fraction &left, const Fraction &right)
     return (left.get_numerator() == right.get_numerator()) &&
            (left.get_denominator() == right.get_denominator());
 }
-
 bool operator!=(const Fraction &left, const Fraction &right)
 {
-    return (left.get_numerator() != right.get_numerator()) &&
-           (left.get_denominator() != right.get_denominator());
+    return !(left == right);
 }
-
 bool operator>(const Fraction &left, const Fraction &right)
 {
-    int n1 = left.get_numerator() * right.get_denominator();
-    int n2 = right.get_numerator() * left.get_denominator();
-    return (n1 > n2);
+    return (left.get_numerator() * right.get_denominator() >
+            right.get_numerator() * left.get_denominator());
 }
 
 bool operator<(const Fraction &left, const Fraction &right)
 {
-    int n1 = left.get_numerator() * right.get_denominator();
-    int n2 = right.get_numerator() * left.get_denominator();
-    return (n1 < n2);
+    return (left.get_numerator() * right.get_denominator() <
+            right.get_numerator() * left.get_denominator());
 }
 
 bool operator>=(const Fraction &left, const Fraction &right)
@@ -216,8 +211,10 @@ bool operator<=(const Fraction &left, const Fraction &right)
     return (left == right) || (left < right);
 }
 
+#define OPERATORSCHECK
 int main()
 {
+#ifdef OPERATORSCHECK
     bool value1, value2;
     Fraction A(2, 1, 2);
     Fraction B(3, 2, 5);
@@ -319,7 +316,8 @@ int main()
     N.print();
     K /= N;
     K.print();
-    ////=
+////=
+#endif // DEBUG
 
     return 0;
 }
