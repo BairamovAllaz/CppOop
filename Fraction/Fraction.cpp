@@ -49,12 +49,14 @@ public:
         this->integer = 0;
         this->numerator = 0;
         this->denominator = 1;
+        cout << "Default constructor" << endl;
     }
-    Fraction(int integer)
+    explicit Fraction(int integer)
     {
         this->integer = integer;
         this->numerator = 0;
         this->denominator = 1;
+        cout << "1arg constuctor" << endl;
     }
     Fraction(int numerator, int denominator)
     {
@@ -144,6 +146,21 @@ public:
         }
         cout << endl;
     }
+
+    explicit operator int() const
+    {
+        return integer;
+    }
+    explicit operator double() const
+    {
+        double n = numerator / (double)denominator;
+        return n;
+    }
+
+    ~Fraction()
+    {
+        cout << "Desctructor: " << this << endl;
+    }
 };
 
 Fraction operator*(Fraction left, Fraction right)
@@ -211,7 +228,9 @@ bool operator<=(const Fraction &left, const Fraction &right)
     return (left == right) || (left < right);
 }
 
-#define OPERATORSCHECK
+// #define OPERATORSCHECK
+// #define FROM_OTHER_TO_CLASS
+#define HOME_WORK
 int main()
 {
 #ifdef OPERATORSCHECK
@@ -317,6 +336,29 @@ int main()
     K /= N;
     K.print();
 ////=
+#endif // DEBUG
+#ifdef FROM_OTHER_TO_CLASS
+    double a = 2;
+    Fraction A = Fraction(5);
+    A.print();
+    cout << "\n ---------------\n"
+         << endl;
+    Fraction B;
+    B = (Fraction)8;
+    B.print();
+#endif
+
+#ifdef HOME_WORK
+    Fraction A(2, 3, 4);
+    A.to_improper();
+    double a = (double)A;
+    cout << a << endl;
+    cout << PATH << endl;
+
+    
+    double b = 2.75;
+    Fraction C = Fraction(b);
+    C.print();
 #endif // DEBUG
 
     return 0;
