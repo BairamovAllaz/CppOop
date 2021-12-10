@@ -70,6 +70,53 @@ public:
         this->numerator = numerator;
         set_denominator(denominator);
     }
+
+    int gcd(int n1, int n2)
+    {
+        int more, less;
+        int rest;
+        if (n1 > n2)
+        {
+            more = n1;
+            less = n2;
+        }
+        else
+        {
+            less = n1;
+            more = n2;
+        }
+        do
+        {
+            rest = more % less;
+            more = less;
+            less = rest;
+        } while (rest);
+        int GCD = more;
+        return GCD;
+    }
+
+    explicit Fraction(double doublenumber)
+    {
+        //for example 2.45
+        int intnumber = doublenumber;
+        //intnumber = 2
+        double newdouble = doublenumber - intnumber;
+        //newdouble = 0.45
+        int c = 10000;
+        int gcdvalue = gcd((newdouble * c), c);
+        ///gcdvalue = 0.45 * 10000 = 4500 and 10000
+        //gcdvalue of 4500 and 10000 is 500
+        int numerator = (newdouble * c) / gcdvalue;
+        ///to find numerator we need to do (  0.45 * 10000 = 4500 / 500 = 9 )
+        int denominator = c / gcdvalue;
+        //to find denominator we need to do (  10000 / 500 = 20 )
+
+        ///output : 9/20
+        this->numerator = numerator;
+        this->denominator = denominator;
+        this->integer = int();
+    }
+
     //Methods:
     void to_improper()
     {
@@ -122,30 +169,30 @@ public:
     {
         return Fraction(this->denominator, this->numerator);
     }
-    void print()
-    {
-        if (integer)
-        {
-            cout << integer;
-        }
-        if (numerator)
-        {
-            if (integer)
-            {
-                cout << "(";
-            }
-            cout << numerator << "/" << denominator;
-            if (integer)
-            {
-                cout << ")";
-            }
-        }
-        else if (integer == 0)
-        {
-            cout << 0;
-        }
-        cout << endl;
-    }
+    // void print()
+    // {
+    //     if (integer)
+    //     {
+    //         cout << integer;
+    //     }
+    //     if (numerator)
+    //     {
+    //         if (integer)
+    //         {
+    //             cout << "(";
+    //         }
+    //         cout << numerator << "/" << denominator;
+    //         if (integer)
+    //         {
+    //             cout << ")";
+    //         }
+    //     }
+    //     else if (integer == 0)
+    //     {
+    //         cout << 0;
+    //     }
+    //     cout << endl;
+    // }
 
     explicit operator int() const
     {
@@ -161,7 +208,50 @@ public:
     {
         cout << "Desctructor: " << this << endl;
     }
+
+    friend ostream &operator<<(ostream &os, const Fraction &F);
+    // friend istream &operator>>(istream &os, Fraction &F);
 };
+
+////overload print operators
+ostream &operator<<(ostream &os, const Fraction &F)
+{
+
+    if (F.integer)
+    {
+        os << F.integer;
+    }
+    if (F.numerator)
+    {
+        if (F.integer)
+        {
+            os << "(";
+        }
+        os << F.numerator << "/" << F.denominator;
+        if (F.integer)
+        {
+            os << ")";
+        }
+    }
+    else if (F.integer == 0)
+    {
+        os << 0;
+    }
+    cout << endl;
+    return os;
+};
+
+// istream &operator>>(istream &os, Fraction &F)
+// {
+
+//     cout << "Enter integer: ";
+//     os >> F.integer;
+//     cout << "Enter numerator: ";
+//     os >> F.numerator;
+//     cout << "Enter denumerator: ";
+//     os >> F.denominator; 
+//     return os;    
+// }
 
 Fraction operator*(Fraction left, Fraction right)
 {
@@ -239,11 +329,11 @@ int main()
     Fraction B(3, 2, 5);
     ///*=
     A *= B;
-    A.print();
+    cout << A << endl;
     cout << "*=" << endl;
-    B.print();
+    cout << B << endl;
     cout << "Value: " << endl;
-    A.print();
+    cout << A << endl;
     cout << PATH << endl;
     ///*=
 
@@ -251,11 +341,11 @@ int main()
     Fraction BA(2, 1, 2);
     Fraction BB(3, 2, 5);
     Fraction C = BA * BB;
-    BA.print();
+    cout << BA << endl;
     cout << " * " << endl;
-    BB.print();
+    cout << BB << endl;
     cout << "Value: " << endl;
-    C.print();
+    cout << C << endl;
     cout << PATH << endl;
     ////*
 
@@ -264,20 +354,20 @@ int main()
     Fraction CA(2, 1, 2);
     Fraction CB(3, 2, 5);
     Fraction T = CA / CB;
-    CA.print();
+    cout << CA << endl;
     cout << " / " << endl;
-    CB.print();
-    T.print();
+    cout << CB << endl;
+    cout << T << endl;
     cout << PATH << endl;
     /// +
 
     Fraction DA(3, 1);
     Fraction DB(5, 2);
-    DA.print();
+    cout << DA << endl;
     cout << " + " << endl;
-    DB.print();
+    cout << DB << endl;
     Fraction h = DA + DB;
-    h.print();
+    cout << h << endl;
     cout << "Operator == " << endl;
     value1 = DA == DB;
     cout << "VALUE 1: == " << boolalpha << value1 << endl;
@@ -289,11 +379,11 @@ int main()
     /// +=
     Fraction J(3, 1);
     Fraction CD(3, 2);
-    J.print();
+    cout << J << endl;
     cout << "+=" << endl;
-    CD.print();
+    cout << CD << endl;
     J += CD;
-    J.print();
+    cout << J << endl;
     value1 = J > CD;
     cout << "Value1 : > " << boolalpha << value1 << endl;
     value2 = J < CD;
@@ -304,11 +394,11 @@ int main()
     ///-
     Fraction FA(3, 1);
     Fraction FB(5, 2);
-    FA.print();
+    cout << FA << endl;
     cout << " - " << endl;
-    FB.print();
+    cout << FB << endl;
     Fraction L = FA - FB;
-    L.print();
+    cout << L << endl;
     value1 = FA >= FB;
     cout << "Value1: >= " << boolalpha << value1 << endl;
     cout << PATH << endl;
@@ -317,24 +407,24 @@ int main()
     /// +=
     Fraction G(3, 1);
     Fraction F(3, 2);
-    G.print();
+    cout << G << endl;
     cout << "+=" << endl;
-    F.print();
+    cout << F << endl;
     value1 = G <= F;
     cout << "Value: <= " << boolalpha << value1 << endl;
     G -= F;
-    G.print();
+    cout << G << endl;
     cout << PATH << endl;
     ///+=
 
     /// /=
     Fraction K(3, 1);
     Fraction N(3, 2);
-    K.print();
+    cout << K << endl;
     cout << "/=" << endl;
-    N.print();
+    cout << N << endl;
     K /= N;
-    K.print();
+    cout << K << endl;
 ////=
 #endif // DEBUG
 #ifdef FROM_OTHER_TO_CLASS
@@ -349,16 +439,16 @@ int main()
 #endif
 
 #ifdef HOME_WORK
+
     Fraction A(2, 3, 4);
     A.to_improper();
     double a = (double)A;
     cout << a << endl;
     cout << PATH << endl;
 
-    
-    double b = 2.75;
+    double b = 2.45;
     Fraction C = Fraction(b);
-    C.print();
+    cout << C << endl;
 #endif // DEBUG
 
     return 0;
