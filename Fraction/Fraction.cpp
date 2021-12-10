@@ -198,7 +198,9 @@ public:
     {
         return integer;
     }
-    explicit operator double() const
+
+    ///overload double double(Fraction!);
+    explicit operator double()const
     {
         double n = numerator / (double)denominator;
         return n;
@@ -249,8 +251,8 @@ ostream &operator<<(ostream &os, const Fraction &F)
 //     cout << "Enter numerator: ";
 //     os >> F.numerator;
 //     cout << "Enter denumerator: ";
-//     os >> F.denominator; 
-//     return os;    
+//     os >> F.denominator;
+//     return os;
 // }
 
 Fraction operator*(Fraction left, Fraction right)
@@ -323,6 +325,20 @@ bool operator<=(const Fraction &left, const Fraction &right)
 #define HOME_WORK
 int main()
 {
+
+#ifdef HOME_WORK
+
+    Fraction A(2, 3, 4);
+    A.to_improper();
+    double a = (double)A;
+    cout << a << endl;
+    cout << PATH << endl;
+
+    double b = 2.45;
+    Fraction C = Fraction(b);
+    cout << C << endl;
+#endif // DEBUG
+
 #ifdef OPERATORSCHECK
     bool value1, value2;
     Fraction A(2, 1, 2);
@@ -437,19 +453,6 @@ int main()
     B = (Fraction)8;
     B.print();
 #endif
-
-#ifdef HOME_WORK
-
-    Fraction A(2, 3, 4);
-    A.to_improper();
-    double a = (double)A;
-    cout << a << endl;
-    cout << PATH << endl;
-
-    double b = 2.45;
-    Fraction C = Fraction(b);
-    cout << C << endl;
-#endif // DEBUG
 
     return 0;
 }
