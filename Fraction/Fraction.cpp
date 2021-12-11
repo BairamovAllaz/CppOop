@@ -98,22 +98,18 @@ public:
     explicit Fraction(double doublenumber)
     {
         //for example 2.45
-        int intnumber = doublenumber;
+        int intnumber = doublenumber,c = 10000;
         //intnumber = 2
         double newdouble = doublenumber - intnumber;
         //newdouble = 0.45
-        int c = 10000;
         int gcdvalue = gcd((newdouble * c), c);
         ///gcdvalue = 0.45 * 10000 = 4500 and 10000
         //gcdvalue of 4500 and 10000 is 500
-        int numerator = (newdouble * c) / gcdvalue;
+        this->numerator =  (newdouble * c) / gcdvalue;
         ///to find numerator we need to do (  0.45 * 10000 = 4500 / 500 = 9 )
-        int denominator = c / gcdvalue;
+        this->denominator = c / gcdvalue;;
         //to find denominator we need to do (  10000 / 500 = 20 )
-
         ///output : 9/20
-        this->numerator = numerator;
-        this->denominator = denominator;
         this->integer = int();
     }
 
