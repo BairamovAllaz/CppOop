@@ -12,9 +12,9 @@ bool operator<(const Fraction &left, const Fraction &right);
 bool operator>(const Fraction &left, const Fraction &right);
 class Fraction
 {
-    int integer;
-    int numerator;
-    int denominator;
+    unsigned long long int integer;
+    unsigned long long int numerator;
+    unsigned long long int denominator;
 
 public:
     int get_integer() const
@@ -71,49 +71,86 @@ public:
         set_denominator(denominator);
     }
 
-    int gcd(int n1, int n2)
+    Fraction &reduce()
     {
-        int more, less;
-        int rest;
-        if (n1 > n2)
-        {
-            more = n1;
-            less = n2;
-        }
-        else
-        {
-            less = n1;
-            more = n2;
-        }
-        do
-        {
-            rest = more % less;
-            more = less;
-            less = rest;
-        } while (rest);
-        int GCD = more;
-        return GCD;
+       	if (numerator == 0)return *this;	//Прерывам работу функции
+		int more, less;
+		int rest;	//остаток от деления
+		if (numerator > denominator)
+		{
+			more = numerator;
+			less = denominator;
+		}
+		else
+		{
+			less = numerator;
+			more = denominator;
+		}
+		do
+		{
+			rest = more % less;
+			more = less;
+			less = rest;
+		} while (rest);
+		int GCD = more;
+		numerator /= GCD;
+		denominator /= GCD;
+		return *this;
     }
+
+    // int gcd(int n1, int n2)
+    // {
+    //     int more, less;
+    //     int rest;
+    //     if (n1 > n2)
+    //     {
+    //         more = n1;
+    //         less = n2;
+    //     }
+    //     else
+    //     {
+    //         less = n1;
+    //         more = n2;
+    //     }
+    //     do
+    //     {
+    //         rest = more % less;
+    //         more = less;
+    //         less = rest;
+    //     } while (rest);
+    //     int GCD = more;
+    //     return GCD;
+    // }
 
     explicit Fraction(double doublenumber)
     {
-        //for example 2.45
-        int intnumber = doublenumber, c = 10000;
-        //intnumber = 2
-        double newdouble = doublenumber - intnumber;
-        //newdouble = 0.45
-        int gcdvalue = gcd((newdouble * c), c);
-        ///gcdvalue = 0.45 * 10000 = 4500 and 10000
-        //gcdvalue of 4500 and 10000 is 500
-        this->numerator = (newdouble * c) / gcdvalue;
-        ///to find numerator we need to do (  0.45 * 10000 = 4500 / 500 = 9 )
-        this->denominator = c / gcdvalue;
-        ;
-        //to find denominator we need to do (  10000 / 500 = 20 )
-        ///output : 9/20
-        this->integer = intnumber;
+        // //for example 2.45
+        // int intnumber = doublenumber, c = 10000;
+        // //intnumber = 2
+        // double newdouble = doublenumber - intnumber;
+        // //newdouble = 0.45
+        // int gcdvalue = gcd((newdouble * c), c);
+        // ///gcdvalue = 0.45 * 10000 = 4500 and 10000
+        // //gcdvalue of 4500 and 10000 is 500
+        // this->numerator = (newdouble * c) / gcdvalue;
+        // ///to find numerator we need to do (  0.45 * 10000 = 4500 / 500 = 9 )
+        // this->denominator = c / gcdvalue;
+        // ;
+        // //to find denominator we need to do (  10000 / 500 = 20 )
+        // ///output : 9/20
+        // this->integer = intnumber;
+        //doublenumber = 2.45
+        integer = doublenumber;
+        //integer = 2;
+        denominator = 1e9;
+        //denominator = 1000000000
+        doublenumber -= integer;
+        //doublenumber = 2.45 - 2 = 0.45 
+        numerator = (doublenumber * denominator);
+        //numerator = 0.45 * 1000000000
+        reduce();
+        ///reduce methode in top!
     }
-
     //Methods:
     void to_improper()
     {
@@ -124,18 +161,6 @@ public:
     {
         integer += numerator / denominator;
         numerator %= denominator;
-    }
-
-    void reduce()
-    {
-        for (int i = 1; i < denominator * numerator; ++i)
-        {
-            if ((denominator % i == 0) && (numerator % i == 0))
-            {
-                denominator /= i;
-                numerator /= i;
-            }
-        }
     }
     Fraction &operator*=(const Fraction &other)
     {
@@ -195,14 +220,12 @@ public:
     {
         return integer;
     }
-
     ///overload double double(Fraction!);
     explicit operator double() const
     {
-        double n = numerator / (double)denominator;
+        double n = integer + (numerator / (double)denominator);
         return n;
     }
-
     ~Fraction()
     {
         cout << "Desctructor: " << this << endl;
@@ -331,7 +354,7 @@ int main()
     cout << a << endl;
     cout << PATH << endl;
 
-    double b = 2.45;
+    double b = 8.75;
     Fraction C = Fraction(b);
     cout << C << endl;
 #endif // DEBUG
@@ -451,10 +474,8 @@ int main()
     B.print();
 #endif
 
-
 #ifdef TYPE_CONVERSIONS
-    cout << "Helli world" << endl;
+    cout << (1e3) << endl;
 #endif // DEBUG
-
     return 0;
 }
