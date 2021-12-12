@@ -12,9 +12,9 @@ bool operator<(const Fraction &left, const Fraction &right);
 bool operator>(const Fraction &left, const Fraction &right);
 class Fraction
 {
-    unsigned long long int integer;
-    unsigned long long int numerator;
-    unsigned long long int denominator;
+    long long int integer;
+    long long int numerator;
+    long long int denominator;
 
 public:
     int get_integer() const
@@ -73,29 +73,30 @@ public:
 
     Fraction &reduce()
     {
-       	if (numerator == 0)return *this;	//Прерывам работу функции
-		int more, less;
-		int rest;	//остаток от деления
-		if (numerator > denominator)
-		{
-			more = numerator;
-			less = denominator;
-		}
-		else
-		{
-			less = numerator;
-			more = denominator;
-		}
-		do
-		{
-			rest = more % less;
-			more = less;
-			less = rest;
-		} while (rest);
-		int GCD = more;
-		numerator /= GCD;
-		denominator /= GCD;
-		return *this;
+        if (numerator == 0)
+            return *this; //Прерывам работу функции
+        int more, less;
+        int rest; //остаток от деления
+        if (numerator > denominator)
+        {
+            more = numerator;
+            less = denominator;
+        }
+        else
+        {
+            less = numerator;
+            more = denominator;
+        }
+        do
+        {
+            rest = more % less;
+            more = less;
+            less = rest;
+        } while (rest);
+        int GCD = more;
+        numerator /= GCD;
+        denominator /= GCD;
+        return *this;
     }
 
     // int gcd(int n1, int n2)
@@ -140,12 +141,13 @@ public:
         // ///output : 9/20
         // this->integer = intnumber;
         //doublenumber = 2.45
-        integer = doublenumber;
+        // integer = doublenumber;
+        doublenumber += 1e-11;
         //integer = 2;
         denominator = 1e9;
         //denominator = 1000000000
         doublenumber -= integer;
-        //doublenumber = 2.45 - 2 = 0.45 
+        //doublenumber = 2.45 - 2 = 0.45
         numerator = (doublenumber * denominator);
         //numerator = 0.45 * 1000000000
         reduce();
@@ -162,6 +164,7 @@ public:
         integer += numerator / denominator;
         numerator %= denominator;
     }
+
     Fraction &operator*=(const Fraction &other)
     {
         return *this = *this * other;
@@ -191,30 +194,50 @@ public:
     {
         return Fraction(this->denominator, this->numerator);
     }
-    // void print()
-    // {
-    //     if (integer)
-    //     {
-    //         cout << integer;
-    //     }
-    //     if (numerator)
-    //     {
-    //         if (integer)
-    //         {
-    //             cout << "(";
-    //         }
-    //         cout << numerator << "/" << denominator;
-    //         if (integer)
-    //         {
-    //             cout << ")";
-    //         }
-    //     }
-    //     else if (integer == 0)
-    //     {
-    //         cout << 0;
-    //     }
-    //     cout << endl;
-    // }
+  
+
+    //overload ostream and istream!
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+    ostream &print(ostream &os) const
+    {
+        if (integer)
+        {
+            os << integer;
+        }
+        if (numerator)
+        {
+            if (integer)
+            {
+                os << "(";
+            }
+            os << numerator << "/" << denominator;
+            if (integer)
+            {
+                os << ")";
+            }
+        }
+        else if (integer == 0)
+        {
+            os << 0;
+        }
+        os << endl;
+        return os;
+    }
+    istream &initP(istream &in)
+    {
+        cout << "Enter integer: ";
+        in >> integer;
+        cout << "Enter denominator: ";
+        in >> denominator;
+        cout << "Enter numerator: ";
+        in >> numerator;
+        return in;
+    }
+    //////////////////////////////////////////
+    //////////////////////////////////////////
+
+
 
     explicit operator int() const
     {
@@ -230,50 +253,7 @@ public:
     {
         cout << "Desctructor: " << this << endl;
     }
-
-    friend ostream &operator<<(ostream &os, const Fraction &F);
-    // friend istream &operator>>(istream &os, Fraction &F);
 };
-
-////overload print operators
-ostream &operator<<(ostream &os, const Fraction &F)
-{
-
-    if (F.integer)
-    {
-        os << F.integer;
-    }
-    if (F.numerator)
-    {
-        if (F.integer)
-        {
-            os << "(";
-        }
-        os << F.numerator << "/" << F.denominator;
-        if (F.integer)
-        {
-            os << ")";
-        }
-    }
-    else if (F.integer == 0)
-    {
-        os << 0;
-    }
-    cout << endl;
-    return os;
-};
-
-// istream &operator>>(istream &os, Fraction &F)
-// {
-
-//     cout << "Enter integer: ";
-//     os >> F.integer;
-//     cout << "Enter numerator: ";
-//     os >> F.numerator;
-//     cout << "Enter denumerator: ";
-//     os >> F.denominator;
-//     return os;
-// }
 
 Fraction operator*(Fraction left, Fraction right)
 {
@@ -340,10 +320,41 @@ bool operator<=(const Fraction &left, const Fraction &right)
     return (left == right) || (left < right);
 }
 
+ostream &operator<<(ostream &os, const Fraction &F)
+{
+    return F.print(os);
+    // if (F.integer)
+    // {
+    //     os << F.integer;
+    // }
+    // if (F.numerator)
+    // {
+    //     if (F.integer)
+    //     {
+    //         os << "(";
+    //     }
+    //     os << F.numerator << "/" << F.denominator;
+    //     if (F.integer)
+    //     {
+    //         os << ")";
+    //     }
+    // }
+    // else if (F.integer == 0)
+    // {
+    //     os << 0;
+    // }
+    // return os;
+};
+
+istream &operator>>(istream &in, Fraction &F)
+{
+    return F.initP(in);
+};
+
 // #define OPERATORSCHECK
 // #define FROM_OTHER_TO_CLASS
-#define HOME_WORK
-// #define TYPE_CONVERSIONS
+// #define HOME_WORK
+#define TYPE_CONVERSIONS
 int main()
 {
 #ifdef HOME_WORK
@@ -354,7 +365,7 @@ int main()
     cout << a << endl;
     cout << PATH << endl;
 
-    double b = 8.75;
+    double b = 2.76;
     Fraction C = Fraction(b);
     cout << C << endl;
 #endif // DEBUG
@@ -384,9 +395,7 @@ int main()
     cout << C << endl;
     cout << PATH << endl;
     ////*
-
     // /// /
-
     Fraction CA(2, 1, 2);
     Fraction CB(3, 2, 5);
     Fraction T = CA / CB;
@@ -396,7 +405,6 @@ int main()
     cout << T << endl;
     cout << PATH << endl;
     /// +
-
     Fraction DA(3, 1);
     Fraction DB(5, 2);
     cout << DA << endl;
@@ -411,7 +419,6 @@ int main()
     cout << "VALUE 2: != " << boolalpha << value2 << endl;
     cout << PATH << endl;
     /// +
-
     /// +=
     Fraction J(3, 1);
     Fraction CD(3, 2);
@@ -426,7 +433,6 @@ int main()
     cout << "Value2 < " << boolalpha << value2 << endl;
     cout << PATH << endl;
     ///+=
-
     ///-
     Fraction FA(3, 1);
     Fraction FB(5, 2);
@@ -439,7 +445,6 @@ int main()
     cout << "Value1: >= " << boolalpha << value1 << endl;
     cout << PATH << endl;
     ///-
-
     /// +=
     Fraction G(3, 1);
     Fraction F(3, 2);
@@ -452,7 +457,6 @@ int main()
     cout << G << endl;
     cout << PATH << endl;
     ///+=
-
     /// /=
     Fraction K(3, 1);
     Fraction N(3, 2);
@@ -475,7 +479,13 @@ int main()
 #endif
 
 #ifdef TYPE_CONVERSIONS
-    cout << (1e3) << endl;
+    // Fraction A(2, 4, 5);
+    // cout << A << endl;
+    // Fraction B = A;
+    // cout << B << endl;
+    Fraction A;
+    cin >> A;
+    cout << A << endl;
 #endif // DEBUG
     return 0;
 }
