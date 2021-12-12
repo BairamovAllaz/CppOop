@@ -98,19 +98,20 @@ public:
     explicit Fraction(double doublenumber)
     {
         //for example 2.45
-        int intnumber = doublenumber,c = 10000;
+        int intnumber = doublenumber, c = 10000;
         //intnumber = 2
         double newdouble = doublenumber - intnumber;
         //newdouble = 0.45
         int gcdvalue = gcd((newdouble * c), c);
         ///gcdvalue = 0.45 * 10000 = 4500 and 10000
         //gcdvalue of 4500 and 10000 is 500
-        this->numerator =  (newdouble * c) / gcdvalue;
+        this->numerator = (newdouble * c) / gcdvalue;
         ///to find numerator we need to do (  0.45 * 10000 = 4500 / 500 = 9 )
-        this->denominator = c / gcdvalue;;
+        this->denominator = c / gcdvalue;
+        ;
         //to find denominator we need to do (  10000 / 500 = 20 )
         ///output : 9/20
-        this->integer = int();
+        this->integer = intnumber;
     }
 
     //Methods:
@@ -196,7 +197,7 @@ public:
     }
 
     ///overload double double(Fraction!);
-    explicit operator double()const
+    explicit operator double() const
     {
         double n = numerator / (double)denominator;
         return n;
@@ -319,9 +320,9 @@ bool operator<=(const Fraction &left, const Fraction &right)
 // #define OPERATORSCHECK
 // #define FROM_OTHER_TO_CLASS
 #define HOME_WORK
+// #define TYPE_CONVERSIONS
 int main()
 {
-
 #ifdef HOME_WORK
 
     Fraction A(2, 3, 4);
@@ -449,6 +450,11 @@ int main()
     B = (Fraction)8;
     B.print();
 #endif
+
+
+#ifdef TYPE_CONVERSIONS
+    cout << "Helli world" << endl;
+#endif // DEBUG
 
     return 0;
 }
