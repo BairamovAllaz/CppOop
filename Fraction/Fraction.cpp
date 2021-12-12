@@ -357,6 +357,17 @@ istream &operator>>(istream &in, Fraction &F)
 #define TYPE_CONVERSIONS
 int main()
 {
+
+#ifdef TYPE_CONVERSIONS
+    // Fraction A(2, 4, 5);
+    // cout << A << endl;
+    // Fraction B = A;
+    // cout << B << endl;
+    Fraction A;
+    cin >> A;
+    cout << A << endl;
+#endif // DEBUG
+
 #ifdef HOME_WORK
 
     Fraction A(2, 3, 4);
@@ -478,14 +489,6 @@ int main()
     B.print();
 #endif
 
-#ifdef TYPE_CONVERSIONS
-    // Fraction A(2, 4, 5);
-    // cout << A << endl;
-    // Fraction B = A;
-    // cout << B << endl;
-    Fraction A;
-    cin >> A;
-    cout << A << endl;
-#endif // DEBUG
+
     return 0;
 }
