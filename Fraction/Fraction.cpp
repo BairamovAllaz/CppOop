@@ -194,7 +194,6 @@ public:
     {
         return Fraction(this->denominator, this->numerator);
     }
-  
 
     //overload ostream and istream!
     //////////////////////////////////////////
@@ -226,18 +225,65 @@ public:
     }
     istream &initP(istream &in)
     {
-        cout << "Enter integer: ";
+        //solution 1
+        /* cout << "Enter integer: ";
         in >> integer;
         cout << "Enter denominator: ";
         in >> denominator;
         cout << "Enter numerator: ";
-        in >> numerator;
+        in >> numerator; */
+
+        ///soltion for char string
+        int denominator = 0, numerator = 0, integer = 0;
+        char frac[100];
+        int step = 0;
+        bool isnegative = false;
+        cout << "Enter a fraction: ";
+        in.getline(frac, 100);
+        for (size_t i = 0; frac[i]; i++)
+        {
+            if (frac[0] == '-')
+                isnegative = true;
+            if (frac[i] == '(' || frac[i] == ')' || frac[i] == '/' || frac[i] == '-')
+            {
+                continue;
+            }
+            else
+            {
+                for (size_t j = i; frac[j] <= '9' && frac[j] >= '0'; j++, ++i)
+                {
+                    ///step0 = integer //step1 = numerator //step2 = denominator
+                    if (step == 0)
+                    {
+                        //integer
+                        ///integer * 10 ---- for add digit      frac[j] - '0' = char to int
+                        integer = integer * 10  + (frac[j] - '0');
+                        if (isnegative)
+                        {
+                            integer = -integer;
+                        }
+                    }
+                    else if (step == 1)
+                    {
+                        ///numerator
+                        numerator = numerator * 10 + (frac[j] - '0');
+                    }
+                    else if (step == 2)
+                    {
+                        ///denominator
+                        denominator = denominator * 10 + (frac[j] - '0');
+                    }
+                }
+            }
+            ++step;
+        }
+        this->integer = integer;
+        this->numerator = numerator;
+        this->denominator = denominator;
         return in;
     }
     //////////////////////////////////////////
     //////////////////////////////////////////
-
-
 
     explicit operator int() const
     {
@@ -488,7 +534,6 @@ int main()
     B = (Fraction)8;
     B.print();
 #endif
-
 
     return 0;
 }
