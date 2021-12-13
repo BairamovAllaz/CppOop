@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 #define PATH "------------"
 class Fraction;
@@ -225,7 +226,8 @@ public:
     }
     istream &initP(istream &in)
     {
-        //solution 1
+        *this = Fraction();
+        //solution for int
         /* cout << "Enter integer: ";
         in >> integer;
         cout << "Enter denominator: ";
@@ -234,52 +236,84 @@ public:
         in >> numerator; */
 
         ///soltion for char string
-        int denominator = 0, numerator = 0, integer = 0;
-        char frac[100];
-        int step = 0;
-        bool isnegative = false;
-        cout << "Enter a fraction: ";
-        in.getline(frac, 100);
-        for (size_t i = 0; frac[i]; i++)
+        // int denominator = 0, numerator = 0, integer = 0;
+        // char frac[100];
+        // int step = 0;
+        // bool isnegative = false;
+        // cout << "Enter a fraction: ";
+        // in.getline(frac, 100);
+        // for (size_t i = 0; frac[i]; i++)
+        // {
+        //     if (frac[0] == '-')
+        //         isnegative = true;
+        //     if (frac[i] == '(' || frac[i] == ')' || frac[i] == '/' || frac[i] == '-')
+        //     {
+        //         continue;
+        //     }
+        //     else
+        //     {
+        //         for (size_t j = i; frac[j] <= '9' && frac[j] >= '0'; j++, ++i)
+        //         {
+        //             ///step0 = integer //step1 = numerator //step2 = denominator
+        //             if (step == 0)
+        //             {
+        //                 //integer
+        //                 ///integer * 10 ---- for add digit      frac[j] - '0' = char to int
+        //                 integer = integer * 10 + (frac[j] - '0');
+        //                 if (isnegative)
+        //                 {
+        //                     integer = -integer;
+        //                 }
+        //             }
+        //             else if (step == 1)
+        //             {
+        //                 ///numerator
+        //                 numerator = numerator * 10 + (frac[j] - '0');
+        //             }
+        //             else if (step == 2)
+        //             {
+        //                 ///denominator
+        //                 denominator = denominator * 10 + (frac[j] - '0');
+        //             }
+        //         }
+        //     }
+        //     ++step;
+        // }
+        // this->integer = integer;
+        // this->numerator = numerator;
+        // this->denominator = denominator;
+        const int size = 256;
+        char buffer[size] = {};
+        char delimiters[] = "() /";
+        in.getline(buffer, size);
+        char *number[3] = {};
+        int n = 0;
+        char *pch = strtok(buffer, delimiters);
+        while (pch)
         {
-            if (frac[0] == '-')
-                isnegative = true;
-            if (frac[i] == '(' || frac[i] == ')' || frac[i] == '/' || frac[i] == '-')
-            {
-                continue;
-            }
-            else
-            {
-                for (size_t j = i; frac[j] <= '9' && frac[j] >= '0'; j++, ++i)
-                {
-                    ///step0 = integer //step1 = numerator //step2 = denominator
-                    if (step == 0)
-                    {
-                        //integer
-                        ///integer * 10 ---- for add digit      frac[j] - '0' = char to int
-                        integer = integer * 10  + (frac[j] - '0');
-                        if (isnegative)
-                        {
-                            integer = -integer;
-                        }
-                    }
-                    else if (step == 1)
-                    {
-                        ///numerator
-                        numerator = numerator * 10 + (frac[j] - '0');
-                    }
-                    else if (step == 2)
-                    {
-                        ///denominator
-                        denominator = denominator * 10 + (frac[j] - '0');
-                    }
-                }
-            }
-            ++step;
+            number[n++] = pch;
+            pch = strtok(NULL, delimiters);
         }
-        this->integer = integer;
-        this->numerator = numerator;
-        this->denominator = denominator;
+
+        // for (size_t i = 0; i < n; i++)
+        // {
+        //     cout << number[i] << endl;
+        // }
+        switch (n)
+        {
+        case 1:
+            integer = atoi(number[0]);
+            break;
+        case 2:
+            numerator = atoi(number[0]);
+            denominator = atoi(number[1]);
+        case 3:
+            integer = atoi(number[0]);
+            numerator = atoi(number[1]);
+            denominator = atoi(number[2]);
+        default:
+            break;
+        }
         return in;
     }
     //////////////////////////////////////////
@@ -400,10 +434,9 @@ istream &operator>>(istream &in, Fraction &F)
 // #define OPERATORSCHECK
 // #define FROM_OTHER_TO_CLASS
 // #define HOME_WORK
-#define TYPE_CONVERSIONS
+// #define TYPE_CONVERSIONS
 int main()
 {
-
 #ifdef TYPE_CONVERSIONS
     // Fraction A(2, 4, 5);
     // cout << A << endl;
@@ -411,17 +444,16 @@ int main()
     // cout << B << endl;
     Fraction A;
     cin >> A;
+    cout << "Your Fraction: " << endl;
     cout << A << endl;
 #endif // DEBUG
 
 #ifdef HOME_WORK
-
     Fraction A(2, 3, 4);
     A.to_improper();
     double a = (double)A;
     cout << a << endl;
     cout << PATH << endl;
-
     double b = 2.76;
     Fraction C = Fraction(b);
     cout << C << endl;
