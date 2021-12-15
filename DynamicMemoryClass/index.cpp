@@ -62,8 +62,6 @@ public:
 
 String operator+(String &left, String &right)
 {
-    int length = left.getLength() + right.getLength();
-    char retstring[length];
     return String(strcat(left.getStr(), right.getStr()));
 }
 
