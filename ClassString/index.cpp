@@ -1,7 +1,8 @@
 #include <iostream>
 #include <cstring>
 using namespace std;
-
+class String;
+String operator+(String left, String right);
 class String
 {
     char *str;
@@ -83,7 +84,11 @@ public:
         cout << "CopyAssigment\t" << this << endl;
         return *this;
     }
-
+    //overload operator +=
+    String &operator+=(const String &other)
+    {
+        return *this = *this + other;
+    }
     //overload ostream
     ostream &print(ostream &os) const
     {
@@ -99,6 +104,12 @@ public:
         return os;
     }
 
+    ///overload operator subscript
+    char &operator[](int i)
+    {
+        return str[i];
+    }
+
     ///desctructor
     ~String()
     {
@@ -107,17 +118,17 @@ public:
     }
 };
 
-String operator+(const String left, const String right)
+String operator+(String left, String right)
 {
     // return String(strcat(left.getStr(), right.getStr()));
     String result(left.getLength() + right.getLength() - 1);
     for (size_t i = 0; i < left.getLength(); i++)
     {
-        result.getStr()[i] = left.getStr()[i];
+        result[i] = left[i];
     }
     for (size_t i = 0; i < right.getLength(); i++)
     {
-        result.getStr()[i + left.getLength() - 1] = right.getStr()[i];
+        result[i + left.getLength() - 1] = right[i];
     }
     return result;
 }
@@ -172,6 +183,8 @@ int main()
     String str2("World");
     String str3 = str1 + str2;
     cout << str3 << endl;
+    str1 += str2;
+    cout << "Str1 : " << str1 << endl;
 
     return 0;
 }
