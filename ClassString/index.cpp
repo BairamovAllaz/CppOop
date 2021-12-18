@@ -109,6 +109,10 @@ public:
     {
         return str[i];
     }
+    const char &operator[](int i)const
+    {
+        return str[i];
+    }
 
     ///desctructor
     ~String()
@@ -185,6 +189,10 @@ int main()
     cout << str3 << endl;
     str1 += str2;
     cout << "Str1 : " << str1 << endl;
+    String s4; 
+    cout << "Enter s4: ";
+    cin >> s4; 
+    cout << "S4 : " << s4 << endl;
 
     return 0;
 }
