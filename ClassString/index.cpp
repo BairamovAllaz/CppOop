@@ -206,7 +206,11 @@ int main()
     cout << "S4 : " << s4 << endl;
 
 #endif // DEBUG
-    String s1("Hello world");
+    String s2("Hello world");
+    String s1 = s2;
     cout << s1 << endl;
+    String s3("This is a object");
+    cout << s3 << endl;
+    
     return 0;
 }

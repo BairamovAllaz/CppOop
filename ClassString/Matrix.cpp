@@ -2,6 +2,16 @@
 #include <ctime>
 using namespace std;
 
+//////////////////////
+    //Algorithm determinant in progress:)
+//////////////////////
+
+class Matrix;
+Matrix operator+(const Matrix &left, const Matrix &right);
+Matrix operator/(const Matrix &left, const Matrix &right);
+Matrix operator*(const Matrix &left, const Matrix &right);
+Matrix operator-(const Matrix &left, const Matrix &right);
+
 class Matrix;
 void Allocate();
 void FillMatrix();
@@ -11,43 +21,84 @@ class Matrix
     int **matrix;
     int height;
     int width;
+
 public:
+    int getHeight() const
+    {
+        return this->height;
+    }
+
+    int getWidth() const
+    {
+        return this->width;
+    }
+
     //constructors
-    Matrix()
+    Matrix() : height(5), width(5)
     {
-        this->width = 5;
-        this->height = 5;
         Allocate();
         FillMatrix();
     }
-    Matrix(int height, int width)
+    Matrix(int height, int width) : height(height), width(width)
     {
-        this->height = height;
-        this->width = width;
         Allocate();
         FillMatrix();
     }
-    // Matrix(const Matrix &other)
-    // {
-    //     this->height = other.height;
-    //     this->width = other.width;
 
-    //     Allocate();
+    Matrix(Matrix &other) : height(other.height), width(other.width)
+    {
+        matrix = new int *[height] {};
+        for (int i = 0; i < height; i++)
+        {
+            matrix[i] = new int[width]{};
+            for (int j = 0; j < width; j++)
+            {
+                matrix[i][j] = other[i][j];
+            }
+        }
+    }
 
-    //     for (size_t i = 0; i < height; i++)
-    //     {
-    //         for (size_t j = 0; j < width; j++)
-    //         {
-    //             matrix[i][j] = other.getM(i,j);
-    //         }
-    //     }
-    // }
+    Matrix operator=(const Matrix &other)
+    {
+        this->height = other.height;
+        this->width = other.width;
+        deleteMat();
+        matrix = new int *[height] {};
+        for (int i = 0; i < height; i++)
+        {
+            matrix[i] = new int[width]{};
+            for (int j = 0; j < width; j++)
+            {
+                matrix[i][j] = other[i][j];
+            }
+        }
+        return *this;
+    }
+    ///methods
+    int *&operator[](int i)
+    {
+        return matrix[i];
+    }
+    int *&operator[](int i) const
+    {
+        return matrix[i];
+    }
+
+    void deleteMat()
+    {
+        for (size_t i = 0; i < width; i++)
+        {
+            delete matrix[i];
+        }
+        delete[] matrix;
+    }
+
     void Allocate()
     {
-        matrix = new int *[height];
+        matrix = new int *[height] {};
         for (size_t i = 0; i < height; i++)
         {
-            matrix[i] = new int[width];
+            matrix[i] = new int[width]{};
         }
     }
     void FillMatrix()
@@ -60,10 +111,9 @@ public:
             }
         }
     }
-    ///methods
-    void print()
-    {
 
+    ostream &print(ostream &os) const
+    {
         for (size_t i = 0; i < height; i++)
         {
             for (size_t j = 0; j < width; j++)
@@ -72,16 +122,68 @@ public:
             }
             cout << endl;
         }
+        return os;
     }
+
     ~Matrix()
     {
-        for (size_t i = 0; i < width; i++)
-        {
-            delete matrix[i];
-        }
-        delete[] matrix;
+        deleteMat();
     }
 };
+
+ostream &operator<<(ostream &os, const Matrix &m)
+{
+    return m.print(os);
+}
+
+Matrix operator+(const Matrix &left, const Matrix &right)
+{
+    Matrix Bf(left.getHeight(), left.getWidth());
+    for (int i = 0; i < Bf.getHeight(); i++)
+    {
+        for (size_t j = 0; j < Bf.getWidth(); j++)
+        {
+            Bf[i][j] = left[i][j] + right[i][j];
+        }
+    }
+    return Bf;
+}
+Matrix operator-(const Matrix &left, const Matrix &right)
+{
+    Matrix Bf(left.getHeight(), left.getWidth());
+    for (int i = 0; i < Bf.getHeight(); i++)
+    {
+        for (size_t j = 0; j < Bf.getWidth(); j++)
+        {
+            Bf[i][j] = left[i][j] - right[i][j];
+        }
+    }
+    return Bf;
+}
+Matrix operator*(const Matrix &left, const Matrix &right)
+{
+    Matrix Bf(left.getHeight(), left.getWidth());
+    for (int i = 0; i < Bf.getHeight(); i++)
+    {
+        for (size_t j = 0; j < Bf.getWidth(); j++)
+        {
+            Bf[i][j] = left[i][j] * right[i][j];
+        }
+    }
+    return Bf;
+}
+Matrix operator/(const Matrix &left, const Matrix &right)
+{
+    Matrix Bf(left.getHeight(), left.getWidth());
+    for (int i = 0; i < Bf.getHeight(); i++)
+    {
+        for (size_t j = 0; j < Bf.getWidth(); j++)
+        {
+            Bf[i][j] = left[i][j] / right[i][j];
+        }
+    }
+    return Bf;
+}
 
 int main()
 {
@@ -89,11 +191,25 @@ int main()
 
     Matrix m(3, 3);
 
-    m.print();
+    cout << "M: " << m << endl;
 
-    Matrix N;
-    N = m;
-    N.print();
+    Matrix N = m;
+    cout << "N : " << N << endl;
 
+    Matrix F;
+    F = N;
+    cout << "F: " << F << endl;
+
+    Matrix H = F + N;
+    cout << "H: " << H << endl;
+
+    Matrix L = H - N;
+    cout << "L: " << L << endl;
+
+    Matrix K = N * N;
+    cout << "K: " << K << endl;
+
+    Matrix D = K / F;
+    cout << "D: " << D << endl;
     return 0;
 }
