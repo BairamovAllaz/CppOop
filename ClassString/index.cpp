@@ -9,22 +9,16 @@ class String
     int LengthOfString;
 
 public:
-    explicit String(int size)
+    explicit String(int size) : LengthOfString(size), str(new char[LengthOfString]{})
     {
-        this->LengthOfString = size;
-        this->str = new char[LengthOfString]{};
     }
 
-    String()
+    String() : LengthOfString(80), str(new char[LengthOfString]{})
     {
-        this->LengthOfString = 80;
-        this->str = new char[LengthOfString]{};
         cout << "Constructor\t " << this << endl;
     }
-    String(const char *str)
+    String(const char *str) : LengthOfString(strlen(str) + 1), str(new char[LengthOfString]{})
     {
-        this->LengthOfString = strlen(str) + 1;
-        this->str = new char[LengthOfString]{};
         strcpy(this->str, str);
         // for (size_t i = 0;n[i]; i++)
         // {
@@ -33,10 +27,8 @@ public:
     }
 
     //deep copy
-    String(const String &other)
+    String(const String &other) : LengthOfString(other.LengthOfString), str(new char[LengthOfString]{})
     {
-        this->LengthOfString = other.LengthOfString;
-        this->str = new char[LengthOfString]{};
         strcpy(str, other.getStr());
         // for (size_t i = 0;str[i]; i++)
         // {
@@ -111,7 +103,7 @@ public:
         // os.getline(str, LengthOfString);
         const int size = 10240;
         char arr[size] = {};
-        cin.getline(arr,size);
+        cin.getline(arr, size);
         setStr(arr);
         return os;
     }
@@ -159,15 +151,13 @@ istream &operator>>(istream &is, String &S)
     return S.fillCin(is);
 }
 
-istream &getline(istream &is,String &S) {
+istream &getline(istream &is, String &S)
+{
     return S.fillGetline(is);
 }
 
-
-
 // #define CONSTRUCTORS_CHECK
-#define CONSTRUCTORS_CHECK2
-
+// #define INPUT_CHECK
 int main()
 {
 #ifdef CONSTRUCTORS_CHECK
@@ -202,7 +192,7 @@ int main()
 
 #endif // DEBUG
 
-#ifdef CONSTRUCTORS_CHECK2
+#ifdef INPUT_CHECK
 
     String str1("Hello");
     String str2("World");
@@ -212,10 +202,11 @@ int main()
     cout << "Str1 : " << str1 << endl;
     String s4;
     cout << "Enter s4: ";
-    getline(cin,s4);
+    getline(cin, s4);
     cout << "S4 : " << s4 << endl;
 
 #endif // DEBUG
-
+    String s1("Hello world");
+    cout << s1 << endl;
     return 0;
 }
