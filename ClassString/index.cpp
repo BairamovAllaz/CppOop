@@ -2,7 +2,7 @@
 #include <cstring>
 using namespace std;
 class String;
-String operator+(String left, String right);
+String operator+(const String &left, const String &right);
 class String
 {
     char *str;
@@ -98,9 +98,21 @@ public:
     }
 
     ///overload istream
-    istream &fill(istream &os)
+    istream &fillCin(istream &os)
     {
-        os.getline(str, LengthOfString);
+        // os.getline(str, LengthOfString);
+        char arr[10240] = {};
+        cin >> arr;
+        setStr(arr);
+        return os;
+    }
+    istream &fillGetline(istream &os)
+    {
+        // os.getline(str, LengthOfString);
+        const int size = 10240;
+        char arr[size] = {};
+        cin.getline(arr,size);
+        setStr(arr);
         return os;
     }
 
@@ -109,7 +121,7 @@ public:
     {
         return str[i];
     }
-    const char &operator[](int i)const
+    const char &operator[](int i) const
     {
         return str[i];
     }
@@ -122,7 +134,7 @@ public:
     }
 };
 
-String operator+(String left, String right)
+String operator+(const String &left, const String &right)
 {
     // return String(strcat(left.getStr(), right.getStr()));
     String result(left.getLength() + right.getLength() - 1);
@@ -144,10 +156,17 @@ ostream &operator<<(ostream &os, const String &S)
 
 istream &operator>>(istream &is, String &S)
 {
-    return S.fill(is);
+    return S.fillCin(is);
 }
 
+istream &getline(istream &is,String &S) {
+    return S.fillGetline(is);
+}
+
+
+
 // #define CONSTRUCTORS_CHECK
+#define CONSTRUCTORS_CHECK2
 
 int main()
 {
@@ -183,16 +202,20 @@ int main()
 
 #endif // DEBUG
 
+#ifdef CONSTRUCTORS_CHECK2
+
     String str1("Hello");
     String str2("World");
     String str3 = str1 + str2;
     cout << str3 << endl;
     str1 += str2;
     cout << "Str1 : " << str1 << endl;
-    String s4; 
+    String s4;
     cout << "Enter s4: ";
-    cin >> s4; 
+    getline(cin,s4);
     cout << "S4 : " << s4 << endl;
+
+#endif // DEBUG
 
     return 0;
 }
