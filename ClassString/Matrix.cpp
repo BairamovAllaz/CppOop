@@ -7,7 +7,6 @@ Matrix operator+(const Matrix &left, const Matrix &right);
 Matrix operator/(const Matrix &left, const Matrix &right);
 Matrix operator*(const Matrix &left, const Matrix &right);
 Matrix operator-(const Matrix &left, const Matrix &right);
-
 class Matrix;
 void Allocate();
 void FillMatrix();
