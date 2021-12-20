@@ -2,10 +2,6 @@
 #include <ctime>
 using namespace std;
 
-//////////////////////
-    //Algorithm determinant in progress:)
-//////////////////////
-
 class Matrix;
 Matrix operator+(const Matrix &left, const Matrix &right);
 Matrix operator/(const Matrix &left, const Matrix &right);
@@ -45,12 +41,12 @@ public:
         FillMatrix();
     }
 
-    Matrix(Matrix &other) : height(other.height), width(other.width)
+    Matrix(Matrix &other) : Matrix(other.height, other.width)
     {
-        matrix = new int *[height] {};
+        // matrix = new int *[height] {};
         for (int i = 0; i < height; i++)
         {
-            matrix[i] = new int[width]{};
+            // matrix[i] = new int[width]{};
             for (int j = 0; j < width; j++)
             {
                 matrix[i][j] = other[i][j];
