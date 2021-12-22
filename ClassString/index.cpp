@@ -2,8 +2,8 @@
 #include "indexString.cpp"
 
 // #define CONSTRUCTORS_CHECK
-// #define CONSTRUCTORS_CHECK2
-#define CONSTRUCTORS_CHECK3
+#define CONSTRUCTORS_CHECK2
+// #define CONSTRUCTORS_CHECK3
 
 int main()
 {
@@ -42,16 +42,21 @@ int main()
 
 #ifdef CONSTRUCTORS_CHECK2
 
+    // String str1("Hello");
+    // String str2("World");
+    // String str3 = str1 + str2;
+    // cout << str3 << endl;
     String str1("Hello");
     String str2("World");
-    String str3 = str1 + str2;
+    String str3;
+    str3 = str1 + str2;
     cout << str3 << endl;
-    str1 += str2;
-    cout << "Str1 : " << str1 << endl;
-    String s4;
-    cout << "Enter s4: ";
-    getline(cin, s4);
-    cout << "S4 : " << s4 << endl;
+    // str1 += str2;
+    // cout << "Str1 : " << str1 << endl;   
+    // // String s4;
+    // cout << "Enter s4: ";
+    // getline(cin, s4);
+    // cout << "S4 : " << s4 << endl;
 
 #endif // DEBUG
 
@@ -61,9 +66,6 @@ int main()
     String s2 = std::move(s1); ///((String &&)string)
     cout << "S2: " << s2 << endl;
     cout << "S1: " << s1 << endl;
-
-
-
     String S3("Hello");
     cout << "S3: " << S3 << endl;
     String S4;
@@ -71,5 +73,6 @@ int main()
     cout << "S4: " << S4 << endl;
     cout << "S3: " << S3 << endl;
 #endif // DEBUG
+
     return 0;
 }

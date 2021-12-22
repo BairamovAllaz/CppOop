@@ -21,7 +21,7 @@ public:
 
 
     //move constructor
-    String(String&& obj); 
+    String(String&& obj)noexcept; 
     ///moveassigment
     String& operator=(String &&x);
 

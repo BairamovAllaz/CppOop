@@ -14,19 +14,10 @@ Matrix &Matrix::operator=(Matrix &&x)
 {
     this->height = x.height;
     this->width = x.width;
-
     x.width = 0;
     x.height = 0;
     deleteMat();
-    matrix = new int *[height] {};
-    for (int i = 0; i < height; i++)
-    {
-        matrix[i] = new int[width]{};
-        for (int j = 0; j < width; j++)
-        {
-            matrix[i][j] = x[i][j];
-        }
-    }
+    this->matrix = x.matrix;
     x.matrix = nullptr;
     return *this;
 }
