@@ -3,72 +3,59 @@
 using namespace std;
 class String;
 String operator+(const String &left, const String &right);
+
 class String
 {
+    int size;
     char *str;
-    int LengthOfString;
 
 public:
-    explicit String(int size) : LengthOfString(size), str(new char[LengthOfString]{})
+    int get_size() const
     {
+        return size;
+    }
+    const char *get_str() const
+    {
+        return str;
+    }
+    char *get_str()
+    {
+        return str;
     }
 
-    String() : LengthOfString(80), str(new char[LengthOfString]{})
-    {
-        cout << "Constructor\t " << this << endl;
-    }
-    String(const char *str) : LengthOfString(strlen(str) + 1), str(new char[LengthOfString]{})
-    {
-        strcpy(this->str, str);
-        // for (size_t i = 0;n[i]; i++)
-        // {
-        //     this->str[i] = n[i];
-        // }
-    }
-
-    //deep copy
-    String(const String &other) : LengthOfString(other.LengthOfString), str(new char[LengthOfString]{})
-    {
-        strcpy(str, other.getStr());
-        // for (size_t i = 0;str[i]; i++)
-        // {
-        //     this->str[i] = other.str[i];
-        // }
-    }
-
-    ///get methods
-    const char *getStr() const
-    {
-        return this->str;
-    }
-
-    char *getStr()
-    {
-        return this->str;
-    }
-
-    int getLength() const
-    {
-        return this->LengthOfString;
-    }
-
-    //set methods
     void setStr(const char *str1)
     {
-        this->LengthOfString = strlen(str1) + 1;
-        this->str = new char[LengthOfString]{};
+        this->size = strlen(str1) + 1;
+        this->str = new char[size]{};
         strcpy(str, str1);
     }
 
-    //overload operator =
+    explicit String(int size = 80) : size(size), str(new char[size]{})
+    {
+        cout << "SizeConstructor:\t" << this << endl;
+    }
+    String(const char str[]) : String(strlen(str) + 1)
+    {
+        strcpy(this->str, str);
+        cout << "Constructor:\t" << this << endl;
+    }
+    String(const String &other) : String(other.str)
+    {
+        cout << "CopyConstructor:\t" << this << endl;
+    }
+    ~String()
+    {
+        delete[] str;
+        cout << "Destructor:\t" << this << endl;
+    }
     String &operator=(const String &other)
     {
         if (this == &other)
             return *this; // String s3("Hello world") !(    s3 = s3    );
         delete[] this->str;
-        this->LengthOfString = other.LengthOfString;
-        this->str = new char[LengthOfString]{};
-        strcpy(str, other.getStr());
+        this->size = other.size;
+        this->str = new char[size]{};
+        strcpy(str, other.get_str());
         // for (size_t i = 0; str[i]; i++)
         // {
         //     this->str[i] = other.str[i];
@@ -76,90 +63,71 @@ public:
         cout << "CopyAssigment\t" << this << endl;
         return *this;
     }
-    //overload operator +=
     String &operator+=(const String &other)
     {
         return *this = *this + other;
     }
-    //overload ostream
+
+    const char &operator[](int i) const
+    {
+        return str[i];
+    }
+    char &operator[](int i)
+    {
+        return str[i];
+    }
+
+    //					Methods
     ostream &print(ostream &os) const
     {
-        os << "Size\t" << LengthOfString << endl;
+        os << "Size\t" << size << endl;
         os << "String\t" << str << endl;
         return os;
     }
 
-    ///overload istream
     istream &fillCin(istream &os)
     {
-        // os.getline(str, LengthOfString);
         char arr[10240] = {};
         cin >> arr;
         setStr(arr);
         return os;
     }
-    istream &fillGetline(istream &os)
-    {
-        // os.getline(str, LengthOfString);
-        const int size = 10240;
-        char arr[size] = {};
-        cin.getline(arr, size);
-        setStr(arr);
-        return os;
-    }
-
-    ///overload operator subscript
-    char &operator[](int i)
-    {
-        return str[i];
-    }
-    const char &operator[](int i) const
-    {
-        return str[i];
-    }
-
-    ///desctructor
-    ~String()
-    {
-        delete[] this->str;
-        cout << "Desctructor\t " << this << endl;
-    }
 };
 
 String operator+(const String &left, const String &right)
 {
-    // return String(strcat(left.getStr(), right.getStr()));
-    String result(left.getLength() + right.getLength() - 1);
-    for (size_t i = 0; i < left.getLength(); i++)
-    {
+    String result(left.get_size() + right.get_size() - 1);
+    for (int i = 0; i < left.get_size(); i++)
         result[i] = left[i];
-    }
-    for (size_t i = 0; i < right.getLength(); i++)
-    {
-        result[i + left.getLength() - 1] = right[i];
-    }
+    for (int i = 0; i < right.get_size(); i++)
+        result[i + left.get_size() - 1] = right[i];
     return result;
 }
 
-ostream &operator<<(ostream &os, const String &S)
+std::ostream &operator<<(std::ostream &os, const String &obj)
 {
-    return S.print(os);
+    return obj.print(os);
+}
+std::istream &operator>>(std::istream &is, String &obj)
+{
+    return obj.fillCin(is);
 }
 
-istream &operator>>(istream &is, String &S)
+std::istream &getline(std::istream &is, String &obj)
 {
-    return S.fillCin(is);
+    const int SIZE = 1024 * 1000;
+    char buffer[SIZE] = {};
+    is.getline(buffer, SIZE);
+    obj = buffer;
+    return is; //winver
 }
-
-istream &getline(istream &is, String &S)
-{
-    return S.fillGetline(is);
-}
-
 // #define CONSTRUCTORS_CHECK
-// #define INPUT_CHECK
+// #define CONSTRUCTORS_CHECK2
+#define CONSTRUCTORS_CHECK3
+
 int main()
 {
+
 #ifdef CONSTRUCTORS_CHECK
     String s;
     cout << "s: " << s << endl;
@@ -192,7 +160,7 @@ int main()
 
 #endif // DEBUG
 
-#ifdef INPUT_CHECK
+#ifdef CONSTRUCTORS_CHECK2
 
     String str1("Hello");
     String str2("World");
@@ -206,11 +174,10 @@ int main()
     cout << "S4 : " << s4 << endl;
 
 #endif // DEBUG
-    String s2("Hello world");
-    String s1 = s2;
-    cout << s1 << endl;
-    String s3("This is a object");
-    cout << s3 << endl;
-    
+
+#ifdef CONSTRUCTORS_CHECK3
+    String s(10);
+    cout << "s : " << s << endl;
+#endif // DEBUG
     return 0;
 }
