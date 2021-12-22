@@ -56,8 +56,20 @@ int main()
 #endif // DEBUG
 
 #ifdef CONSTRUCTORS_CHECK3
-    String s(10);
-    cout << "s : " << s << endl;
+    String s1("First");
+    cout << "S1: " << s1 << endl;
+    String s2 = std::move(s1); ///((String &&)string)
+    cout << "S2: " << s2 << endl;
+    cout << "S1: " << s1 << endl;
+
+
+
+    String S3("Hello");
+    cout << "S3: " << S3 << endl;
+    String S4;
+    S4 = std::move(S3);
+    cout << "S4: " << S4 << endl;
+    cout << "S3: " << S3 << endl;
 #endif // DEBUG
     return 0;
 }

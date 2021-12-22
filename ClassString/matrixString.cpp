@@ -1,5 +1,36 @@
 #include "matrixString.h"
 
+///move constructor
+Matrix::Matrix(Matrix &&obj) : height(obj.height), width(obj.width), matrix(obj.matrix)
+{
+    obj.height = 0;
+    obj.width = 0;
+    obj.matrix = nullptr;
+}
+
+//move assigment
+
+Matrix &Matrix::operator=(Matrix &&x)
+{
+    this->height = x.height;
+    this->width = x.width;
+
+    x.width = 0;
+    x.height = 0;
+    deleteMat();
+    matrix = new int *[height] {};
+    for (int i = 0; i < height; i++)
+    {
+        matrix[i] = new int[width]{};
+        for (int j = 0; j < width; j++)
+        {
+            matrix[i][j] = x[i][j];
+        }
+    }
+    x.matrix = nullptr;
+    return *this;
+}
+
 int Matrix::getHeight() const
 {
     return this->height;

@@ -17,11 +17,18 @@ public:
     int get_size() const;
     const char *get_str() const;
     char *get_str();
-
     void setStr(const char *str1);
+
+
+    //move constructor
+    String(String&& obj); 
+    ///moveassigment
+    String& operator=(String &&x);
+
+
+
     explicit String(int size = 80);
     String(const char str[]);
-
     String(const String &other);
     ~String();
 

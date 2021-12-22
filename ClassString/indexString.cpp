@@ -1,5 +1,22 @@
 #include "indexString.h"
 #include <cstring>
+
+///move constructor
+String::String(String &&obj) : size(obj.size), str(obj.str)
+{
+    obj.size = 0;
+    obj.str = nullptr;
+}
+
+String &String::operator=(String &&obj){
+    this->size = obj.size;
+    obj.size = 0;
+    delete[] str;
+    this->str = obj.str;
+    obj.str = nullptr;
+    return *this;
+}
+
 int String::get_size() const
 {
     return size;

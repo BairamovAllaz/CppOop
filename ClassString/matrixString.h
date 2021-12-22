@@ -16,6 +16,12 @@ class Matrix
 public:
     int getHeight() const;
     int getWidth() const;
+
+    //move constructor
+    Matrix(Matrix &&obj);
+    ///moveassigment
+    Matrix &operator=(Matrix &&x);
+
     //constructors
     Matrix();
     Matrix(int height, int width);
