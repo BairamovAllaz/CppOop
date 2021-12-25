@@ -2,13 +2,14 @@
 #include <bitset>
 #include <cassert>
 using namespace std;
+
+//https://en.wikipedia.org/wiki/Bitwise_operation
+
 class Binary;
 class Binary
 {
 private:
     std::bitset<32> b1{};
-    std::bitset<32> value{};
-
 public:
     Binary() : b1(0) { cout << "Default" << endl; };
     Binary(int a) : b1(a) { cout << "Two argument"; };
@@ -16,11 +17,6 @@ public:
     bitset<32> getb1()
     {
         return b1;
-    }
-
-    bitset<32> getvalue()
-    {
-        return value;
     }
     void print()
     {
@@ -30,6 +26,20 @@ public:
 
 Binary operator+(Binary &left, Binary &right)
 {
+    ///Algorithm
+
+    /* 
+    sum = a xor b xor c
+    carry = a&b|b&c|c&a 
+    
+    */
+    /* 
+        1 or 1 = 1
+        1 or 0 = 1
+        0 or 1 = 1
+        0 or 0 = 0
+    */
+
     std::bitset<32> Ne{};
     int y = 0;
     for (size_t i = 0; i < 32; i++)
@@ -42,21 +52,64 @@ Binary operator+(Binary &left, Binary &right)
 
 Binary operator-(Binary &left, Binary &right)
 {
+    std::bitset<32> Result{};
     for (size_t i = 0; i < 32; i++)
     {
-        int b = (~left.getb1()[i] & right.getb1()[i]);
-        right.getb1()[i] = (right.getb1()[i] ^ left.getb1()[i]);
-        left.getb1()[i] = b << 1;
+        bool diff, borrow = false;
+        if (borrow)
+        {
+            diff = !(left.getb1()[i] ^ right.getb1()[i]);
+            borrow = !left.getb1()[i] || (left.getb1()[i] && right.getb1()[i]);
+        }
+        else
+        {
+            diff = left.getb1()[i] ^ right.getb1()[i];
+            borrow = !left.getb1()[i] && right.getb1()[i];
+        }
+        Result[i] = diff;
     }
-    return Binary(left.getb1());
+    return Binary(Result);
 }
 
+Binary operator*(Binary &left, Binary &right)
+{
+    //algorithm multipilaction binary
+    //https://study.com/academy/lesson/binary-division-multiplication-rules-examples.html
+
+    /* 
+            1 and 1 = 1
+            1 and 0 = 0
+            0 and 1 = 0
+            0 and 0 = 0
+     */
+    std::bitset<32> Ne{};
+    std::bitset<32> K{};
+    std::bitset<32> Result{};
+    for (size_t i = 0; i < 32; i++)
+    {
+        for (size_t j = 0; j < 32; j++)
+        {
+            K[j] = right.getb1()[j] & left.getb1()[i];
+        }
+        if (i != 0)
+        {
+            K = (K << 1);
+        }
+        int y = 0;
+        Ne = Result;
+        for (size_t l = 0; l < 32; l++)
+        {
+            Result[l] = (K[l] ^ Ne[l]) ^ y;
+            y = (K[l] & Ne[l]) | (K[l] & y) | (Ne[l] & y);
+        }
+        K = {};
+    }
+    return Binary(Result);
+}
+///Binary division not complete!!
 int main()
 {
-
     Binary b1{3};
-    b1.print();
-
     Binary b2;
     Binary b4{8};
     b2 = b1 + b4;
@@ -64,58 +117,16 @@ int main()
 
     cout << "-------------------" << endl;
     Binary b6;
-    Binary b9{2};
-    Binary b8{8};
+    Binary b9{5};
+    Binary b8{2};
     b6 = b8 - b9;
     b6.print();
 
-    ////operator +
-    // std::bitset<32> b1{25};
-    // std::bitset<32> b2{15};
-    // std::bitset<32> Ne{};
-    // int y = 0;
-    // for (size_t i = 0; i < 32; i++)
-    // {
-    //     Ne[i] = (b1[i] ^ b2[i]) ^ y;
-    //     y = (b1[i] & b2[i]) | (b1[i] & y) | (b2[i] & y);
-    // }
-    // cout << Ne << endl;
-
-    //operator -
-    // std::bitset<32> b1{"01001"};
-    // std::bitset<32> b2{"10011"};
-    // for (size_t i = 0; i < 32; i++)
-    // {
-    //     int b = (~b1[i] & b2[i]);
-    //     cout << b << endl;
-    //     b1[i] = (b1[i] ^ b2[i]);
-    //     b2[i] = b << 1;
-    // }
-    // cout << b1 << endl;
-
-    // std::bitset<32> b1{"11001"};
-    // std::bitset<32> b2{"10011"};
-    // std::bitset<32> Ne{};
-    // std::bitset<32> K{};
-    // for (size_t i = 0; i < 32; i++)
-    // {
-    //     for (size_t j = 0; j < 32; j++)
-    //     {
-    //         K[i] = b1[j] & b2[i];
-    //     }
-    //     if (i != 1)
-    //     {
-    //         K = (K << 1);
-    //     }
-    //     int y = 0;
-    //     for (size_t i = 0; i < 32; i++)
-    //     {
-    //         Ne[i] = (K[i] ^ Ne[i]) ^ y;
-    //         y = (K[i] & Ne[i]) | (K[i] & y) | (Ne[i] & y);
-    //     }
-    //     // K = {};
-    // }
-
-    // cout << Ne << endl;
+    cout << "-------------------" << endl;
+    Binary C1;
+    Binary C2(12);
+    Binary C3(15);
+    C1 = C2 * C3;
+    C1.print();
     return 0;
 }
