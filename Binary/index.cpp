@@ -26,6 +26,7 @@ public:
 
 Binary operator+(Binary &left, Binary &right)
 {
+    //For example: 101 + 10 = 0111
     ///Algorithm
 
     /* 
@@ -52,10 +53,12 @@ Binary operator+(Binary &left, Binary &right)
 
 Binary operator-(Binary &left, Binary &right)
 {
+    //for example: 101 - 10 = 011
     std::bitset<32> Result{};
+    bool borrow = false;
     for (size_t i = 0; i < 32; i++)
     {
-        bool diff, borrow = false;
+        bool diff;
         if (borrow)
         {
             diff = !(left.getb1()[i] ^ right.getb1()[i]);
@@ -73,6 +76,7 @@ Binary operator-(Binary &left, Binary &right)
 
 Binary operator*(Binary &left, Binary &right)
 {
+    //for example : 01010
     //algorithm multipilaction binary
     //https://study.com/academy/lesson/binary-division-multiplication-rules-examples.html
 
