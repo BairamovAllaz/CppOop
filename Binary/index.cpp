@@ -2,9 +2,7 @@
 #include <bitset>
 #include <cassert>
 using namespace std;
-
 //https://en.wikipedia.org/wiki/Bitwise_operation
-
 class Binary;
 class Binary
 {
@@ -76,7 +74,7 @@ Binary operator-(Binary &left, Binary &right)
 
 Binary operator*(Binary &left, Binary &right)
 {
-    //for example : 01010
+    //for example : 101 * 10 = 01010
     //algorithm multipilaction binary
     //https://study.com/academy/lesson/binary-division-multiplication-rules-examples.html
 
