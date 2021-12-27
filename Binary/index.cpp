@@ -4,41 +4,95 @@
 using namespace std;
 //https://en.wikipedia.org/wiki/Bitwise_operation
 class Binary;
+Binary operator+(Binary &left, Binary &right);
+Binary operator-(Binary &left, Binary &right);
+
+Binary operator*(Binary &left, Binary &right);
 class Binary
 {
 private:
     std::bitset<32> b1{};
+
 public:
     Binary() : b1(0) { cout << "Default" << endl; };
-    Binary(int a) : b1(a) { cout << "Two argument"; };
-    Binary(bitset<32> val) : b1(val) { cout << "Value"; };
+    Binary(int a) : b1(a) { cout << "Two argument" << endl; };
+    Binary(bitset<32> val) : b1(val) { cout << "Value" << endl; };
+
+    Binary(const Binary &other) : b1(other.b1) { cout << "Copy assigment"; };
+    Binary(Binary &&other) : b1(other.b1)
+    {
+        other.b1 = {};
+        cout << "MoveConstructor\t" << this << endl;
+    }
+
+    Binary &operator=(Binary &&other)
+    {
+        if (this == &other)
+            return *this;
+        this->b1 = other.b1;
+        other.b1 = {};
+        cout << "MoveAssigment\t" << this << endl;
+        return *this;
+    }
+
     bitset<32> getb1()
     {
         return b1;
     }
-    void print()
+
+    std::ostream &print(std::ostream &os) const
     {
-        cout << "Answer: " << b1 << endl;
+        os << b1 << endl;
+        return os;
+    }
+
+    ~Binary()
+    {
+        cout << "Desctructor" << endl;
     }
 };
+std::ostream &operator<<(std::ostream &os, const Binary &F)
+{
+    return F.print(os);
+};
+
+std::bitset<32> multipilaction(std::bitset<32> b1, std::bitset<32> b2)
+{
+    std::bitset<32> Result{};
+
+    bool borrow = false;
+    for (size_t i = 0; i < 32; i++)
+    {
+        bool diff;
+        if (borrow)
+        {
+            diff = !(b1[i] ^ b2[i]);
+            borrow = !b1[i] || (b1[i] && b2[i]);
+        }
+        else
+        {
+            diff = b1[i] ^ b2[i];
+            borrow = !b1[i] && b2[i];
+        }
+        Result[i] = diff;
+    }
+    return Result;
+}
 
 Binary operator+(Binary &left, Binary &right)
 {
     //For example: 101 + 10 = 0111
     ///Algorithm
-
     /* 
     sum = a xor b xor c
     carry = a&b|b&c|c&a 
-    
     */
     /* 
-        1 or 1 = 1
+        1 or 1 = 0
         1 or 0 = 1
         0 or 1 = 1
         0 or 0 = 0
     */
-
     std::bitset<32> Ne{};
     int y = 0;
     for (size_t i = 0; i < 32; i++)
@@ -53,6 +107,7 @@ Binary operator-(Binary &left, Binary &right)
 {
     //for example: 101 - 10 = 011
     std::bitset<32> Result{};
+
     bool borrow = false;
     for (size_t i = 0; i < 32; i++)
     {
@@ -108,27 +163,49 @@ Binary operator*(Binary &left, Binary &right)
     }
     return Binary(Result);
 }
-///Binary division not complete!!
+///Binary division is not complete yet!!
+Binary operator/(Binary &left, Binary &right)
+{
+
+    std::bitset<32> result{};
+    std::bitset<32> down{};
+
+    for (int i = 0; i < 32; i++)
+    {
+        if (down.to_ulong() < left.getb1().to_ullong())
+        {
+
+        }
+    }
+    return Binary(5);
+}
 int main()
 {
-    Binary b1{3};
+    Binary b1{2};
     Binary b2;
-    Binary b4{8};
+    Binary b4{5};
     b2 = b1 + b4;
-    b2.print();
+    cout << b2 << endl;
 
     cout << "-------------------" << endl;
     Binary b6;
-    Binary b9{5};
-    Binary b8{2};
+    Binary b9{2};
+    Binary b8{5};
     b6 = b8 - b9;
-    b6.print();
+    cout << b6 << endl;
 
     cout << "-------------------" << endl;
     Binary C1;
-    Binary C2(12);
-    Binary C3(15);
+    Binary C2(2);
+    Binary C3(5);
     C1 = C2 * C3;
-    C1.print();
+    cout << C1 << endl;
+
+    cout << "-------------------" << endl;
+    Binary C4;
+    Binary C5(42);
+    Binary C6(6);
+    C4 = C6 / C5;
+    cout << C4 << endl;
     return 0;
 }
