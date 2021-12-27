@@ -46,6 +46,7 @@ public:
         // double y_distance = this->y - other.y;
         // return sqrt(x_distance * x_distance + y_distance * y_distance);
     }
+    
     ///descturctors
     ~M()
     {
