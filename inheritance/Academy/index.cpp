@@ -10,7 +10,7 @@ private:
     unsigned int age;
 
 public:
-    //constructors
+    // constructors
     Human(const std::string lastname, const std::string firstname, unsigned int age)
     {
         set_lastname(lastname);
@@ -107,7 +107,7 @@ public:
     }
 
     Student(
-        const std::string lastname, const std::string firstname, unsigned int age, //human
+        const std::string lastname, const std::string firstname, unsigned int age, // human
         const std::string &speciality, const std::string &group, double rating, double attendace) : Human(lastname, firstname, age)
     {
         set_speciality(speciality);
@@ -129,9 +129,131 @@ public:
     }
 };
 
+class Teacher : public Human
+{
+private:
+    std::string speciality;
+    unsigned int experience;
+    double evil;
+
+public:
+    const std::string &get_speciality() const
+    {
+        return speciality;
+    }
+    unsigned int get_experience()
+    {
+        return experience;
+    }
+    double get_evil()
+    {
+        return evil;
+    }
+
+    void set_speciality(const std::string &speciality)
+    {
+        this->speciality = speciality;
+    }
+
+    void set_experience(unsigned int experience)
+    {
+        this->experience = experience;
+    }
+
+    void set_evil(double evil)
+    {
+        this->evil = evil;
+    }
+    Teacher(
+        const std::string last_name,
+        const std::string first_name,
+        unsigned int age,
+        const std::string speciality,
+        unsigned int experience,
+        double evil) : Human(last_name, first_name, age)
+    {
+        set_speciality(speciality);
+        set_experience(experience);
+        set_evil(evil);
+        cout << "Tconstructor\t" << this << endl;
+    }
+    void print() const
+    {
+        Human::print();
+        cout << "Teacher " << endl;
+        cout << "Speciality: " << speciality << " Experience " << experience << " evil" << evil << endl;
+    }
+    ~Teacher()
+    {
+        cout << "TDesctructor\t" << this << endl;
+    }
+};
+
+class Graduate : public Student
+{
+private:
+    std::string graduate_subject;
+    unsigned int graduate_year;
+
+public:
+    const std::string &get_graduate_subject() const
+    {
+        return graduate_subject;
+    }
+
+    unsigned int get_graduate_year()
+    {
+        return graduate_year;
+    }
+
+    void set_graduate_subject(const std::string &sub)
+    {
+        this->graduate_subject = sub;
+    }
+
+    void set_graduate_year(unsigned int y)
+    {
+        this->graduate_year = y;
+    }
+
+    Graduate(
+        const std::string lastname,
+        const std::string firstname,
+        unsigned int age, //human constructor
+        const std::string &speciality,
+        const std::string &group,
+        double rating,
+        double attendace, ///student constructor
+        const std::string graduate_subject,
+        unsigned int graduate_year) : Student(lastname, firstname, age, speciality, group, rating, attendace)
+    {
+        set_graduate_subject(graduate_subject);
+        set_graduate_year(graduate_year);
+        cout << "Gconstructor\t" << this << endl;
+    }
+    void print() const
+    {
+        Student::print();
+        cout << "Graduate student" << endl;
+        cout << "Graduate subeject --- " << graduate_subject << " "
+             << "Graduate year --- " << graduate_year << endl;
+    }
+    ~Graduate()
+    {
+        cout << "Gdesctructor\t" << this << endl;
+    }
+};
+
 int main()
 {
     Student stud("Pinkman", "Jessie", 25, "Chemistry", "WW_123", 85, 95);
     stud.print();
+
+    Teacher teach("Walter", "White", 50, "Chemistry", 100, 67.8);
+    teach.print();
+
+    Graduate s("Hank", "Schrader", 43, "DEA", "Police", 100, 100, "DEA", 1999);
+    s.print();
+
     return 0;
 }
