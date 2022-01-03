@@ -56,7 +56,8 @@ public:
         cout << last_name << " " << first_name << " " << age
              << " age" << endl;
     }
-
+    
+     ////write to file
     virtual ofstream &getvalues(ofstream &in)
     {
         in << "Lastname: " << last_name << endl;
@@ -202,6 +203,7 @@ public:
         cout << "Speciality: " << speciality << " Experience " << experience << " evil" << evil << endl;
     }
 
+     ////write to file
     ofstream &getvalues(ofstream &in)
     {
         Human::getvalues(in);
@@ -262,6 +264,8 @@ public:
              << "Graduate year --- " << graduate_year << endl;
     }
 
+
+    ////write to file
     ofstream &getvalues(ofstream &in)
     {
         Student::getvalues(in);
@@ -269,6 +273,8 @@ public:
         in << "Graduate year: " << graduate_year << endl;
         return in;
     }
+
+
     ~Graduate()
     {
         cout << "Gdesctructor\t" << this << endl;
@@ -276,16 +282,15 @@ public:
 };
 // #define INHERITANCE_CHECK
 
+/////////////////////////////////////
+//overload operator ofstream<<
 template <typename T1, typename T2>
 ofstream &operator<<(T1 &in, T2 h)
 {
     return h->getvalues(in);
 }
-// template <typename T1>
-// istream &getline(T1 &out ,string &line){
+////////////////////////////////////
 
-//     return out;
-// }
 
 int main()
 {
@@ -319,7 +324,6 @@ int main()
         for (int i = 0; i < size; ++i)
         {
             writefile << group[i] << endl;
-            // cout << endl;
         }
     }
     else
@@ -344,7 +348,6 @@ int main()
     {
         cout << "Error while opening file!!!!" << endl;
     }
-
     for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
     {
         delete group[i];
