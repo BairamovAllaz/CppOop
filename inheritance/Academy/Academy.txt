@@ -53,3 +53,13 @@ Speciality: Chemistry
 Exprience: 100
 Evil: 67.8
 
+Lastname: Hank
+Firstname: Schrader
+age: 43
+Speciality: DEA
+Group: Police
+Rating: 100
+attendace: 100
+Graduate subject: DEA
+Graduate year: 1999
+

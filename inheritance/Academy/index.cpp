@@ -277,10 +277,9 @@ public:
 // #define INHERITANCE_CHECK
 
 template <typename T1, typename T2>
-ofstream &operator<<(T1 &in, T2 &human)
+ofstream &operator<<(T1 &in, T2 h)
 {
-    human->getvalues(in);
-    return in;
+    return h->getvalues(in);
 }
 // template <typename T1>
 // istream &getline(T1 &out ,string &line){
@@ -308,18 +307,19 @@ int main()
         new Teacher("Diaz", "Ricardo", 25, "Weapons distribiton", 100, 30),
         new Student("Monatana", "Antonio", 30, "Criminalistic", "Vice", 90, 80),
         new Teacher("Walter", "White", 50, "Chemistry", 100, 67.8),
+        new Graduate("Hank", "Schrader", 43, "DEA", "Police", 100, 100, "DEA", 1999),
     };
 
     int size = sizeof(group) / sizeof(group[0]);
 
-    /// write array to file
+    //write array to file
     ofstream writefile("Academy.txt");
     if (writefile.is_open())
     {
         for (int i = 0; i < size; ++i)
         {
             writefile << group[i] << endl;
-            cout << endl;
+            // cout << endl;
         }
     }
     else
@@ -329,18 +329,21 @@ int main()
     writefile.close();
 
     /// read text from file
-
-    // string line;
-    // ifstream readfile("Academy.txt");
-    // if(readfile.is_open()){
-    //     while(getline(readfile,line)){
-    //         cout << "Line: " << line << endl;
-    //     }
-    // }else{
-    //     cout << "Error while opening file!!!!" << endl;
-    // }
-
-    // readfile.close();
+    cout << endl;
+    ifstream readfile("Academy.txt");
+    string line;
+    if (readfile.is_open())
+    {
+        while (getline(readfile, line))
+        {
+            cout << line << endl;
+        }
+        readfile.close();
+    }
+    else
+    {
+        cout << "Error while opening file!!!!" << endl;
+    }
 
     for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
     {
