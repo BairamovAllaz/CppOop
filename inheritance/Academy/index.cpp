@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstring>
+#include <fstream>
 using namespace std;
-
+#define HUMAN_TAKE_PARAMETRS const std::string lastname, const std::string firstname, unsigned int age
+#define HUMAN_GIVEN_PARAMETRS lastname, firstname, age
 class Human
 {
 private:
@@ -11,7 +13,7 @@ private:
 
 public:
     // constructors
-    Human(const std::string lastname, const std::string firstname, unsigned int age)
+    Human(HUMAN_TAKE_PARAMETRS)
     {
         set_lastname(lastname);
         set_firstname(firstname);
@@ -49,18 +51,28 @@ public:
         this->age = age;
     }
 
-    void print() const
+    virtual void print() const
     {
         cout << last_name << " " << first_name << " " << age
              << " age" << endl;
     }
 
-    ~Human()
+    virtual ofstream &getvalues(ofstream &in)
+    {
+        in << "Lastname: " << last_name << endl;
+        in << "Firstname: " << first_name << endl;
+        in << "age: " << age << endl;
+        return in;
+    }
+
+    virtual ~Human()
     {
         cout << "Hdesctructor\t" << this << endl;
     }
 };
 
+#define STUDENT_TAKE_PARAMETRS const std::string &speciality, const std::string &group, double rating, double attendace
+#define STUDENT_GIVEN_PARAMETRS speciality, group, rating, attendace
 class Student : public Human
 {
 private:
@@ -107,8 +119,7 @@ public:
     }
 
     Student(
-        const std::string lastname, const std::string firstname, unsigned int age, // human
-        const std::string &speciality, const std::string &group, double rating, double attendace) : Human(lastname, firstname, age)
+        HUMAN_TAKE_PARAMETRS, STUDENT_TAKE_PARAMETRS) : Human(HUMAN_GIVEN_PARAMETRS)
     {
         set_speciality(speciality);
         set_group(group);
@@ -122,6 +133,15 @@ public:
         Human::print();
         cout << speciality << " " << group << " " << rating << " " << attendace << endl;
     }
+    ofstream &getvalues(ofstream &in)
+    {
+        Human::getvalues(in);
+        in << "Speciality: " << speciality << endl;
+        in << "Group: " << group << endl;
+        in << "Rating: " << rating << endl;
+        in << "attendace: " << attendace << endl;
+        return in;
+    }
 
     ~Student()
     {
@@ -129,6 +149,8 @@ public:
     }
 };
 
+#define TEACHER_TAKE_PARAMETRS const std::string speciality, unsigned int experience, double evil
+#define TEACHER_GIVEN_PARAMETRS speciality, experience, evil
 class Teacher : public Human
 {
 private:
@@ -165,12 +187,8 @@ public:
         this->evil = evil;
     }
     Teacher(
-        const std::string last_name,
-        const std::string first_name,
-        unsigned int age,
-        const std::string speciality,
-        unsigned int experience,
-        double evil) : Human(last_name, first_name, age)
+        HUMAN_TAKE_PARAMETRS,
+        TEACHER_TAKE_PARAMETRS) : Human(HUMAN_GIVEN_PARAMETRS)
     {
         set_speciality(speciality);
         set_experience(experience);
@@ -183,6 +201,16 @@ public:
         cout << "Teacher " << endl;
         cout << "Speciality: " << speciality << " Experience " << experience << " evil" << evil << endl;
     }
+
+    ofstream &getvalues(ofstream &in)
+    {
+        Human::getvalues(in);
+        in << "Speciality: " << speciality << endl;
+        in << "Exprience: " << experience << endl;
+        in << "Evil: " << evil << endl;
+        return in;
+    }
+
     ~Teacher()
     {
         cout << "TDesctructor\t" << this << endl;
@@ -217,15 +245,10 @@ public:
     }
 
     Graduate(
-        const std::string lastname,
-        const std::string firstname,
-        unsigned int age, //human constructor
-        const std::string &speciality,
-        const std::string &group,
-        double rating,
-        double attendace, ///student constructor
+        HUMAN_TAKE_PARAMETRS,
+        STUDENT_TAKE_PARAMETRS,
         const std::string graduate_subject,
-        unsigned int graduate_year) : Student(lastname, firstname, age, speciality, group, rating, attendace)
+        unsigned int graduate_year) : Student(HUMAN_GIVEN_PARAMETRS, STUDENT_GIVEN_PARAMETRS)
     {
         set_graduate_subject(graduate_subject);
         set_graduate_year(graduate_year);
@@ -238,14 +261,36 @@ public:
         cout << "Graduate subeject --- " << graduate_subject << " "
              << "Graduate year --- " << graduate_year << endl;
     }
+
+    ofstream &getvalues(ofstream &in)
+    {
+        Student::getvalues(in);
+        in << "Graduate subject: " << graduate_subject << endl;
+        in << "Graduate year: " << graduate_year << endl;
+        return in;
+    }
     ~Graduate()
     {
         cout << "Gdesctructor\t" << this << endl;
     }
 };
+// #define INHERITANCE_CHECK
+
+template <typename T1, typename T2>
+ofstream &operator<<(T1 &in, T2 &human)
+{
+    human->getvalues(in);
+    return in;
+}
+// template <typename T1>
+// istream &getline(T1 &out ,string &line){
+
+//     return out;
+// }
 
 int main()
 {
+#ifdef INHERITANCE_CHECK
     Student stud("Pinkman", "Jessie", 25, "Chemistry", "WW_123", 85, 95);
     stud.print();
 
@@ -254,6 +299,52 @@ int main()
 
     Graduate s("Hank", "Schrader", 43, "DEA", "Police", 100, 100, "DEA", 1999);
     s.print();
+#endif // DEBUG
+    Human *group[] = {
+        new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_123", 85, 95),
+        new Teacher("Walter", "White", 50, "Chemistry", 100, 67.8),
+        new Graduate("Hank", "Schrader", 43, "DEA", "Police", 100, 100, "DEA", 1999),
+        new Student("Vercetti", "Tomas", 30, "City Bussines", "Vice", 98, 99),
+        new Teacher("Diaz", "Ricardo", 25, "Weapons distribiton", 100, 30),
+        new Student("Monatana", "Antonio", 30, "Criminalistic", "Vice", 90, 80),
+        new Teacher("Walter", "White", 50, "Chemistry", 100, 67.8),
+    };
 
+    int size = sizeof(group) / sizeof(group[0]);
+
+    /// write array to file
+    ofstream writefile("Academy.txt");
+    if (writefile.is_open())
+    {
+        for (int i = 0; i < size; ++i)
+        {
+            writefile << group[i] << endl;
+            cout << endl;
+        }
+    }
+    else
+    {
+        cout << "Error while opening file" << endl;
+    }
+    writefile.close();
+
+    /// read text from file
+
+    // string line;
+    // ifstream readfile("Academy.txt");
+    // if(readfile.is_open()){
+    //     while(getline(readfile,line)){
+    //         cout << "Line: " << line << endl;
+    //     }
+    // }else{
+    //     cout << "Error while opening file!!!!" << endl;
+    // }
+
+    // readfile.close();
+
+    for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+    {
+        delete group[i];
+    }
     return 0;
 }
