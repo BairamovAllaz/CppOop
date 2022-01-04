@@ -53,17 +53,32 @@ public:
 
     virtual void print() const
     {
-        cout << last_name << " " << first_name << " " << age
-             << " age" << endl;
+        cout << "Firstname: " << last_name << endl;
+        cout << "Lastname: " << first_name << endl;
+        cout << "Age: " << age << endl;
     }
-    
-     ////write to file
-    virtual ofstream &getvalues(ofstream &in)
+
+    ////write to file
+
+    virtual ofstream &printtotext(ofstream &in)
     {
-        in << "Lastname: " << last_name << endl;
-        in << "Firstname: " << first_name << endl;
-        in << "age: " << age << endl;
+        in << last_name << ",";
+        in << first_name << ",";
+        in << age << ",";
         return in;
+    }
+
+    virtual ifstream &takefromtext(ifstream &out)
+    {
+        std::getline(out, last_name, ',');
+        std::getline(out, first_name, ',');
+        std::string bufferage;
+        std::getline(out, bufferage, ',');
+        set_age(stoi(bufferage));
+        // set_lastname(lastname);
+        // set_firstname(firstname);
+        // set_age(stoi(age));
+        return out;
     }
 
     virtual ~Human()
@@ -132,16 +147,40 @@ public:
     void print() const
     {
         Human::print();
-        cout << speciality << " " << group << " " << rating << " " << attendace << endl;
+        cout << "Speciality: " << speciality << endl;
+        cout << "Group: " << group << endl;
+        cout << "Rating: " << rating << endl;
+        cout << "Attendace: " << attendace << endl;
     }
-    ofstream &getvalues(ofstream &in)
+
+    ofstream &printtotext(ofstream &in)
     {
-        Human::getvalues(in);
-        in << "Speciality: " << speciality << endl;
-        in << "Group: " << group << endl;
-        in << "Rating: " << rating << endl;
-        in << "attendace: " << attendace << endl;
+        Human::printtotext(in);
+        in << speciality << ",";
+        in << group << ",";
+        in << rating << ",";
+        in << attendace << ",";
         return in;
+    }
+
+    ifstream &takefromtext(ifstream &out)
+    {
+        Human::takefromtext(out);
+        std::getline(out, speciality, ',');
+        std::getline(out, group, ',');
+
+        std::string bufferrating, bufferattendace;
+
+        std::getline(out, bufferrating, ',');
+        std::getline(out, bufferattendace, ',');
+
+        set_rating(atof(bufferrating.c_str()));
+        set_attendace(atof(bufferattendace.c_str()));
+        // set_speciality(speciality);
+        // set_group(group);
+        // set_rating(stoi(rating));
+        // set_attendace(stoi(attendace));
+        return out;
     }
 
     ~Student()
@@ -199,18 +238,33 @@ public:
     void print() const
     {
         Human::print();
-        cout << "Teacher " << endl;
-        cout << "Speciality: " << speciality << " Experience " << experience << " evil" << evil << endl;
+        cout << "Speciality: " << speciality << endl;
+        cout << "Experience: " << experience << endl;
+        cout << "Evil: " << evil << endl;
     }
 
-     ////write to file
-    ofstream &getvalues(ofstream &in)
+    ////write to file
+
+    ofstream &printtotext(ofstream &in)
     {
-        Human::getvalues(in);
-        in << "Speciality: " << speciality << endl;
-        in << "Exprience: " << experience << endl;
-        in << "Evil: " << evil << endl;
+        Human::printtotext(in);
+        in << speciality << ",";
+        in << experience << ",";
+        in << evil << ",";
         return in;
+    }
+
+    ifstream &takefromtext(ifstream &out)
+    {
+        Human::takefromtext(out);
+        std::getline(out, speciality, ',');
+        std::string bufferexperience;
+        std::getline(out, bufferexperience, ',');
+        set_experience(stoi(bufferexperience));
+        std::string bufferevil;
+        std::getline(out, bufferevil, ',');
+        set_evil(atof(bufferevil.c_str()));
+        return out;
     }
 
     ~Teacher()
@@ -245,7 +299,6 @@ public:
     {
         this->graduate_year = y;
     }
-
     Graduate(
         HUMAN_TAKE_PARAMETRS,
         STUDENT_TAKE_PARAMETRS,
@@ -259,38 +312,54 @@ public:
     void print() const
     {
         Student::print();
-        cout << "Graduate student" << endl;
-        cout << "Graduate subeject --- " << graduate_subject << " "
-             << "Graduate year --- " << graduate_year << endl;
+        cout << "Graduate subject: " << graduate_subject << endl;
+        cout << "Graduate year: " << graduate_year << endl;
     }
-
-
     ////write to file
-    ofstream &getvalues(ofstream &in)
+
+    ofstream &printtotext(ofstream &in)
     {
-        Student::getvalues(in);
-        in << "Graduate subject: " << graduate_subject << endl;
-        in << "Graduate year: " << graduate_year << endl;
+        Student::printtotext(in);
+        in << graduate_subject << ",";
+        in << graduate_year << ",";
         return in;
     }
 
-
+    ifstream &takefromtext(ifstream &out)
+    {
+        Student::takefromtext(out);
+        std::getline(out, graduate_subject, ',');
+        std::string buffer;
+        std::getline(out, buffer, ',');
+        set_graduate_year(stoi(buffer));
+        return out;
+    }
     ~Graduate()
     {
         cout << "Gdesctructor\t" << this << endl;
     }
 };
+
 // #define INHERITANCE_CHECK
-
 /////////////////////////////////////
-//overload operator ofstream<<
-template <typename T1, typename T2>
-ofstream &operator<<(T1 &in, T2 h)
-{
-    return h->getvalues(in);
-}
+// overload operator ofstream<<
+// template <typename T1, typename T2>
+// ofstream &operator<<(T1 &in, T2 h)
+// {
+//     return h->getvalues(in);
+// }
 ////////////////////////////////////
+template <typename T1>
+std::ofstream &operator<<(std::ofstream &in, T1 &obj)
+{
+    return obj->printtotext(in);
+}
 
+template <typename T1>
+std::ifstream &operator>>(std::ifstream &out, T1 &obj)
+{
+    return obj->takefromtext(out);
+}
 
 int main()
 {
@@ -314,16 +383,18 @@ int main()
         new Teacher("Walter", "White", 50, "Chemistry", 100, 67.8),
         new Graduate("Hank", "Schrader", 43, "DEA", "Police", 100, 100, "DEA", 1999),
     };
-
+    ////write to file
     int size = sizeof(group) / sizeof(group[0]);
 
-    //write array to file
+    // write array to file
     ofstream writefile("Academy.txt");
     if (writefile.is_open())
     {
         for (int i = 0; i < size; ++i)
         {
-            writefile << group[i] << endl;
+            writefile << typeid(*group[i]).name() << "*" << endl;
+            writefile << group[i];
+            writefile << '-' << endl;
         }
     }
     else
@@ -332,25 +403,92 @@ int main()
     }
     writefile.close();
 
-    /// read text from file
-    cout << endl;
-    ifstream readfile("Academy.txt");
-    string line;
-    if (readfile.is_open())
-    {
-        while (getline(readfile, line))
-        {
-            cout << line << endl;
-        }
-        readfile.close();
-    }
-    else
-    {
-        cout << "Error while opening file!!!!" << endl;
-    }
-    for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+    for (int i = 0; i < size; i++)
     {
         delete group[i];
     }
+
+    ////read data from file solution 1
+
+    // ifstream readfile("Academy.txt");
+    // string line;
+    // if (readfile.is_open())
+    // {
+    //     while (getline(readfile, line))
+    //     {
+    //         cout << line << endl;
+    //         // cout << readfile.tellg() << endl;
+    //     }
+    //     readfile.close();
+    // }
+    // else
+    // {
+    //     cout << "Error while opening file!!!!" << endl;
+    // }
+
+    /// read data from any file solution 2
+    cout << endl;
+
+    ifstream read("Academy.txt");
+
+    // 2d array object
+    // https://stackoverflow.com/questions/45176135/c-how-do-i-create-a-dynamic-array-of-objects-inherited-from-an-abstract-class
+    // http://www.functionx.com/bcb/articles/dynarray.htm
+    Human **groupfromfile = nullptr;
+    int groupsize = 0;
+
+    if (read.is_open())
+    {
+        string line;
+        while (getline(read, line, '-'))
+        {
+            ++groupsize;
+        }
+        --groupsize;
+        cout << groupsize << endl;
+
+        /// https://www.cplusplus.com/doc/tutorial/files/
+        read.clear();
+        read.seekg(0);
+        groupfromfile = new Human *[groupsize] {};
+        for (size_t i = 0; i < groupsize + 1; i++)
+        {
+            std::getline(read, line, '*');
+
+            /// string find
+            // https://www.geeksforgeeks.org/string-find-in-cpp/
+
+            if (line.find("7Student") != std::string::npos)
+            {
+                groupfromfile[i] = new Student("", "", 0, "", "", 0, 0);
+                // cout << "Type student success " << endl;
+            }
+            else if (line.find("7Teacher") != std::string::npos)
+            {
+                groupfromfile[i] = new Teacher("", "", 0, "", 0, 0);
+                // cout << "Type teacher success " << endl;
+            }
+            else if (line.find("8Graduate") != std::string::npos)
+            {
+                groupfromfile[i] = new Graduate("", "", 0, "", "", 0, 0, "", 0);
+                // cout << "Type graduate success " << endl;
+            }
+
+            read >> groupfromfile[i];
+            groupfromfile[i]->print();
+            cout << endl;
+        }
+        read.close();
+    }
+    else
+    {
+        cout << "Problem when opening group " << endl;
+    }
+
+    for (int i = 0; i < groupsize; i++)
+    {
+        delete groupfromfile[i];
+    }
+    delete[] groupfromfile;
     return 0;
 }

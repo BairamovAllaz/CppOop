@@ -1,42 +1,40 @@
 #include <iostream>
-#include <fstream>
 #include <cstring>
+#include <fstream>
 using namespace std;
 
 int main()
 {
-    // int arr[5] = {0,1,2,3,4};
-    // ofstream myfile;
-    // myfile.open("test.txt");
 
-    // for (size_t i = 0; i < 5; i++)
-    // {
-    //     myfile << i << " - " << arr[i] << endl;
-    // }
+    ifstream read("group.txt");
 
-    // if(myfile.is_open()){
-    //     cout << "Success" << endl;
-    // }
-
-    // myfile.close();
-
-    ///read file
     string line;
-    ifstream readfile("test.txt");
+    int size = 0;
+    while (getline(read, line, ';'))
+    {
+        ++size;
+    }
+    cout << size << endl;
 
-    if (readfile.is_open())
+    read.clear();
+    read.seekg(0);
+
+    for (size_t i = 0; i < size; i++)
     {
-        while (getline(readfile, line))
+        std::getline(read, line, '*');
+        cout << line << endl;
+        if (line.find("7Student") != std::string::npos)
         {
-            cout << "Line: " << line << endl;
+            cout << "Yeah this is hello world" << endl;
         }
-        readfile.close();
+
+        std::getline(read, line, ';');
+        std::getline(read, line, ',');
+        cout << "L: " << line;
+        // std::getline(read,line,',');
     }
-    else
-    {
-        cout << "Error when open file " << endl;
-    }
+
+    read.close();
 
     return 0;
-    cout << "Hello cpp" << endl;
 }
