@@ -407,7 +407,6 @@ int main()
     {
         delete group[i];
     }
-
     ////read data from file solution 1
 
     // ifstream readfile("Academy.txt");
@@ -428,7 +427,6 @@ int main()
 
     /// read data from any file solution 2
     cout << endl;
-
     ifstream read("Academy.txt");
 
     // 2d array object
@@ -439,7 +437,11 @@ int main()
 
     if (read.is_open())
     {
+        //string documentation 
+        //https://en.cppreference.com/w/cpp/string/basic_string
         string line;
+        //getline documentation
+        //https://www.geeksforgeeks.org/getline-string-c/
         while (getline(read, line, '-'))
         {
             ++groupsize;

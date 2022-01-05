@@ -1,0 +1,4 @@
+16SalariedEmployee*John,Actor,36,Whick,10000,10000,;
+14HourlyEmployee*John1,Actor1,36,Whick1,100,10,1000,;
+16SalariedEmployee*Michael,Schofield,36,prison break,30000,30000,;
+14HourlyEmployee*Bill,Gates,78,Bussines man,1000,13,13000,;
