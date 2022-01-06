@@ -235,7 +235,7 @@ public:
         set_evil(evil);
         cout << "Tconstructor\t" << this << endl;
     }
-    void print() const
+    void print() const override
     {
         Human::print();
         cout << "Speciality: " << speciality << endl;
@@ -245,7 +245,7 @@ public:
 
     ////write to file
 
-    ofstream &printtotext(ofstream &in)
+    ofstream &printtotext(ofstream &in) override
     {
         Human::printtotext(in);
         in << speciality << ",";
@@ -254,7 +254,7 @@ public:
         return in;
     }
 
-    ifstream &takefromtext(ifstream &out)
+    ifstream &takefromtext(ifstream &out) override
     {
         Human::takefromtext(out);
         std::getline(out, speciality, ',');
@@ -309,7 +309,7 @@ public:
         set_graduate_year(graduate_year);
         cout << "Gconstructor\t" << this << endl;
     }
-    void print() const
+    void print() const override
     {
         Student::print();
         cout << "Graduate subject: " << graduate_subject << endl;
@@ -317,7 +317,7 @@ public:
     }
     ////write to file
 
-    ofstream &printtotext(ofstream &in)
+    ofstream &printtotext(ofstream &in) override
     {
         Student::printtotext(in);
         in << graduate_subject << ",";
@@ -325,7 +325,7 @@ public:
         return in;
     }
 
-    ifstream &takefromtext(ifstream &out)
+    ifstream &takefromtext(ifstream &out) override
     {
         Student::takefromtext(out);
         std::getline(out, graduate_subject, ',');
@@ -354,7 +354,6 @@ std::ofstream &operator<<(std::ofstream &in, T1 &obj)
 {
     return obj->printtotext(in);
 }
-
 template <typename T1>
 std::ifstream &operator>>(std::ifstream &out, T1 &obj)
 {
@@ -437,7 +436,7 @@ int main()
 
     if (read.is_open())
     {
-        //string documentation 
+        //string documentation
         //https://en.cppreference.com/w/cpp/string/basic_string
         string line;
         //getline documentation
@@ -453,24 +452,24 @@ int main()
         read.clear();
         read.seekg(0);
         groupfromfile = new Human *[groupsize] {};
-        for (size_t i = 0; i < groupsize + 1; i++)
+        for (size_t i = 0; i < groupsize; i++)
         {
             std::getline(read, line, '*');
 
             /// string find
             // https://www.geeksforgeeks.org/string-find-in-cpp/
 
-            if (line.find("7Student") != std::string::npos)
+            if (line.find("7Student") != string::npos)
             {
                 groupfromfile[i] = new Student("", "", 0, "", "", 0, 0);
                 // cout << "Type student success " << endl;
             }
-            else if (line.find("7Teacher") != std::string::npos)
+            else if (line.find("7Teacher") != string::npos)
             {
                 groupfromfile[i] = new Teacher("", "", 0, "", 0, 0);
                 // cout << "Type teacher success " << endl;
             }
-            else if (line.find("8Graduate") != std::string::npos)
+            else if (line.find("8Graduate") != string::npos)
             {
                 groupfromfile[i] = new Graduate("", "", 0, "", "", 0, 0, "", 0);
                 // cout << "Type graduate success " << endl;
@@ -491,6 +490,5 @@ int main()
     {
         delete groupfromfile[i];
     }
-    delete[] groupfromfile;
     return 0;
 }

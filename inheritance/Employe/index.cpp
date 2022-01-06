@@ -82,7 +82,7 @@ public:
         return out;
     }
 
-    void print() const
+    virtual void print() const
     {
         cout << "Lastname: " << last_name << endl;
         cout << "Firstname: " << first_name << endl;
@@ -154,7 +154,7 @@ public:
     void print() const
     {
         Employe::print();
-        std::cout << "Weekly salary: " << weeklysalary << std::endl;
+        std::cout << "Salary: " << weeklysalary << std::endl;
     }
 
     ~SalariedEmployee()
@@ -178,7 +178,7 @@ public:
     {
         setwage(wage);
         sethours(hours);
-        std::cout << "Salariedconstructor\t" << this << endl;
+        std::cout << "Hourlyconstructor\t" << this << endl;
     }
 
     double getwage()
@@ -242,15 +242,14 @@ public:
 
     ~HourlyEmployee()
     {
-        std::cout << "SalariedDesctructor\t" << this << std::endl;
+        std::cout << "HourlyDesctructor\t" << this << std::endl;
     }
 };
-
 std::ofstream &operator<<(std::ofstream &in, Employe &obj)
 {
     return obj.printtotext(in);
 }
-std::ifstream &operator>>(std::ifstream &out, Employe& obj)
+std::ifstream &operator>>(std::ifstream &out, Employe &obj)
 {
     return obj.getfromtext(out);
 }
@@ -265,7 +264,7 @@ int main()
     };
 
     int sizeA = sizeof(worker) / sizeof(worker[0]);
-
+    int netincomesalary = 0;
     ofstream writefile("Employye.txt");
 
     if (writefile.is_open())
@@ -275,7 +274,9 @@ int main()
             writefile << typeid(*worker[i]).name() << '*';
             writefile << *worker[i];
             writefile << ';' << endl;
+            netincomesalary += worker[i]->calculate_salary();
         }
+        writefile << netincomesalary << ",";
     }
     else
     {
@@ -283,11 +284,6 @@ int main()
     }
 
     writefile.close();
-
-    for (size_t i = 0; i < sizeA; i++)
-    {
-        delete worker[i];
-    }
 
     ifstream readfile("Employye.txt");
     Employe **newworker = nullptr;
@@ -303,19 +299,19 @@ int main()
         --sizeofarray;
         cout << sizeofarray << endl;
 
-        newworker = new Employe *[sizeofarray] {};
         readfile.clear();
         readfile.seekg(0);
-        for (int i = 0; i < sizeofarray + 1; i++)
+        newworker = new Employe *[sizeofarray] {};
+        for (int i = 0; i < sizeofarray; i++)
         {
             std::getline(readfile, line, '*');
 
-            if (line.find("16SalariedEmployee") != std::string::npos)
+            if (line.find("16SalariedEmployee") != string::npos)
             {
                 newworker[i] = new SalariedEmployee("", "", "", 0, 0);
                 // cout << "S" << endl;
             }
-            else if (line.find("14HourlyEmployee") != std::string::npos)
+            else if (line.find("14HourlyEmployee") != string::npos)
             {
                 newworker[i] = new HourlyEmployee("", "", "", 0, 0, 0);
                 // cout << "H" << std::endl;
@@ -324,18 +320,25 @@ int main()
             newworker[i]->print();
             cout << endl;
         }
-
+        string buffer;
+        std::getline(readfile, buffer, ',');
+        cout << "Net income company: " << buffer << endl;
+        cout << endl;
         readfile.close();
     }
     else
     {
         cout << "Error while opening file " << endl;
     }
-
-    for (size_t i = 0; i < sizeofarray + 1; i++)
+    for (size_t i = 0; i < sizeofarray; i++)
     {
         delete newworker[i];
     }
-    delete[] newworker;
+    for (size_t i = 0; i < sizeA; i++)
+    {
+        delete worker[i];
+    }
+
+    // delete[] newworker;
     return 0;
 }
