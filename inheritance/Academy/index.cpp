@@ -349,13 +349,11 @@ public:
 //     return h->getvalues(in);
 // }
 ////////////////////////////////////
-template <typename T1>
-std::ofstream &operator<<(std::ofstream &in, T1 &obj)
+std::ofstream &operator<<(std::ofstream &in, Human *obj)
 {
     return obj->printtotext(in);
 }
-template <typename T1>
-std::ifstream &operator>>(std::ifstream &out, T1 &obj)
+std::ifstream &operator>>(std::ifstream &out, Human *obj)
 {
     return obj->takefromtext(out);
 }
@@ -386,7 +384,7 @@ int main()
     int size = sizeof(group) / sizeof(group[0]);
 
     // write array to file
-    ofstream writefile("Academy.txt");
+    ofstream writefile("Academy.txt", std::ios::out);
     if (writefile.is_open())
     {
         for (int i = 0; i < size; ++i)
@@ -426,7 +424,8 @@ int main()
 
     /// read data from any file solution 2
     cout << endl;
-    ifstream read("Academy.txt");
+    std::streampos begin, end;
+    ifstream read("Academy.txt", std::ios::in | std::ios::binary);
 
     // 2d array object
     // https://stackoverflow.com/questions/45176135/c-how-do-i-create-a-dynamic-array-of-objects-inherited-from-an-abstract-class
@@ -449,10 +448,11 @@ int main()
         cout << groupsize << endl;
 
         /// https://www.cplusplus.com/doc/tutorial/files/
+        begin = read.tellg();
         read.clear();
-        read.seekg(0);
+        read.seekg(0); //change reading location to 0
         groupfromfile = new Human *[groupsize] {};
-        for (size_t i = 0; i < groupsize; i++)
+        for (int i = 0; i < groupsize; i++)
         {
             std::getline(read, line, '*');
 
@@ -479,11 +479,16 @@ int main()
             groupfromfile[i]->print();
             cout << endl;
         }
+        read.seekg(0, std::ios::end);
+        end = read.tellg();
+
         read.close();
+        std::cout << std::endl;
+        std::cout << "Size of this file: " << (end - begin) << " binary" << std::endl;
     }
     else
     {
-        cout << "Problem when opening group " << endl;
+        std::cout << "Problem when opening group " << std::endl;
     }
 
     for (int i = 0; i < groupsize; i++)

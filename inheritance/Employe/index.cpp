@@ -261,6 +261,7 @@ int main()
         new HourlyEmployee("John1", "Actor1", "Whick1", 36, 100, 10),
         new SalariedEmployee("Michael", "Schofield", "prison break", 36, 30000),
         new HourlyEmployee("Bill", "Gates", "Bussines man", 78, 1000, 13),
+        new HourlyEmployee("Elon", "Musk", "Bussines man", 78, 2000, 15),
     };
 
     int sizeA = sizeof(worker) / sizeof(worker[0]);
@@ -285,7 +286,8 @@ int main()
 
     writefile.close();
 
-    ifstream readfile("Employye.txt");
+    ifstream readfile("Employye.txt",std::ios::in | std::ios::binary);
+    streampos end,begin;
     Employe **newworker = nullptr;
     int sizeofarray = 0;
     if (readfile.is_open())
@@ -299,6 +301,7 @@ int main()
         --sizeofarray;
         cout << sizeofarray << endl;
 
+        begin = readfile.tellg();
         readfile.clear();
         readfile.seekg(0);
         newworker = new Employe *[sizeofarray] {};
@@ -319,11 +322,14 @@ int main()
             readfile >> *newworker[i];
             newworker[i]->print();
             cout << endl;
+            string buffer;
+            std::getline(readfile, buffer, ',');
+            cout << "Net income Employe: " << buffer;
         }
-        string buffer;
-        std::getline(readfile, buffer, ',');
-        cout << "Net income company: " << buffer << endl;
-        cout << endl;
+
+        readfile.seekg(0,std::ios::end); 
+        end = readfile.tellg(); 
+        cout <<"Size of this file: " << (end - begin) << " byte" << endl; 
         readfile.close();
     }
     else
@@ -339,6 +345,5 @@ int main()
         delete worker[i];
     }
 
-    // delete[] newworker;
     return 0;
 }
