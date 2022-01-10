@@ -340,7 +340,6 @@ public:
     }
 };
 
-// #define INHERITANCE_CHECK
 /////////////////////////////////////
 // overload operator ofstream<<
 // template <typename T1, typename T2>
@@ -357,6 +356,8 @@ std::ifstream &operator>>(std::ifstream &out, Human *obj)
 {
     return obj->takefromtext(out);
 }
+// #define INHERITANCE_CHECK
+// #define FILE_OPERATIONS
 
 int main()
 {
@@ -370,6 +371,9 @@ int main()
     Graduate s("Hank", "Schrader", 43, "DEA", "Police", 100, 100, "DEA", 1999);
     s.print();
 #endif // DEBUG
+
+    #ifdef FILE_OPERATIONS
+    
     Human *group[] = {
         new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_123", 85, 95),
         new Teacher("Walter", "White", 50, "Chemistry", 100, 67.8),
@@ -495,5 +499,8 @@ int main()
     {
         delete groupfromfile[i];
     }
+    #endif // DEBUG
+
+    cout << "Hello world" << endl; 
     return 0;
 }
