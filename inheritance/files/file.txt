@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="favicon.ico?v=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115970085-4"></script>
+<script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-115970085-4');
+    </script>
+<title>Mystat</title>
+<link href="/vendor.css?v=6a4a709779e376c53fa4" rel="stylesheet"></head>
+<body>
+<base href="/">
+<noscript>JavaScript must be enabled for using this service!</noscript>
+<mystat></mystat>
+<script type="text/javascript" src="/polyfills.js?v=318e20a88a95deda094d"></script><script type="text/javascript" src="/vendor.chunk.js?v=318e20a88a95deda094d"></script><script type="text/javascript" src="/app.js?v=318e20a88a95deda094d"></script></body>
+</html>

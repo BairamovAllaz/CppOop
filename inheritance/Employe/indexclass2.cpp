@@ -50,12 +50,13 @@ public:
         this->age = age;
     }
 
-    virtual void print() const
+    std::ostream &print(std::ostream &out) const
     {
-        cout << "Firstname: " << last_name << endl;
-        cout << "Lastname: " << first_name << endl;
-        cout << "Age: " << age << endl;
-        cout << endl;
+        out << "Firstname: " << last_name << endl;
+        out << "Lastname: " << first_name << endl;
+        out << "Age: " << age << endl;
+        out << endl;
+        return out;
     }
 
     virtual ~Human()
@@ -63,6 +64,7 @@ public:
         cout << "Hdesctructor\t" << this << endl;
     }
 };
+
 #define EMPLOYEE_TAKE_PARAMETRS const std::string &position
 #define EMPLOYEE_GIVEN_PARAMETRS position
 
@@ -90,16 +92,17 @@ public:
              << this << endl;
     }
 
+    virtual std::ostream &print(std::ostream &out) const
+    {
+        Human::print(out);
+        out << "Position " << position << endl;
+        out << endl;
+        return out;
+    }
+
     virtual ~Employee()
     {
         cout << "Edesctructor\t" << this << endl;
-    }
-
-    void print() const
-    {
-        Human::print();
-        cout << "Position: " << position << endl;
-        cout << endl;
     }
 };
 
@@ -129,16 +132,18 @@ public:
         this->salary = salary;
         cout << "Pconstructor: \t" << this << endl;
     }
+
+    std::ostream &print(std::ostream &out) const
+    {
+        Employee::print(out);
+        out << "Salary " << salary << endl;
+        out << endl;
+        return out;
+    }
+
     ~Permanent()
     {
         cout << "Pdesctructor: \t" << this << endl;
-    }
-
-    void print() const
-    {
-        Employee::print();
-        cout << "Salary: " << salary << endl;
-        cout << endl;
     }
 };
 
@@ -177,6 +182,15 @@ public:
         this->hours = hours;
     }
 
+    std::ostream &print(std::ostream &out) const
+    {
+        Employee::print(out);
+        out << "Rate " << rate << endl;
+        out << "Hours " << hours << endl;
+        out << endl;
+        return out;
+    }
+
     HourlyEmployee(
         HUMAN_TAKE_PARAMETRS,
         EMPLOYEE_TAKE_PARAMETRS,
@@ -191,14 +205,14 @@ public:
     {
         cout << "Pdesctructor\t" << this << endl;
     }
-
-    void print() const
-    {
-        Employee::print();
-        cout << "Rate: " << rate << endl;
-        cout << "hours: " << hours << endl;
-    }
 };
+
+std::ostream &operator<<(std::ostream &out, const Employee &obj)
+{
+    return obj.print(out);
+}
+
+
 
 int main()
 {
@@ -214,7 +228,18 @@ int main()
     cout << "\n-------------------------------------\n";
     for (size_t i = 0; i < size; i++)
     {
-        department[i]->print();
+        // department[i]->print();
+        cout << typeid(*department[i]).name() << endl;
+        // if (typeid(*department[i]) == typeid(Permanent))
+        // {
+        //     cout << *dynamic_cast<Permanent*>(department[i]) << endl;
+        // }
+        // if (typeid(*department[i]) == typeid(HourlyEmployee))
+        // {
+        //     cout << *dynamic_cast<HourlyEmployee*>(department[i]) << endl;
+        // }
+        // cout << *department[i] << endl;
+        cout << *department[i] << endl;
         total_salary += department[i]->get_salary();
         cout << "\n-------------------------------------\n";
     }

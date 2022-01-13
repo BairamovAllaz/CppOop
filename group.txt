@@ -1,5 +1,0 @@
-7Student*Pinkman,Jessie,25,Chemistry,WW_123,85,95,;
-7Teacher*Walter,White,50,Chemistry,100,67.8,;
-8Graduate*Hank,Schrader,43,DEA,Police,100,100,DEA,1999,;
-7Student*Vercetti,Tomas,30,City Bussines,Vice,98,99,;
-7Teacher*Diaz,Ricardo,25,Weapons distribiton,100,30;
