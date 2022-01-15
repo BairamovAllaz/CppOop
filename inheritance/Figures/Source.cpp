@@ -167,7 +167,7 @@ public:
 		SelectObject(device_context, hPen);
 		SetBkColor(device_context, RGB(255, 255, 0));
 		SelectObject(device_context, CreateSolidBrush(RGB(100, 200, 255)));
-		Rectangle(device_context, Window::get_y(), Window::get_x(), Window::get_y() + width, Window::get_x() + height);
+		Rectangle(device_context, Window::get_x(), Window::get_y(), Window::get_x() + width, Window::get_y() + height);
 		DeleteObject(device_context);
 		DeleteObject(hPen);
 	}
@@ -279,7 +279,7 @@ public:
 		SelectObject(device_context, hPen);
 		SetBkColor(device_context, RGB(255, 0, 0));
 		SelectObject(device_context, CreateSolidBrush(RGB(0, 0, 0)));
-		Ellipse(device_context,Window::get_y(), Window::get_x(), Window::get_y() + radius, Window::get_x() + radius);
+		Ellipse(device_context,Window::get_x(), Window::get_y(), Window::get_x() + radius, Window::get_y() + radius);
 		DeleteObject(device_context);
 		DeleteObject(hPen);
 	}
