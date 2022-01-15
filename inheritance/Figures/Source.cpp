@@ -164,7 +164,7 @@ public:
 		SelectObject(device_context, hPen);
 		SetBkColor(device_context, RGB(255, 255, 0));
 		SelectObject(device_context, CreateSolidBrush(RGB(100, 200, 255)));
-		Rectangle(device_context, Window::get_y(), Window::get_x(), Window::get_y() + width,Window::get_x() + height);
+		Rectangle(device_context, Window::get_y(), Window::get_x(), Window::get_y() + width , Window::get_x() + height);
 	}
 	void print() {
 		cout << "Perimetr: " << get_perimetr() << endl; 
@@ -291,10 +291,11 @@ int main() {
 		cin >> drawop;
 	}
 
-		Square a(100, 100, 10);
-		Rectangel b(100, 100, 100, 40);
-		EqualTriangel c(100, 100, 40); 
-		Circle d(100, 100, 100);
+	Square a(100, 100, 10);
+	Rectangel b(100, 100, 100, 40);
+	EqualTriangel c(100, 100, 40); 
+	Circle d(100, 100, 100);
+	
 	while (true)
 	{
 		if (drawop == 5) {
