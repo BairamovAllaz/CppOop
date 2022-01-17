@@ -1,6 +1,7 @@
-﻿#include <iostream>
+#include <iostream>
 #include <cstring>
 #include <fstream>
+#include <string>
 using namespace std;
 #define HUMAN_TAKE_PARAMETRS const std::string lastname, const std::string firstname, unsigned int age
 #define HUMAN_GIVEN_PARAMETRS lastname, firstname, age
@@ -10,7 +11,6 @@ private:
     std::string last_name;
     std::string first_name;
     unsigned int age;
-
 public:
     // constructors
     Human(HUMAN_TAKE_PARAMETRS)
@@ -57,7 +57,7 @@ public:
         this->age = age;
     }
 
-    std::ostream& print(std::ostream& out) const
+   virtual std::ostream& print(std::ostream& out) const
     {
         out << left;
         out.width(10);
@@ -69,7 +69,24 @@ public:
         return out;
     }
 
-    std::istream& enter(std::istream &in) {
+   virtual std::ofstream& print(std::ofstream& os) const
+   {
+        os << left;
+        os.width(10);
+        os << last_name;
+        os.width(10);
+        os << first_name;
+        os.width(3);
+        os << age;
+        return os;
+   }
+
+   virtual std::ifstream& scan(std::ifstream &os) {
+       os >> last_name >> first_name >> age;
+       return os;
+   }
+
+   virtual std::istream& enter(std::istream &in) {
         cout << "Enter lastname: ";
         in >> last_name; 
         cout << "Enter firstname: ";
@@ -84,6 +101,23 @@ public:
         cout << "Hdesctructor\t" << this << endl;
     }
 };
+
+std::ostream& operator<<(std::ostream& out, const Human& obj)
+{
+    return obj.print(out);
+}
+
+std::istream& operator>>(std::istream& in, Human& obj) {
+    return obj.enter(in);
+}
+
+std::ofstream& operator<<(std::ofstream& os, const Human& obj) {
+    return obj.print(os);
+}
+
+std::ifstream& operator>>(std::ifstream& is,Human& obj) {
+    return obj.scan(is);
+}
 
 #define EMPLOYEE_TAKE_PARAMETRS const std::string &position
 #define EMPLOYEE_GIVEN_PARAMETRS position
@@ -116,7 +150,7 @@ public:
         set_position("");
     }
 
-    virtual std::ostream& print(std::ostream& out) const
+    std::ostream& print(std::ostream& out) const
     {
         Human::print(out);
         out << left; 
@@ -124,14 +158,28 @@ public:
         out << right;
         out << position << " ";
         return out;
+    } 
+    std::ofstream& print(std::ofstream& out) const
+    {
+        Human::print(out) << " ";
+        out.width(10);  
+        out << position;
+        return out;
     }
 
-     virtual std::istream& enter(std::istream& in) {
+    std::istream& enter(std::istream& in) {
          Human::enter(in);
          cout << "Enter position: ";
          in >> position;
          return in;
      }
+
+
+    std::ifstream& scan(std::ifstream& is) {
+        Human::scan(is);
+        is >> position; 
+        return is;
+    }
 
     virtual ~Employee()
     {
@@ -179,6 +227,14 @@ public:
         out << right;
         out << salary << " ";
         return out;
+    } 
+    std::ofstream& print(std::ofstream& out) const
+    {
+        Employee::print(out) << " ";
+        out.width(10);
+        out << right;
+        out << salary;
+        return out;
     }
 
     std::istream& enter(std::istream& in) {
@@ -186,6 +242,12 @@ public:
         cout << "Enter salary: ";
         in >> salary;
         return in;
+    }
+
+    std::ifstream& scan(std::ifstream& is) {
+        Employee::scan(is);
+        is >> salary;
+        return is;
     }
 
     ~Permanent()
@@ -232,12 +294,25 @@ public:
     std::ostream& print(std::ostream& out) const
     {
         Employee::print(out);
-        out.width(10);
-        out << right;
-        out << rate << " ";
-        //out << left;
+        out << " rate:";
         out.width(5);
-        out << hours << " ";
+        out << right;
+        out << rate;
+        //out << left;
+        out << ", hours";
+        out.width(3);
+        out << hours << ", salary:" << get_salary();
+        return out;
+    } 
+    
+    std::ofstream& print(std::ofstream& out) const
+    {
+        Employee::print(out);
+        out.width(10);   
+        out << right;
+        out << rate;
+        out.width(3);
+        out << hours;
         return out;
     }
 
@@ -248,6 +323,12 @@ public:
         cout << "Enter hours: ";
         in >> hours;
         return in;
+    }
+
+    std::ifstream& scan(std::ifstream& os) {
+        Employee::scan(os);
+        os >> rate >> hours;
+        return os;
     }
 
     HourlyEmployee(
@@ -272,15 +353,14 @@ public:
     }
 };
 
-std::ostream& operator<<(std::ostream& out, const Employee& obj)
-{
-    return obj.print(out);
+Employee* EmployeeFactory(const string& type) {
+    if (type.find("class Permanent") != std::string::npos) {
+        return new Permanent("", "", 0, "", 0);
+    }
+    if (type.find("class HourlyEmployee") != std::string::npos) {
+        return new HourlyEmployee("", "", 0, "", 0, 0);
+    }
 }
-
-std::istream& operator>>(std::istream& in, Employee& obj) {
-    return obj.enter(in);
-}
-
 
 //#define DEPARTMANENT_CHECK
 int main()
@@ -321,7 +401,8 @@ int main()
     {
         fout.width(25);
         fout << left;
-        fout << string(typeid(*department[i]).name()) << ":" << *department[i] << endl;
+        fout << string(typeid(*department[i]).name()) + ":";
+        fout << *department[i] << endl;
     }
 
     fout.close();
@@ -333,12 +414,41 @@ int main()
     }
 #endif // DEPARTMANENT_CHECK
 
-    HourlyEmployee a;
-    cout << "Enter information for hourly employee: " << endl;
-    cin >> a;
+   Employee** department = nullptr;
+   int n = 0; //size of array;
+   ifstream fin("file.txt");
+       if (fin.is_open()) {
+            std::string employee_type;
 
-    cout << a << endl;
+           for (;!fin.eof();n++)
+           {
+                std::getline(fin, employee_type);
+           }
+            n--;
+            cout << n << endl;
+            department = new Employee * [n] {};
+            cout << fin.tellg() << endl;
+            fin.clear();
+            fin.seekg(0);
+            cout << fin.tellg() << endl;
 
+            for (int i = 0; i < n; i++)
+            {
+                getline(fin, employee_type, ':');
+                department[i] = EmployeeFactory(employee_type);
+                fin >> *department[i];
+                cout << *department[i] << endl;
+            }
 
+        }else{
+            cout << "File is not found" << endl;
+        }
+
+       for (int i = 0; i < n; i++)
+       {
+           delete department[i];
+       }
+       delete[] department;
+    fin.close();
     return 0;
 }
