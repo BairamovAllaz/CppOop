@@ -1,0 +1,5 @@
+class Student:   Pinkman    Jessie     25       Chemistry  WW_123      85      95
+class Teacher:     White    Walter     50          Chemistry        25
+class Student:  Vercetti     Tomas     30   cit business    Vice      98      99
+class Teacher:      Diaz   Ricardo     55        distribution        30
+class Student:   Montana   Antonio     30   Cryminalistic    Vice      90      80

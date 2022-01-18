@@ -1,3 +1,0 @@
-﻿  Source.cpp
-C:\Users\ellez\OneDrive\Programing\CppOop\Employeeinclass\Source.cpp(182,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  Employeeinclass.vcxproj -> C:\Users\ellez\OneDrive\Programing\CppOop\Employeeinclass\x64\Debug\Employeeinclass.exe

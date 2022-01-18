@@ -1,0 +1,3 @@
+class Permanent:         Rosenberg Ken       30  Lawyer           2000
+class Permanent:         Diaz      Ricardo   50  Boss            50000
+class HourlyEmployee:    Vercetty  Tomas     30  Security         500  8

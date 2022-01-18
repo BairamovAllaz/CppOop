@@ -1,3 +1,0 @@
-class Permanent          :Rosenberg Ken       30  age    Lawyer       2000 
-class Permanent          :Diaz      Ricardo   50  age      Boss      50000 
-class HourlyEmployee     :Vercetty  Tomas     30  age  Security        500 8     
