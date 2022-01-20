@@ -3,7 +3,7 @@
 #include<fstream>
 using namespace std;
 
-#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age	//Принимаемые переметры конструктора Human
+#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age	//ГЏГ°ГЁГ­ГЁГ¬Г ГҐГ¬Г»ГҐ ГЇГҐГ°ГҐГ¬ГҐГІГ°Г» ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г  Human
 #define HUMAN_GIVE_PARAMETERS last_name, first_name, age
 
 class Human
@@ -363,10 +363,10 @@ int main()
 #endif // WRITE_TO_FILE
 
 
-#if READ_FROM_FILE
+#ifdef READ_FROM_FILE
 
 
-	std::ifstream fin("file.txt");
+	std::ifstream fin("test.txt");
 	int size = 0;
 	
 	Human** group = nullptr;
