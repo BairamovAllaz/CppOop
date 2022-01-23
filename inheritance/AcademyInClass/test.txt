@@ -1,0 +1,6 @@
+class Student:   Pinkman    Jessie     25       Chemistry  WW_123      85      95
+class Teacher:     White    Walter     50          Chemistry        25
+class Graduate:   Shreder      Hank     40   Cryminalistic  WW_123      90      75 How-to-catch-Heizenberg
+class Student:  Vercetti     Tomas     30    Citybusiness    Vice      98      99
+class Teacher:      Diaz   Ricardo     55 Weaponsdistribution        30
+class Student:   Montana   Antonio     30   Cryminalistic    Vice      90      80

@@ -77,7 +77,6 @@ public:
 	}
 };
 
-
 std::ostream& operator <<(std::ostream& os,Human& obj) {
 	return obj.print(os);
 }
@@ -89,7 +88,6 @@ std::ofstream& operator <<(std::ofstream& os, Human& obj) {
 std::ifstream& operator >>(std::ifstream& in, Human& obj) {
 	return obj.scan(in);
 }
-
 
 #define STUDENT_TAKE_PARAMETERS const std::string& speciality, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS speciality, group, rating, attendance
@@ -285,10 +283,9 @@ public:
 
 };
 
-//Resharper
 
 //#define INHERITANCE_CHECK
-#define WRITE_TO_FILE
+//#define WRITE_TO_FILE
 //#define READ_FROM_FILE
 
 Human* newtype(const std::string& st) {
@@ -302,7 +299,6 @@ Human* newtype(const std::string& st) {
 		return new Graduate("", "", 0, "", "", 0, 0, "");
 	}
 }
-
 
 
 int main()
@@ -363,12 +359,9 @@ int main()
 #endif // WRITE_TO_FILE
 
 
-#if READ_FROM_FILE
-
-
-	std::ifstream fin("file.txt");
+#ifdef READ_FROM_FILE
+	std::ifstream fin("test.txt");
 	int size = 0;
-	
 	Human** group = nullptr;
 	if (fin.is_open()) {
 		std::string buffer;
@@ -390,28 +383,20 @@ int main()
 			group[i] = newtype(buffer);
 			fin >> *group[i];
 		}
+		fin.close();
 	}
 	else {
 		cout << "File is not found!" << endl;
 	}
-
 	for (int i = 0; i < size; i++)
 	{
 		cout << *group[i] << endl;
 	}
-
 	for (int i = 0; i < size; i++)
 	{
 		delete group[i];
 	}
-
 	delete[] group;
-
-
-	fin.close(); 
-
-
 #endif // READ_FROM_FILE
-
 	return 0;
 }
