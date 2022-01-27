@@ -1,1 +1,28 @@
-﻿
+﻿  Source.cpp
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(111,63): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(111,47): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(185,67): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(185,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(235,66): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(235,48): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,27): warning C4838: conversion from 'const unsigned int' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,44): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,44): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,62): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,62): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,78): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,78): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,96): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,96): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(324,108): warning C4838: conversion from 'const unsigned int' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,34): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,34): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,55): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,55): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,71): warning C4838: conversion from 'const unsigned int' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,79): warning C4838: conversion from 'const unsigned int' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,98): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,98): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,119): warning C4838: conversion from 'double' to 'LONG' requires a narrowing conversion
+C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\Source.cpp(426,119): warning C4244: 'initializing': conversion from 'double' to 'LONG', possible loss of data
+  AbstractGeometry.vcxproj -> C:\Users\ellez\OneDrive\Programing\CppOop\inheritance\AbstractGeometry\x64\Debug\AbstractGeometry.exe
