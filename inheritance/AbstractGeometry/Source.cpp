@@ -257,8 +257,6 @@ namespace Geometry
 		}
 
 	};
-
-
 	class Triangel : public Shape {
 
 	public:
@@ -320,8 +318,11 @@ namespace Geometry
 			SelectObject(hcontext, hPen);
 			SetBkColor(hcontext, color);
 			SelectObject(hcontext, CreateSolidBrush(color));
- 			//POINT vertices[] = { {left line end, left line start}, {right line end, right line start}, {fill from, fill to}};
- 			POINT vertices[] = { {start_x, start_y + side}, {start_x + side, start_y + side}, {start_x + side / 2, start_y}};
+			POINT vertices[] = {
+				{start_x, start_y + side},
+				{start_x + side, start_y + side}, 
+				{start_x + side / 2, start_y}
+			};
 			Polygon(hcontext, vertices, sizeof(vertices) / sizeof(vertices[0]));
 			DeleteObject(hcontext);
 			DeleteObject(hPen);
@@ -396,7 +397,7 @@ namespace Geometry
 		}
 
 		double get_area()const {
-			return (1.0/2.0) * cathetus1 * cathetus2;
+			return (1.0 / 2.0) * cathetus1 * cathetus2;
 		}
 
 		double get_height() const {
@@ -420,10 +421,15 @@ namespace Geometry
 			SelectObject(hcontext, hPen);
 			SetBkColor(hcontext, color);
 			SelectObject(hcontext, CreateSolidBrush(color));
-			//POINT vertices[] = { {100,300}, {200, 300}, {100,200}};
-			//end start
+			POINT vertices[] = {
+				/*{100, 300},
+				{200,300},
+				{100, 200} */
+				{start_x + cathetus1,start_y + cathetus1 + cathetus2},
+				{start_y + cathetus1, start_y + cathetus1 + cathetus2},
+				{start_x + cathetus1,start_y + cathetus1}
+			};
 
-			POINT vertices[] = { {start_x + cathetus1, start_y + hypotenuse}, {start_x,start_y}, {start_y + cathetus1, start_x + cathetus2} };
 			Polygon(hcontext, vertices, sizeof(vertices) / sizeof(vertices[0]));
 			DeleteObject(hcontext);
 			DeleteObject(hPen);
@@ -466,31 +472,45 @@ namespace Geometry
 			unsigned int start_x,
 			unsigned int start_y,
 			unsigned int linewidth
-		) : Triangel(color,start_x,start_y,linewidth){ 
+		) : Triangel(color, start_x, start_y, linewidth) {
 			set_leg(leg);
 			set_base(base);
 		}
 		~IsoscalesTriangle() {}
-		
+
 		double get_perimetr()const {
 			return 2 * leg + base;
 		}
 
 		double get_area()const {
-			return (1.0/2.0) * base * sqrt(leg*leg -(base*base / 4));
+			return (1.0 / 2.0) * base * sqrt(leg * leg - (base * base / 4));
 		}
 
 		double get_height()const {
-			return (1.0/2.0) * base * leg;
+			return (1.0 / 2.0) * base * leg;
 		}
 
 		void draw()const {
-
+			HWND hconsole = GetConsoleWindow();
+			HDC hcontext = GetDC(hconsole);
+			HPEN hPen = CreatePen(PS_SOLID, linewidth, color);
+			SelectObject(hcontext, hPen);
+			SetBkColor(hcontext, color);
+			SelectObject(hcontext, CreateSolidBrush(color));
+			POINT vertices[] = {
+				{start_x, start_y + leg},
+				{start_x + leg + (base/2),start_y + leg},
+				{start_x + base,start_y}
+			};
+			Polygon(hcontext, vertices, sizeof(vertices) / sizeof(vertices[0]));
+			DeleteObject(hcontext);
+			DeleteObject(hPen);
+			ReleaseDC(hconsole, hcontext);
 		}
 
 		void print()const {
-			Shape::print(); 
-			cout << "Leg : " << leg << endl; 
+			Shape::print();
+			cout << "Leg : " << leg << endl;
 			cout << "Base : " << base << endl;
 		}
 	};
@@ -506,7 +526,7 @@ int main() {
 	/*Rectangel rectangel(100, 50, Color::red, 100, 200, 5);
 	rectangel.print();
 	rectangel.draw();*/
-
+	
 	//Circle circle(200, Color::blue, 100, 200, 5);
 	//circle.print();
 	//circle.draw();
@@ -515,8 +535,8 @@ int main() {
 	equaltriangel.print();
 	equaltriangel.draw();*/
 
-	Geometry::RightTriangel righttriangel(200,150, 100, Geometry::Color::green, 100, 200, 5);
+	/*Geometry::RightTriangel righttriangel(400, 150, 150, Geometry::Color::green, 10, 100, 5);
 	righttriangel.print();
-	righttriangel.draw();
+	righttriangel.draw();*/
 	return 0;
 }
