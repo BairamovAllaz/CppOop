@@ -34,11 +34,15 @@ public:
 	~ForwardList() {
 		cout << "Ldesctructor\t" << this << endl;
 	}
+
+
 	void push_front(int Data) {
 		Element* New = new Element(Data);
 		New->pNext = Head; 
 		Head = New;
 	}
+
+
 	void push_back(int Data) {
 		Element* Temp = Head;
 		while (Temp && Temp->pNext) {
@@ -48,11 +52,15 @@ public:
 		newelement->pNext = NULL;
 		Temp->pNext = newelement;
 	}
+
+
 	void pop_front() {
 		Element* Temp = Head;
 		Head = Head->pNext; 
 		delete Temp;
 	}
+
+
 	void pop_back() {
 		Element* Temp = Head; 
 		///Temp = before last element 
@@ -62,6 +70,8 @@ public:
 		delete Temp->pNext; /// delete last element.Example 5  ---- delete 4->5(adress) 
 		Temp->pNext = NULL;  //4->pNext = Null last element null!!
 	}
+
+
 	void insert(int index, int Data) {
 		Element* Temp = Head;
 		int i = 0;
@@ -88,6 +98,9 @@ public:
 		delete Temp->pNext;
 		Temp->pNext = next;
 	}
+
+
+
 	void print()const{
 		Element* Temp = Head;
 		while (Temp) {
@@ -95,6 +108,9 @@ public:
 			Temp = Temp->pNext;
 		}
 	}
+
+
+	
 };
 
 
