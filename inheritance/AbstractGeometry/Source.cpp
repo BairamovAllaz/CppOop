@@ -538,5 +538,13 @@ int main() {
 	/*Geometry::RightTriangel righttriangel(400, 150, 150, Geometry::Color::green, 10, 100, 5);
 	righttriangel.print();
 	righttriangel.draw();*/
+<<<<<<< HEAD
 	return 0;
 }
+=======
+	Geometry::IsoscalesTriangle istriangel(200, 100, Geometry::Color::green, 10, 100, 5);
+	istriangel.print();
+	istriangel.draw();
+	return 0;
+}
+>>>>>>> c08243fae7c0129410eb8c75f54676597841e423
