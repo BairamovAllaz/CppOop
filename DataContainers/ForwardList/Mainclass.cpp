@@ -66,7 +66,7 @@ public:
         }
     }
 
-    ForwardList(ForwardList &&obj) noexcept : Head(nullptr)
+    ForwardList(ForwardList &&obj) noexcept
     {
         std::swap(Head, obj.Head);
     }
@@ -91,7 +91,6 @@ public:
 
     ForwardList &operator=(ForwardList &&obj)
     {
-        Head = nullptr;
         std::swap(Head, obj.Head);
         return *this;
     }
