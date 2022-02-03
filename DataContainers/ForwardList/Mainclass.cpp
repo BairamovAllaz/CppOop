@@ -2,7 +2,7 @@
 using namespace std;
 
 #define tab "\t"
-
+#define DEBUG
 class Element
 {
     int Data;
@@ -13,7 +13,9 @@ public:
     Element(int Data, Element *pNext = nullptr) : Data(Data), pNext(pNext)
     {
         count++;
+#ifdef DEBUG
         cout << "EConstrcutor:\t" << this << endl;
+#endif // DEBUG
     }
     ~Element()
     {
@@ -37,74 +39,118 @@ public:
         cout << "LConstructor:\t" << this << endl;
     }
 
+    ForwardList(const std::initializer_list<int> &list)
+    {
+        this->size = 0;
+        Head = nullptr;
+        for (auto &Data : list)
+        {
+            push_front(Data);
+        }
+    }
+
     // desctructor
     ~ForwardList()
     {
-        Element *Temp = Head;
-        while (Temp->pNext)
-        {
-            Element *New = Temp->pNext;
-            delete Temp;
-            Temp = New;
-        }
-        cout << "LDestructor:\t" << this << endl;
-    }
-    /// deep copy
-    explicit ForwardList(const ForwardList &obj)
-    {
-        if (&obj == this)
-            return;
-        Head = new Element(obj.Head->Data);
-        //! iterators
-        Element *currentHead = Head;
-        Element *objHead = obj.Head;
-        //! iterators
-        objHead = objHead->pNext;
-        while (objHead)
-        {
-            currentHead->pNext = new Element(objHead->Data);
-            currentHead = currentHead->pNext;
-            objHead = objHead->pNext;
-        }
-
-        // Element* currentHead = Head;
-        // Element* objHead = obj.Head;
-
-        // while(objHead && currentHead) {
-        //     push_front(obj.Head->Data);
-        //     currentHead = currentHead->pNext;
-        //     objHead = objHead->pNext;
+        // Element *Temp = Head;
+        // while (Temp->pNext)
+        // {
+        //     Element *New = Temp->pNext;
+        //     delete Temp;
+        //     Temp = New;
         // }
+        // cout << "LDestructor:\t" << this << endl;
+
+        while (Head)
+            pop_front();
+
+        cout << "Ldesctructor" << endl;
     }
+
+    const Element &operator[](int it) const
+    {
+        Element *Temp = Head;
+        for (size_t i = 0; i < it; i++)
+        {
+            Temp = Temp->pNext;
+        }
+        Temp->pNext = Temp;
+        return *Temp;
+    }
+
+    Element &operator[](int it)
+    {
+        Element *Temp = Head;
+        for (size_t i = 0; i < it; i++)
+        {
+            Temp = Temp->pNext;
+        }
+        Temp->pNext = Temp;
+        return *Temp;
+    }
+
+    /// deep copy
+    // explicit ForwardList(const ForwardList &obj)
+    // {
+    //     if (&obj == this)
+    //         return;
+    //     Head = new Element(obj.Head->Data);
+    //     Element *currentHead = Head;
+    //     Element *objHead = obj.Head;
+    //     objHead = objHead->pNext;
+    //     while (objHead)
+    //     {
+    //         currentHead->pNext = new Element(objHead->Data);
+    //         currentHead = currentHead->pNext;
+    //         objHead = objHead->pNext;
+    //     }
+
+    // Element* currentHead = Head;
+    // Element* objHead = obj.Head;
+
+    // while(objHead && currentHead) {
+    //     push_front(obj.Head->Data);
+    //     currentHead = currentHead->pNext;
+    //     objHead = objHead->pNext;
+    // }
+    // }
+
+    // ForwardList(ForwardList &&obj) noexcept
+    // {
+    //     std::swap(Head, obj.Head);
 
     // ForwardList(ForwardList &&obj) noexcept
     // {
     //     std::swap(Head, obj.Head);
     // }
 
-    ForwardList &operator=(const ForwardList &obj)
-    {
-        Head = new Element(obj.Head->Data);
-        //! iterators
-        Element *currentHead = Head;
-        Element *objHead = obj.Head;
-        //! iterators
-        objHead = objHead->pNext;
-        while (objHead)
-        {
-            currentHead->pNext = new Element(objHead->Data);
-            currentHead = currentHead->pNext;
-            objHead = objHead->pNext;
-        }
+    // ForwardList &operator=(const ForwardList &obj)
+    // {
+    //     Head = new Element(obj.Head->Data);
+    //     Element *currentHead = Head;
+    //     Element *objHead = obj.Head;
+    //     objHead = objHead->pNext;
+    //     while (objHead)
+    //     {
+    //         currentHead->pNext = new Element(objHead->Data);
+    //         currentHead = currentHead->pNext;
+    //         objHead = objHead->pNext;
+    //     }
 
-        return *this;
-    }
+    //     return *this;
+    // }
 
     // ForwardList &operator=(ForwardList &&obj)
     // {
     //     std::swap(Head, obj.Head);
     //     return *this;
     // }
+
+    ForwardList &operator=(ForwardList &&obj)
+    {
+        std::swap(Head, obj.Head);
+        return *this;
+    }
 
     void push_front(int Data)
     {
@@ -181,15 +227,19 @@ public:
 
     void erase(int index)
     {
-        if(index > size) return;
-        if(index == 0) return pop_front();
+        if (index > size)
+            return;
+        if (index == 0)
+            return pop_front();
         Element *Temp = Head;
-        for(int i=0; i < index - 1; ++i) { 
+        for (int i = 0; i < index - 1; ++i)
+        {
             Temp = Temp->pNext;
         }
-        Element *Erased = Temp->pNext; 
+        Element *Erased = Temp->pNext;
         Temp->pNext = Temp->pNext->pNext;
-        delete Erased; 
+        delete Erased;
+        size--;
         // Element *Temp = Head;
         // for (int i = 0; i < index - 1; ++i)
         // {
@@ -198,7 +248,6 @@ public:
         // Element *next = Temp->pNext->pNext;
         // delete Temp->pNext;
         // Temp->pNext = next;
-        size--;
     }
 
     void print() const
@@ -212,15 +261,46 @@ public:
         cout << "Count in Forwardlist: " << size << endl;
         cout << "All Count of list: " << Head->count << endl;
     }
+
+    // std::ostream &operator<<(std::ostream &in) const
+    // {
+    //     Element *Temp = Head;
+    //     while (Temp)
+    //     {
+    //         in << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+    //         Temp = Temp->pNext;
+    //     }
+    //     in << "Count in Forwardlist: " << size << endl;
+    //     in << "All Count of list: " << Head->count << endl;
+    //     return in;
+    // }
+
+    friend std::ostream &operator<<(std::ostream &in, const Element &obj);
 };
 
-#define BaseCheck
+std::ostream &operator<<(std::ostream &in,const Element& obj)
+{
+    Element *Temp = Head;
+    while (Temp)
+    {
+        in << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+        Temp = Temp->pNext;
+    }
+    in << "Count in Forwardlist: " << obj.size << endl;
+    in << "All Count of list: " << Head->count << endl;
+    return in;
+}
+
+
+
+// #define BaseCheck
+#define CONSTRUCTOR_CHECK
 int main()
 {
 
 #ifdef BaseCheck
     int n;
-    cout << "Введите размер списка: ";
+    cout << "Enter size of list: ";
     cin >> n;
     ForwardList list;
     list.pop_front();
@@ -241,12 +321,37 @@ int main()
     list.print();
 
     cout << "Enter index to delete: ";
-    cin >> index; 
+    cin >> index;
 
-    list.erase(index); 
-    list.print(); 
+    list.erase(index);
+    list.print();
 
 #endif
+#ifdef CONSTRUCTOR_CHECK
+
+    int n;
+    cout << "Enter size of list: ";
+    cin >> n;
+
+    ForwardList list;
+
+    for (size_t i = 0; i < n; i++)
+    {
+        list.push_front(100 % rand());
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << list[i] << endl;
+    }
+
+    cout << "Done" << endl;
+
+#endif // DEBUG
+
+    // ForwardList list = {3, 5, 8, 13, 23};
+    // list.print();
+
     // ForwardList list;
     // list.push_front(44);
     // list.push_front(48);
