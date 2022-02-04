@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 #define tab "\t"
@@ -66,6 +67,14 @@ public:
         cout << "Ldesctructor" << endl;
     }
 
+    Element &operator=(int Data)
+    {
+        cout << "j " << endl;
+        push_front(Data);
+        cout << "Newconstructor" << endl;
+        return *Head;
+    }
+
     const Element &operator[](int it) const
     {
         Element *Temp = Head;
@@ -73,7 +82,6 @@ public:
         {
             Temp = Temp->pNext;
         }
-        // Temp->pNext = Temp;
         return *Temp;
     }
 
@@ -84,8 +92,28 @@ public:
         {
             Temp = Temp->pNext;
         }
-        // Temp->pNext = Temp;
         return *Temp;
+    }
+
+    void unique()
+    {
+        int index = 0;
+        Element *Temp = Head;
+
+        for (int i = 0; Temp; ++i)
+        {
+            Element *In = Temp->pNext;
+            while (In)
+            {
+                if (Temp->Data == In->Data)
+                {
+                    erase(i);
+                }
+                In = In->pNext;
+            }
+
+            Temp = Temp->pNext;
+        }
     }
 
     /// deep copy
@@ -270,10 +298,11 @@ std::ostream &operator<<(std::ostream &in, const Element &obj)
 }
 
 // #define BaseCheck
-#define CONSTRUCTOR_CHECK
+// #define CONSTRUCTOR_CHECK
+// #define LIST_CHECK
 int main()
 {
-
+    srand(time(0));
 #ifdef BaseCheck
     int n;
     cout << "Enter size of list: ";
@@ -311,9 +340,9 @@ int main()
 
     ForwardList list;
 
-    for (size_t i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        list.push_front(i + 1);
+        list.push_front(rand() % 100);
     }
 
     for (int i = 0; i < n; i++)
@@ -324,7 +353,7 @@ int main()
     cout << "Done" << endl;
 
 #endif // DEBUG
-
+#ifdef LIST_CHECK
     // ForwardList list = {3, 5, 8, 13, 23};
     // list.print();
 
@@ -367,5 +396,18 @@ int main()
     // list2.push_front(55);
     // cout << "List 2: " << endl;
     // list2.print();
+
+#endif // DEBUG
+
+    ForwardList list = {1, 2, 3, 1, 5, 6};
+    list.print();
+
+    list.unique();
+
+    cout << endl;
+
+    cout << "List2" << endl;
+
+    list.print();
     return 0;
 }
