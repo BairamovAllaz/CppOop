@@ -116,6 +116,20 @@ public:
         }
     }
 
+    void reverse()
+    {
+        Element *Temp = Head, *next = nullptr, *prev = nullptr;
+
+        while (Temp)
+        {
+            next = Temp->pNext; /// next element
+            prev = Temp;        // current element will be pervios element
+            Temp->pNext = prev; // change to pervois element
+            Temp = next;        /// change to next element
+        }
+        Head = prev;
+    }
+
     /// deep copy
     // explicit ForwardList(const ForwardList &obj)
     // {
@@ -402,12 +416,11 @@ int main()
     ForwardList list = {1, 2, 3, 1, 5, 6};
     list.print();
 
-    list.unique();
+    list.reverse();
 
-    cout << endl;
-
-    cout << "List2" << endl;
+    cout << "reversed:" << endl;
 
     list.print();
+
     return 0;
 }
