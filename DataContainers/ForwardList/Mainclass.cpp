@@ -2,7 +2,6 @@
 using namespace std;
 
 #define tab "\t"
-#define DEBUG
 class Element
 {
     int Data;
@@ -13,9 +12,8 @@ public:
     Element(int Data, Element *pNext = nullptr) : Data(Data), pNext(pNext)
     {
         count++;
-#ifdef DEBUG
+
         cout << "EConstrcutor:\t" << this << endl;
-#endif // DEBUG
     }
     ~Element()
     {
@@ -23,6 +21,7 @@ public:
         cout << "EDestrcutor:\t" << this << endl;
     }
     friend class ForwardList;
+    friend std::ostream &operator<<(std::ostream &in, const Element &obj);
 };
 int Element::count = 0;
 
@@ -70,11 +69,11 @@ public:
     const Element &operator[](int it) const
     {
         Element *Temp = Head;
-        for (size_t i = 0; i < it; i++)
+        for (int i = 0; i < it; i++)
         {
             Temp = Temp->pNext;
         }
-        Temp->pNext = Temp;
+        // Temp->pNext = Temp;
         return *Temp;
     }
 
@@ -85,7 +84,7 @@ public:
         {
             Temp = Temp->pNext;
         }
-        Temp->pNext = Temp;
+        // Temp->pNext = Temp;
         return *Temp;
     }
 
@@ -261,37 +260,14 @@ public:
         cout << "Count in Forwardlist: " << size << endl;
         cout << "All Count of list: " << Head->count << endl;
     }
-
-    // std::ostream &operator<<(std::ostream &in) const
-    // {
-    //     Element *Temp = Head;
-    //     while (Temp)
-    //     {
-    //         in << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-    //         Temp = Temp->pNext;
-    //     }
-    //     in << "Count in Forwardlist: " << size << endl;
-    //     in << "All Count of list: " << Head->count << endl;
-    //     return in;
-    // }
-
-    friend std::ostream &operator<<(std::ostream &in, const Element &obj);
 };
 
-std::ostream &operator<<(std::ostream &in,const Element& obj)
+std::ostream &operator<<(std::ostream &in, const Element &obj)
 {
-    Element *Temp = Head;
-    while (Temp)
-    {
-        in << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-        Temp = Temp->pNext;
-    }
-    in << "Count in Forwardlist: " << obj.size << endl;
-    in << "All Count of list: " << Head->count << endl;
+    in << endl;
+    in << "Data: " << obj.Data << endl;
     return in;
 }
-
-
 
 // #define BaseCheck
 #define CONSTRUCTOR_CHECK
@@ -337,7 +313,7 @@ int main()
 
     for (size_t i = 0; i < n; i++)
     {
-        list.push_front(100 % rand());
+        list.push_front(i + 1);
     }
 
     for (int i = 0; i < n; i++)
