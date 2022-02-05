@@ -49,6 +49,38 @@ public:
         }
     }
 
+    explicit ForwardList(ForwardList &obj)
+    {
+        if (&obj == this)
+            return;
+
+        Head = nullptr;
+
+        while (obj.Head)
+        {
+
+            push_front(obj.Head->Data);
+
+            obj.Head = obj.Head->pNext;
+        }
+
+        cout << "Copy constructor\t" << this << endl;
+    }
+
+    ForwardList &operator=(ForwardList &obj)
+    {
+        if (&obj == this)
+            return *this;
+        Head = nullptr;
+        while (obj.Head)
+        {
+            push_front(obj.Head->Data);
+            obj.Head = obj.Head->pNext;
+        }
+        cout << "CopyAssigment\t" << this << endl;
+        return *this;
+    }
+
     // desctructor
     ~ForwardList()
     {
@@ -65,14 +97,6 @@ public:
             pop_front();
 
         cout << "Ldesctructor" << endl;
-    }
-
-    Element &operator=(int Data)
-    {
-        cout << "j " << endl;
-        push_front(Data);
-        cout << "Newconstructor" << endl;
-        return *Head;
     }
 
     const Element &operator[](int it) const
@@ -122,70 +146,14 @@ public:
 
         while (Temp)
         {
-            next = Temp->pNext; /// next element
-            prev = Temp;        // current element will be pervios element
-            Temp->pNext = prev; // change to pervois element
-            Temp = next;        /// change to next element
+            next = Temp->pNext;
+            Temp->pNext = prev;
+            prev = Temp;
+            Temp = next;
         }
         Head = prev;
     }
 
-    /// deep copy
-    // explicit ForwardList(const ForwardList &obj)
-    // {
-    //     if (&obj == this)
-    //         return;
-    //     Head = new Element(obj.Head->Data);
-    //     Element *currentHead = Head;
-    //     Element *objHead = obj.Head;
-    //     objHead = objHead->pNext;
-    //     while (objHead)
-    //     {
-    //         currentHead->pNext = new Element(objHead->Data);
-    //         currentHead = currentHead->pNext;
-    //         objHead = objHead->pNext;
-    //     }
-
-    // Element* currentHead = Head;
-    // Element* objHead = obj.Head;
-
-    // while(objHead && currentHead) {
-    //     push_front(obj.Head->Data);
-    //     currentHead = currentHead->pNext;
-    //     objHead = objHead->pNext;
-    // }
-    // }
-
-    // ForwardList(ForwardList &&obj) noexcept
-    // {
-    //     std::swap(Head, obj.Head);
-
-    // ForwardList(ForwardList &&obj) noexcept
-    // {
-    //     std::swap(Head, obj.Head);
-    // }
-
-    // ForwardList &operator=(const ForwardList &obj)
-    // {
-    //     Head = new Element(obj.Head->Data);
-    //     Element *currentHead = Head;
-    //     Element *objHead = obj.Head;
-    //     objHead = objHead->pNext;
-    //     while (objHead)
-    //     {
-    //         currentHead->pNext = new Element(objHead->Data);
-    //         currentHead = currentHead->pNext;
-    //         objHead = objHead->pNext;
-    //     }
-
-    //     return *this;
-    // }
-
-    // ForwardList &operator=(ForwardList &&obj)
-    // {
-    //     std::swap(Head, obj.Head);
-    //     return *this;
-    // }
 
     ForwardList &operator=(ForwardList &&obj)
     {
@@ -414,13 +382,14 @@ int main()
 #endif // DEBUG
 
     ForwardList list = {1, 2, 3, 1, 5, 6};
-    list.print();
+    ForwardList list2(list);
 
-    list.reverse();
+    cout << "List2:" << endl;
 
-    cout << "reversed:" << endl;
-
-    list.print();
+    for (int i = 0; i < 6; i++)
+    {
+        cout << list2[i] << endl;
+    }
 
     return 0;
 }
