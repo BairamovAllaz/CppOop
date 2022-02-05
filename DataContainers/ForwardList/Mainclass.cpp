@@ -146,10 +146,10 @@ public:
 
         while (Temp)
         {
-            next = Temp->pNext;
-            Temp->pNext = prev;
-            prev = Temp;
-            Temp = next;
+            next = Temp->pNext; //next element for while loop
+            Temp->pNext = prev; // curren next element to pervios element
+            prev = Temp; // pervios element for next element
+            Temp = next; /// next element to while loop run again!
         }
         Head = prev;
     }
