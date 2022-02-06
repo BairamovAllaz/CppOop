@@ -1,7 +1,6 @@
 #include <iostream>
 #include <ctime>
 using namespace std;
-
 #define tab "\t"
 class Element
 {
@@ -13,7 +12,6 @@ public:
     Element(int Data, Element *pNext = nullptr) : Data(Data), pNext(pNext)
     {
         count++;
-
         cout << "EConstrcutor:\t" << this << endl;
     }
     ~Element()
@@ -25,7 +23,6 @@ public:
     friend std::ostream &operator<<(std::ostream &in, const Element &obj);
 };
 int Element::count = 0;
-
 class ForwardList
 {
     Element *Head;
@@ -38,17 +35,19 @@ public:
         Head = nullptr;
         cout << "LConstructor:\t" << this << endl;
     }
-
-    ForwardList(const std::initializer_list<int> &list)
+    ForwardList(const std::initializer_list<int> &list) : ForwardList()
     {
-        this->size = 0;
-        Head = nullptr;
-        for (auto &Data : list)
-        {
-            push_front(Data);
+        // for (auto &Data : list)
+        // {
+        //     push_front(Data);
+        // }
+        // for(const int* it=list.begin();it!=list.end();it++) { 
+        //     push_back(*it);
+        // }
+        for(const int*it= list.end()-1;it!=list.begin()-1;--it){ 
+            push_front(*it);
         }
     }
-
     explicit ForwardList(ForwardList &obj)
     {
         if (&obj == this)
@@ -66,7 +65,6 @@ public:
 
         cout << "Copy constructor\t" << this << endl;
     }
-
     ForwardList &operator=(ForwardList &obj)
     {
         if (&obj == this)
@@ -80,7 +78,15 @@ public:
         cout << "CopyAssigment\t" << this << endl;
         return *this;
     }
-
+    ForwardList(int size)
+    {
+        this->size = 0;
+        this->Head = nullptr;
+        for (int i = 0; i < size; ++i)
+        {
+            push_front(0);
+        }
+    }
     // desctructor
     ~ForwardList()
     {
@@ -98,48 +104,62 @@ public:
 
         cout << "Ldesctructor" << endl;
     }
-
-    const Element &operator[](int it) const
+    // const Element &operator[](int it) const
+    // {
+    //     Element *Temp = Head;
+    //     for (int i = 0; i < it; i++)
+    //     {
+    //         Temp = Temp->pNext;
+    //     }
+    //     return *Temp;
+    // }
+    // Element &operator[](int it)
+    // {
+    //     Element *Temp = Head;
+    //     for (size_t i = 0; i < it; i++)
+    //     {
+    //         Temp = Temp->pNext;
+    //     }
+    //     return *Temp;
+    // }
+    int &operator[](int index)
     {
         Element *Temp = Head;
-        for (int i = 0; i < it; i++)
+        for (int i = 0; i < index; ++i)
         {
             Temp = Temp->pNext;
         }
-        return *Temp;
+        return Temp->Data;
     }
-
-    Element &operator[](int it)
+    const int &operator[](int index) const
     {
         Element *Temp = Head;
-        for (size_t i = 0; i < it; i++)
+        for (int i = 0; i < index; ++i)
         {
             Temp = Temp->pNext;
         }
-        return *Temp;
+        return Temp->Data;
     }
-
-    void unique()
-    {
-        int index = 0;
-        Element *Temp = Head;
-
-        for (int i = 0; Temp; ++i)
-        {
-            Element *In = Temp->pNext;
-            while (In)
-            {
-                if (Temp->Data == In->Data)
-                {
-                    erase(i);
-                }
-                In = In->pNext;
-            }
-
-            Temp = Temp->pNext;
-        }
-    }
-
+    // void unique()
+    // {
+    //     Element *Temp = Head, *next = nullptr;
+    //     for (int i = 0; Temp; ++i)
+    //     {
+    //         Element *In = Temp->pNext;
+    //         while (In)
+    //         {
+    //             if (Temp->Data == In->Data)
+    //             {
+    //                 // erase(Temp);
+    //                 Element *Erased = Temp->pNext;
+    //                 Temp->pNext = Temp->pNext->pNext;
+    //                 delete Erased;
+    //             }
+    //             In = In->pNext;
+    //         }
+    //         Temp = Temp->pNext;
+    //     }
+    // }
     void reverse()
     {
         Element *Temp = Head, *next = nullptr, *prev = nullptr;
@@ -153,14 +173,6 @@ public:
         }
         Head = prev;
     }
-
-
-    ForwardList &operator=(ForwardList &&obj)
-    {
-        std::swap(Head, obj.Head);
-        return *this;
-    }
-
     void push_front(int Data)
     {
         Element *New = new Element(Data);
@@ -168,7 +180,6 @@ public:
         Head = New;
         size++;
     }
-
     void push_back(int Data)
     {
         if (Head == nullptr)
@@ -186,9 +197,7 @@ public:
         // New->pNext = NULL; Deafult Null
         size++;
     }
-
     ////*removing elements
-
     void pop_front()
     {
         if (Head == nullptr)
@@ -198,7 +207,6 @@ public:
         delete Erases;
         size++;
     }
-
     void pop_back()
     {
         if (Head == nullptr)
@@ -215,7 +223,6 @@ public:
         Temp->pNext = nullptr;
         size--;
     }
-
     void insert(int index, int Data)
     {
         if (index > size)
@@ -233,7 +240,6 @@ public:
         Temp->pNext = New;
         size++;
     }
-
     void erase(int index)
     {
         if (index > size)
@@ -258,7 +264,6 @@ public:
         // delete Temp->pNext;
         // Temp->pNext = next;
     }
-
     void print() const
     {
         Element *Temp = Head;
@@ -272,16 +277,16 @@ public:
     }
 };
 
-std::ostream &operator<<(std::ostream &in, const Element &obj)
-{
-    in << endl;
-    in << "Data: " << obj.Data << endl;
-    return in;
-}
-
+// std::ostream &operator<<(std::ostream &in, const Element &obj)
+// {
+//     in << endl;
+//     in << "Data: " << obj.Data << endl;
+//     return in;
+// }
 // #define BaseCheck
 // #define CONSTRUCTOR_CHECK
 // #define LIST_CHECK
+// #define ASSIGMENT_CHECK
 int main()
 {
     srand(time(0));
@@ -315,30 +320,23 @@ int main()
 
 #endif
 #ifdef CONSTRUCTOR_CHECK
-
     int n;
     cout << "Enter size of list: ";
     cin >> n;
-
     ForwardList list;
-
     for (int i = 0; i < n; i++)
     {
         list.push_front(rand() % 100);
     }
-
     for (int i = 0; i < n; i++)
     {
         cout << list[i] << endl;
     }
-
     cout << "Done" << endl;
-
 #endif // DEBUG
 #ifdef LIST_CHECK
     // ForwardList list = {3, 5, 8, 13, 23};
     // list.print();
-
     // ForwardList list;
     // list.push_front(44);
     // list.push_front(48);
@@ -378,18 +376,22 @@ int main()
     // list2.push_front(55);
     // cout << "List 2: " << endl;
     // list2.print();
-
 #endif // DEBUG
-
-    ForwardList list = {1, 2, 3, 1, 5, 6};
-    ForwardList list2(list);
-
-    cout << "List2:" << endl;
-
-    for (int i = 0; i < 6; i++)
+#ifdef ASSIGMENT_CHECK
+    int n;
+    cout << "Enter size of list: ";
+    cin >> n;
+    ForwardList list(n);
+    for (int i = 0; i < n; ++i)
     {
-        cout << list2[i] << endl;
+        list[i] = rand() % 20;
     }
-
+    for (int i = 0; i < n; i++)
+    {
+        cout << list[i] << endl;
+    }
+#endif // DEBUG
+    ForwardList list = {1, 3, 4, 6, 7, 5, 3};
+    list.print();
     return 0;
 }
