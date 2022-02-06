@@ -154,13 +154,6 @@ public:
         Head = prev;
     }
 
-
-    ForwardList &operator=(ForwardList &&obj)
-    {
-        std::swap(Head, obj.Head);
-        return *this;
-    }
-
     void push_front(int Data)
     {
         Element *New = new Element(Data);
