@@ -198,13 +198,7 @@ public:
         }
         Head = prev;
     }
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
->>>>>>> 0cd4646b668a0c4c2602964e6939fa1d88611273
-=======
->>>>>>> 0cd4646b668a0c4c2602964e6939fa1d88611273
     void push_front(int Data)
     {
         // Element *New = new Element(Data);
