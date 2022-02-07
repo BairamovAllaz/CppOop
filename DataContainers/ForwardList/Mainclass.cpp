@@ -2,6 +2,7 @@
 #include <ctime>
 using namespace std;
 #define tab "\t"
+// #define OLD_PRINT
 class Iterator;
 class Element
 {
@@ -20,7 +21,6 @@ public:
         count--;
         cout << "EDestrcutor:\t" << this << endl;
     }
-
     friend class ForwardList;
     friend class Iterator;
     // friend std::ostream &operator<<(std::ostream &in, const Element &obj);
@@ -31,24 +31,46 @@ class Iterator
 {
 private:
     Element *Temp;
+
 public:
-    Iterator(Element *temp = nullptr) : Temp(temp){}
-    ~Iterator(){}
+    Iterator(Element *temp = nullptr) : Temp(temp) {}
+    ~Iterator() {}
     Iterator &operator++()
     {
         Temp = Temp->pNext;
         return *this;
     }
-    Iterator operator++(int) { 
-        Iterator Copy = Temp; 
+    Iterator operator++(int)
+    {
+        Iterator Copy = *this;
         Temp = Temp->pNext;
         return Copy;
     }
+    bool operator==(const Iterator &obj) const
+    {
+        return this->Temp == obj.Temp;
+    }
+
+    bool operator!=(const Iterator &obj) const
+    {
+        return this->Temp != obj.Temp;
+    }
+    int &operator*()
+    {
+        return Temp->Data;
+    }
+
+    const int &operator*() const
+    {
+        return Temp->Data;
+    }
+
     friend class ForwardList;
 };
 
 class ForwardList
 {
+private:
     Element *Head;
     unsigned int size;
 
@@ -191,20 +213,14 @@ public:
 
         while (Temp)
         {
-            next = Temp->pNext; //next element for while loop
+            next = Temp->pNext; // next element for while loop
             Temp->pNext = prev; // curren next element to pervios element
-            prev = Temp; // pervios element for next element
-            Temp = next; /// next element to while loop run again!
+            prev = Temp;        // pervios element for next element
+            Temp = next;        /// next element to while loop run again!
         }
         Head = prev;
     }
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
->>>>>>> 0cd4646b668a0c4c2602964e6939fa1d88611273
-=======
->>>>>>> 0cd4646b668a0c4c2602964e6939fa1d88611273
     void push_front(int Data)
     {
         // Element *New = new Element(Data);
@@ -219,7 +235,6 @@ public:
         {
             return push_front(Data);
         }
-
         // Element *New = new Element(Data);
         Element *Temp = Head;
 
@@ -227,7 +242,7 @@ public:
         {
             Temp = Temp->pNext;
         }
-        Temp->pNext = new Element(Data, Temp->pNext);
+        Temp->pNext = new Element(Data);
         // New->pNext = NULL; Deafult Null
         size++;
     }
@@ -301,6 +316,7 @@ public:
 
     void print() const
     {
+#ifdef OLD_PRINT
         // Element *Temp = Head;
         // while (Temp)
         // {
@@ -320,8 +336,13 @@ public:
 
         cout << "Count in Forwardlist: " << size << endl;
         cout << "All Count of list: " << Head->count << endl;
+#endif // DEBUG
+        for (Iterator Temp = Head; Temp.Temp; ++Temp)
+        {
+            // cout << Temp.Temp->Data << tab << Temp.Temp->pNext << endl;
+            cout << "Data: " << *Temp << endl;
+        }
     }
-
     friend Iterator;
 };
 
@@ -441,8 +462,7 @@ int main()
 #endif // DEBUG
     ForwardList list = {1, 3, 4, 6, 7, 5, 3};
     list.print();
-
-    // list.push_back(99);
+    list.push_back(99);
     // list.push_front(100);
     // list.push_back(600);
     // list.insert(1, 400);
