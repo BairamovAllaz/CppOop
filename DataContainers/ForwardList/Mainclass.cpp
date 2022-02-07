@@ -2,6 +2,7 @@
 #include <ctime>
 using namespace std;
 #define tab "\t"
+class Iterator;
 class Element
 {
     int Data;
@@ -19,10 +20,33 @@ public:
         count--;
         cout << "EDestrcutor:\t" << this << endl;
     }
+
     friend class ForwardList;
-    friend std::ostream &operator<<(std::ostream &in, const Element &obj);
+    friend class Iterator;
+    // friend std::ostream &operator<<(std::ostream &in, const Element &obj);
 };
 int Element::count = 0;
+/// iterator documentation:  http://www2.lawrence.edu/fast/GREGGJ/CMSC270/linked/iterators.html
+class Iterator
+{
+private:
+    Element *Temp;
+public:
+    Iterator(Element *temp = nullptr) : Temp(temp){}
+    ~Iterator(){}
+    Iterator &operator++()
+    {
+        Temp = Temp->pNext;
+        return *this;
+    }
+    Iterator operator++(int) { 
+        Iterator Copy = Temp; 
+        Temp = Temp->pNext;
+        return Copy;
+    }
+    friend class ForwardList;
+};
+
 class ForwardList
 {
     Element *Head;
@@ -41,10 +65,11 @@ public:
         // {
         //     push_front(Data);
         // }
-        // for(const int* it=list.begin();it!=list.end();it++) { 
+        // for(const int* it=list.begin();it!=list.end();it++) {
         //     push_back(*it);
         // }
-        for(const int*it= list.end()-1;it!=list.begin()-1;--it){ 
+        for (const int *it = list.end() - 1; it != list.begin() - 1; --it)
+        {
             push_front(*it);
         }
     }
@@ -175,9 +200,10 @@ public:
     }
     void push_front(int Data)
     {
-        Element *New = new Element(Data);
-        New->pNext = Head;
-        Head = New;
+        // Element *New = new Element(Data);
+        // New->pNext = Head;
+        // Head = New;
+        Head = new Element(Data, Head);
         size++;
     }
     void push_back(int Data)
@@ -186,14 +212,15 @@ public:
         {
             return push_front(Data);
         }
-        Element *New = new Element(Data);
+
+        // Element *New = new Element(Data);
         Element *Temp = Head;
 
         while (Temp->pNext)
         {
             Temp = Temp->pNext;
         }
-        Temp->pNext = New;
+        Temp->pNext = new Element(Data, Temp->pNext);
         // New->pNext = NULL; Deafult Null
         size++;
     }
@@ -229,15 +256,15 @@ public:
             return;
         if (index == 0 || Head == nullptr)
             return push_front(Data);
-        Element *New = new Element(Data);
+        // Element *New = new Element(Data);
         Element *Temp = Head; //*iterator
 
         for (int i = 0; i < index - 1; ++i)
         {
             Temp = Temp->pNext;
         }
-        New->pNext = Temp->pNext;
-        Temp->pNext = New;
+        // New->pNext = Temp->pNext;
+        Temp->pNext = new Element(Data, Temp->pNext);
         size++;
     }
     void erase(int index)
@@ -264,17 +291,31 @@ public:
         // delete Temp->pNext;
         // Temp->pNext = next;
     }
+
     void print() const
     {
-        Element *Temp = Head;
-        while (Temp)
+        // Element *Temp = Head;
+        // while (Temp)
+        // {
+        //     // cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+        //     // Temp = Temp->pNext;
+        //     cout << "Hello world " << endl;
+        //     ++Temp;
+        // }
+
+        Iterator Temp = Iterator(Head);
+
+        while (Temp.Temp)
         {
-            cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-            Temp = Temp->pNext;
+            cout << Temp.Temp->Data << tab << Temp.Temp->pNext << endl;
+            Temp++;
         }
+
         cout << "Count in Forwardlist: " << size << endl;
         cout << "All Count of list: " << Head->count << endl;
     }
+
+    friend Iterator;
 };
 
 // std::ostream &operator<<(std::ostream &in, const Element &obj)
@@ -392,6 +433,12 @@ int main()
     }
 #endif // DEBUG
     ForwardList list = {1, 3, 4, 6, 7, 5, 3};
+    list.print();
+
+    // list.push_back(99);
+    // list.push_front(100);
+    // list.push_back(600);
+    // list.insert(1, 400);
     list.print();
     return 0;
 }
