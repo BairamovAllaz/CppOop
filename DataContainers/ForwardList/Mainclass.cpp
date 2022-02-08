@@ -151,7 +151,24 @@ public:
 
         cout << "Ldesctructor" << endl;
     }
- 
+
+    ForwardList(ForwardList &&obj) : Head(nullptr), size(0)
+    {
+        Element *Temp = Head;
+        Head = obj.Head;
+        obj.Head = Temp;
+        cout << "Move constructor: \t" << this << endl;
+    }
+
+    ForwardList &operator=(ForwardList &&obj)
+    {
+        Element *Temp = Head;
+        Head = obj.Head;
+        obj.Head = Temp;
+        cout << "Move Assigment: \t" << this << endl;
+        return *this;
+    }
+
     // const Element &operator[](int it) const
     // {
     //     Element *Temp = Head;
@@ -483,6 +500,22 @@ int main()
     {
         cout << c << endl;
     }
+
+    // ForwardList list = {666, 333, 4, 888, 7, 5, 999};
+    // ForwardList list2 = std::move(list);
+    // cout << "List: " << endl;
+    // for (int c : list2)
+    // {
+    //     cout << c << endl;
+    // }
+
+
+    // cout << "List2: " << endl;
+
+    // for (int d : list)
+    // {
+    //     cout << d << endl;
+    // }
 
     return 0;
 }
