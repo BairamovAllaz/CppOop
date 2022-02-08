@@ -151,6 +151,7 @@ public:
 
         cout << "Ldesctructor" << endl;
     }
+ 
     // const Element &operator[](int it) const
     // {
     //     Element *Temp = Head;
@@ -343,6 +344,22 @@ public:
             cout << "Data: " << *Temp << endl;
         }
     }
+
+    Iterator begin()
+    {
+        Iterator Temp = Head;
+        return Temp;
+    }
+    Iterator end()
+    {
+        Iterator Temp = Head;
+        while (Temp.Temp)
+        {
+            ++Temp;
+        }
+        return Temp;
+    };
+
     friend Iterator;
 };
 
@@ -460,12 +477,12 @@ int main()
         cout << list[i] << endl;
     }
 #endif // DEBUG
-    ForwardList list = {1, 3, 4, 6, 7, 5, 3};
-    list.print();
-    list.push_back(99);
-    // list.push_front(100);
-    // list.push_back(600);
-    // list.insert(1, 400);
-    list.print();
+
+    ForwardList list = {666, 3, 4, 888, 7, 5, 999};
+    for (int c : list)
+    {
+        cout << c << endl;
+    }
+
     return 0;
 }
