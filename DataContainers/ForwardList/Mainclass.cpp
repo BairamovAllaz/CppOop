@@ -369,12 +369,7 @@ public:
     }
     Iterator end()
     {
-        Iterator Temp = Head;
-        while (Temp.Temp)
-        {
-            ++Temp;
-        }
-        return Temp;
+        return nullptr;
     };
 
     friend Iterator;
