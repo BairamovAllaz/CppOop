@@ -73,7 +73,8 @@ public:
         return Temp->Data;
     }
 
-    operator bool()const { 
+    operator bool() const
+    {
         return Temp;
     }
 
@@ -127,7 +128,8 @@ public:
     {
         if (&obj == this)
             return *this;
-        while(Head) pop_front();
+        while (Head)
+            pop_front();
         // for (Element<T> *Temp = obj.Head; Temp; Temp = Temp->pNext)
         // {
         //     push_back(Temp->Data);
@@ -216,26 +218,45 @@ public:
         }
         return Temp->Data;
     }
-    // void unique()
-    // {
-    //     Element *Temp = Head, *next = nullptr;
-    //     for (int i = 0; Temp; ++i)
-    //     {
-    //         Element *In = Temp->pNext;
-    //         while (In)
-    //         {
-    //             if (Temp->Data == In->Data)
-    //             {
-    //                 // erase(Temp);
-    //                 Element *Erased = Temp->pNext;
-    //                 Temp->pNext = Temp->pNext->pNext;
-    //                 delete Erased;
-    //             }
-    //             In = In->pNext;
-    //         }
-    //         Temp = Temp->pNext;
-    //     }
-    // }
+    void unique()
+    {
+        Element<T> *Temp = Head, *next = nullptr, *current = nullptr;
+        bool isdelete = false;
+        for (int i = 0; Temp; ++i)
+        {
+            Element<T> *In = Temp->pNext;
+            while (In)
+            {
+                if (Temp->Data == In->Data)
+                {
+                    // Element<T> *erased = pervios->pNext;
+                    // Temp->pNext = Temp->pNext->pNext;
+                    // delete erased;
+                    next = Temp->pNext;
+                    delete Temp;
+                    Temp = next;
+                    isdelete = true;
+                }
+                In = In->pNext;
+            }
+            // pervios = Temp;
+            if (isdelete == false)
+            {
+                Temp = Temp->pNext;
+            }
+            isdelete = false;
+        }
+    }
+
+    // Element<T> *Erased = Temp->pNext;
+    // Temp->pNext = Temp->pNext->pNext;
+    // delete Erased;
+
+    void erase(Element<T> &obj)
+    {
+        delete obj;
+    }
+
     void reverse()
     {
         Element<T> *Temp = Head, *next = nullptr, *prev = nullptr;
@@ -243,7 +264,7 @@ public:
         while (Temp)
         {
             next = Temp->pNext; // next element for while loop
-            Temp->pNext = prev; // curren next element to pervios element
+            Temp->pNext = prev; // current next element to pervios element
             prev = Temp;        // pervios element for next element
             Temp = next;        /// next element to while loop run again!
         }
@@ -385,6 +406,18 @@ public:
     friend Iterator<T>;
 };
 
+template <typename T>
+ForwardList<T> operator+(ForwardList<T> &left, ForwardList<T> &right)
+{
+    ForwardList<T> newlist(left);
+    for (int i : right)
+    {
+        newlist.push_back(i);
+    }
+
+    return newlist;
+}
+
 // std::ostream &operator<<(std::ostream &in, const Element &obj)
 // {
 //     in << endl;
@@ -395,6 +428,7 @@ public:
 // #define CONSTRUCTOR_CHECK
 // #define LIST_CHECK
 // #define ASSIGMENT_CHECK
+
 int main()
 {
     srand(time(0));
@@ -499,19 +533,31 @@ int main()
         cout << list[i] << endl;
     }
 #endif // DEBUG
-    ForwardList<int> list = {666, 3, 4, 888, 7, 5, 999};
+    // ForwardList<int> list = {666, 3, 4, 888, 7, 5, 999};
 
-    ForwardList<string> list_string = {"Have", "a", "nice", "day"};
-    for (string c : list_string)
-    {
-        cout << c << tab;
-    }
-    ForwardList<string> list_string2;
-    list_string2 = list_string;
-    for (string c : list_string2)
-    {
-        cout << c << tab;
-    }
+    // ForwardList<string> list_string = {"Have", "a", "nice", "day"};
+    // for (string c : list_string)
+    // {
+    //     cout << c << tab;
+    // }
+    // ForwardList<string> list_string2;
+    // list_string2 = list_string;
+    // for (string c : list_string2)
+    // {
+    //     cout << c << tab;
+    // }
+
+    ForwardList<int> list1 = {1, 2, 3, 4, 1};
+    list1.unique();
+    list1.print();
+    // ForwardList<int> list2 = {5, 6, 7, 8, 9};
+
+    // ForwardList<int> list3 = list1 + list2;
+
+    // for (int i : list3)
+    // {
+    //     cout << i << tab;
+    // }
 
     // ForwardList list = {666, 333, 4, 888, 7, 5, 999};
     // ForwardList list2 = std::move(list);
