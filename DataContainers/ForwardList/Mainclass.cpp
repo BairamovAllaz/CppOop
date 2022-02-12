@@ -218,43 +218,26 @@ public:
         }
         return Temp->Data;
     }
+
     void unique()
     {
-        Element<T> *Temp = Head, *next = nullptr, *current = nullptr;
-        bool isdelete = false;
+        Element<T> *Temp = Head, *In = nullptr;
         for (int i = 0; Temp; ++i)
         {
-            Element<T> *In = Temp->pNext;
+            In = Temp->pNext;
             while (In)
             {
                 if (Temp->Data == In->Data)
                 {
-                    // Element<T> *erased = pervios->pNext;
-                    // Temp->pNext = Temp->pNext->pNext;
-                    // delete erased;
-                    next = Temp->pNext;
+                    //erase(i);
+                    Element<T> *next = Temp->pNext;
                     delete Temp;
-                    Temp = next;
-                    isdelete = true;
+                    Temp->pNext = next;
                 }
                 In = In->pNext;
             }
-            // pervios = Temp;
-            if (isdelete == false)
-            {
-                Temp = Temp->pNext;
-            }
-            isdelete = false;
+            Temp = Temp->pNext;
         }
-    }
-
-    // Element<T> *Erased = Temp->pNext;
-    // Temp->pNext = Temp->pNext->pNext;
-    // delete Erased;
-
-    void erase(Element<T> &obj)
-    {
-        delete obj;
     }
 
     void reverse()
@@ -547,9 +530,13 @@ int main()
     //     cout << c << tab;
     // }
 
-    ForwardList<int> list1 = {1, 2, 3, 4, 1};
+    ForwardList<int> list1 = {1, 4, 3, 2, 0, 1};
     list1.unique();
-    list1.print();
+    // list1.print();
+    for (int i : list1)
+    {
+        cout << i << endl;
+    }
     // ForwardList<int> list2 = {5, 6, 7, 8, 9};
 
     // ForwardList<int> list3 = list1 + list2;
