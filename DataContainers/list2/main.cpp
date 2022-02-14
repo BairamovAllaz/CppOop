@@ -160,6 +160,7 @@ public:
     {
         if (index > size)
         {
+            cerr << "Error size" << endl;
             return;
         }
         if (Head == nullptr && Tail == nullptr || index == 0)
@@ -205,6 +206,19 @@ public:
 
     void erase(int index)
     {
+        if (index > size)
+        {
+            cerr << "Error size" << endl;
+            return;
+        }
+        if (Head == nullptr && Tail == nullptr || index == 0)
+        {
+            return pop_front(data);
+        }
+        if (index == size)
+        {
+            return pop_back(data);
+        }
         double newsize = size / 2;
         Element *outTemp = nullptr;
         if (index <= newsize || size < 5)
