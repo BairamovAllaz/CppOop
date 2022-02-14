@@ -1,17 +1,19 @@
 #include <iostream>
 #include <ctime>
+#include <cstring>
 using namespace std;
 
+template <typename T>
 class List
 {
     class Element
     {
     private:
-        int Data;
+        T Data;
         Element *pNext; // next element
         Element *pPrev; // pervious element
     public:
-        Element(int Data, Element *pNext = nullptr, Element *pPrev = nullptr) : Data(Data), pNext(pNext), pPrev(pPrev)
+        Element(T Data, Element *pNext = nullptr, Element *pPrev = nullptr) : Data(Data), pNext(pNext), pPrev(pPrev)
         {
             cout << "Econstructor\t" << this << endl;
         }
@@ -39,7 +41,7 @@ public:
     }
 
     /// adding elements
-    void push_front(int Data)
+    void push_front(T Data)
     {
         if (Head == nullptr && Tail == nullptr)
         {
@@ -54,7 +56,7 @@ public:
         size++;
     }
 
-    void push_back(int Data)
+    void push_back(T Data)
     {
         if (Head == nullptr && Tail == nullptr)
         {
@@ -187,27 +189,30 @@ int main()
     int n;
     cout << "Enter size: ";
     cin >> n;
-    List list;
-    for (int i = 0; i < n; ++i)
-    {
-        list.push_back(rand() % 20 + 1);
-    }
+    List<string> list;
+    // for (int i = 0; i < n; ++i)
+    // {
+    //     list.push_back(rand() % 20 + 1);
+    // }
+
+    list.push_back("Hello");
+    list.push_back("World");
 
     cout << "Last: " << endl;
     list.print_reverse();
 
-    int index, number;
-    cout << "Enter index to add number: ";
-    cin >> index;
-    cout << "Enter number to add: ";
-    cin >> number;
-    list.insert(index, number);
-    cout << "Our: " << endl;
-    list.print_reverse();
+    // int index, number;
+    // cout << "Enter index to add number: ";
+    // cin >> index;
+    // cout << "Enter number to add: ";
+    // cin >> number;
+    // list.insert(index, number);
+    // cout << "Our: " << endl;
+    // list.print_reverse();
 
-    cout << "Enter index to delete: ";
-    cin >> index;
-    list.erase(index);
-    list.print_reverse();
+    // cout << "Enter index to delete: ";
+    // cin >> index;
+    // list.erase(index);
+    // list.print_reverse();
     return 0;
 }
