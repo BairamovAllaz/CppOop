@@ -37,7 +37,59 @@ public:
     }
     ~List()
     {
+        while (Head)
+        {
+            pop_front();
+        }
         cout << "Ldesctructor\t" << endl;
+    }
+
+    explicit List(const List &other)
+    {
+        if (&other == this)
+        {
+            return;
+        }
+
+        Head = nullptr;
+        Tail = nullptr;
+
+        Element *Temp = other.Tail;
+        while (Temp)
+        {
+            push_back(Temp->Data);
+            Temp = Temp->pPrev;
+        }
+        cout << "CopyConstructor\t" << this << endl;
+    }
+
+    List &operator=(List &other)
+    {
+        if (&other == this)
+        {
+            return *this;
+        }
+        Element *Temp = other.Tail;
+        while (Temp)
+        {
+            push_back(Temp->Data);
+            Temp = Temp->pPrev;
+        }
+        cout << "CopyAssigment\t" << this << endl;
+        return *this;
+    }
+
+    List(const std::initializer_list<T> &list)
+    {
+
+        for (T Data : list)
+        {
+            push_front(Data);
+        }
+        // for (const T *it = list.begin(); it != list.end(); ++it)
+        // {
+        //     push_back(*it);
+        // }
     }
 
     /// adding elements
@@ -78,6 +130,12 @@ public:
         {
             return;
         }
+
+        if (Head == Tail)
+        {
+            Head = Tail = nullptr;
+            return;
+        }
         Element *Erased = Head;
         Head = Head->pNext;
         Head->pPrev = nullptr;
@@ -98,8 +156,22 @@ public:
         size--;
     }
 
-    void insert(int index, int data)
+    void insert(int index, T data)
     {
+        if (index > size)
+        {
+            return;
+        }
+        if (Head == nullptr && Tail == nullptr || index == 0)
+        {
+            return push_front(data);
+        }
+
+        if (index == size)
+        {
+            return push_back(data);
+        }
+
         double newsize = size / 2;
         Element *newElement = new Element(data);
         Element *outTemp = nullptr;
@@ -166,7 +238,6 @@ public:
 
     void print() const
     {
-        Element *Temp = Head;
         for (Element *Temp = Head; Temp; Temp = Temp->pNext)
         {
             cout << Temp->Data << endl;
@@ -186,20 +257,35 @@ public:
 int main()
 {
     srand(time(0));
-    int n;
-    cout << "Enter size: ";
-    cin >> n;
     List<string> list;
+    list.push_back("H");
+    list.push_back("E");
+    list.push_back("L");
+    list.push_back("L");
+    list.push_back("O");
+    list.insert(5, "World");
+    list.print();
+    // cout << "New: "<< endl;
+    // list.pop_front();
+    // list.print();
+
+    // List<string> list = {"This", "is", "a", "test"};
+    // list.print();
+
+    // int n;
+    // cout << "Enter size: ";
+    // cin >> n;
+    // List<string> list;
     // for (int i = 0; i < n; ++i)
     // {
     //     list.push_back(rand() % 20 + 1);
     // }
+    // cout << "Last: " << endl;
+    // list.print_reverse();
 
-    list.push_back("Hello");
-    list.push_back("World");
-
-    cout << "Last: " << endl;
-    list.print_reverse();
+    // List<string> list2;
+    // list2 = list;
+    // list2.print_reverse();
 
     // int index, number;
     // cout << "Enter index to add number: ";
