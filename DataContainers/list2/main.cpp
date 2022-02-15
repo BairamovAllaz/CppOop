@@ -24,6 +24,89 @@ class List
         }
         friend class List;
     } * Head, *Tail;
+
+    class Iterator
+    {
+    private:
+        Element *Temp;
+
+    public:
+        Iterator(Element *temp = nullptr) : Temp(temp) {}
+        ~Iterator() {}
+        Iterator &operator++()
+        {
+            Temp = Temp->pNext;
+            return *this;
+        }
+        Iterator operator++(int)
+        {
+            Iterator Copy = *this;
+            Temp = Temp->pNext;
+            return Copy;
+        }
+        bool operator==(const Iterator &obj) const
+        {
+            return this->Temp == obj.Temp;
+        }
+
+        bool operator!=(const Iterator &obj) const
+        {
+            return this->Temp != obj.Temp;
+        }
+        T &operator*()
+        {
+            return Temp->Data;
+        }
+
+        const T &operator*() const
+        {
+            return Temp->Data;
+        }
+
+        friend class List;
+    };
+
+    class IteratorBack
+    {
+    private:
+        Element *Temp;
+
+    public:
+        IteratorBack(Element *temp = nullptr) : Temp(temp) {}
+        ~IteratorBack() {}
+        IteratorBack &operator++()
+        {
+            Temp = Temp->pPrev;
+            return *this;
+        }
+        IteratorBack operator++(int)
+        {
+            IteratorBack Copy = *this;
+            Temp = Temp->pPrev;
+            return Copy;
+        }
+        bool operator==(const IteratorBack &obj) const
+        {
+            return this->Temp == obj.Temp;
+        }
+
+        bool operator!=(const IteratorBack &obj) const
+        {
+            return this->Temp != obj.Temp;
+        }
+        T &operator*()
+        {
+            return Temp->Data;
+        }
+
+        const T &operator*() const
+        {
+            return Temp->Data;
+        }
+
+        friend class List;
+    };
+
     // Element *Head;
     // Element *Tail;
     size_t size;
@@ -79,7 +162,7 @@ public:
         return *this;
     }
 
-    List(const std::initializer_list<T> &list)
+    List(const std::initializer_list<T> &list) : List()
     {
 
         for (T Data : list)
@@ -101,10 +184,10 @@ public:
             size++;
             return;
         }
-        Element *new_element = new Element(Data);
-        new_element->pNext = Head;
-        Head->pPrev = new_element;
-        Head = new_element;
+        // Element *new_element = new Element(Data);
+        // new_element->pNext = Head;
+        // Head->pPrev = new_element;
+        Head = Head->pPrev = new Element(Data, Head);
         size++;
     }
 
@@ -116,10 +199,10 @@ public:
             size++;
             return;
         }
-        Element *new_element = new Element(Data);
-        new_element->pPrev = Tail;
-        Tail->pNext = new_element;
-        Tail = new_element;
+        // Element *new_element = new Element(Data);
+        // new_element->pPrev = Tail;
+        // Tail->pNext = new_element;
+        Tail = Tail->pNext = new Element(Data, nullptr, Tail);
         size++;
     }
 
@@ -167,7 +250,6 @@ public:
         {
             return push_back(data);
         }
-        Element *newElement = new Element(data);
         Element *Temp;
         if (index < size / 2)
         {
@@ -187,10 +269,12 @@ public:
             }
             size++;
         }
-        newElement->pNext = Temp;
-        newElement->pPrev = Temp->pPrev;
-        Temp->pPrev->pNext = newElement;
-        Temp->pPrev = newElement;
+        // Element *newElement = new Element(data);
+        // newElement->pNext = Temp;
+        // newElement->pPrev = Temp->pPrev;
+        // Temp->pPrev->pNext = newElement;
+        // Temp->pPrev = newElement;
+        Temp->pPrev = Temp->pPrev->pNext = new Element(data, Temp, Temp->pPrev);
     }
 
     void erase(int index)
@@ -232,21 +316,74 @@ public:
         delete Temp;
     }
 
+    T &operator[](int index)
+    {
+        Element *Temp;
+        if (index < size / 2)
+        {
+            Temp = Head;
+            for (int i = 0; i < index; ++i)
+            {
+                Temp = Temp->pNext;
+            }
+        }
+        else
+        {
+            Temp = Tail;
+            for (int i = 0; i < size - 1 - index; ++i)
+            {
+                Temp = Temp->pPrev;
+            }
+        }
+        return Temp->Data;
+    }
+    const T &operator[](int index) const
+    {
+        Element *Temp;
+        if (index < size / 2)
+        {
+            Temp = Head;
+            for (int i = 0; i < index; ++i)
+            {
+                Temp = Temp->pNext;
+            }
+        }
+        else
+        {
+            Temp = Tail;
+            for (int i = 0; i < size - 1 - index; ++i)
+            {
+                Temp = Temp->pPrev;
+            }
+        }
+        return Temp->Data;
+    }
+
+    Iterator begin()
+    {
+        return Head;
+    }
+    Iterator end()
+    {
+        return nullptr;
+    }
+
     void print() const
     {
-        for (Element *Temp = Head; Temp; Temp = Temp->pNext)
+        for (Iterator Temp = Head; Temp.Temp; ++Temp)
         {
-            cout << Temp->Data << endl;
+            cout << *Temp << endl;
         }
         cout << "Size: " << size << endl;
     }
 
     void print_reverse() const
     {
-        for (Element *Temp = Tail; Temp; Temp = Temp->pPrev)
+        for (IteratorBack Temp = Tail; Temp.Temp; ++Temp)
         {
-            cout << Temp->Data << endl;
+            cout << *Temp << endl;
         }
+        cout << "Size: " << size << endl;
     }
 };
 
@@ -256,15 +393,23 @@ int main()
 {
     srand(time(0));
 #ifdef BASE_CHECK
-    List<string> list;
-    list.push_back("H");
-    list.push_back("E");
-    list.push_back("L");
-    list.push_back("L");
-    list.push_back("O");
-    // list.insert(5, "World");
-    list.erase(1);
-    list.print();
+    // List<string> list;
+    // list.push_back("H");
+    // list.push_back("E");
+    // list.push_back("L");
+    // list.push_back("L");
+    // list.push_back("O");
+    // // list.insert(5, "World");
+    // // list.erase(1);
+    // list.insert(2, "T");
+    // list.print();
+    List<string> list = {"H", "E", "L", "L", "O", "O"};
+    for (string i : list)
+    {
+        cout << i << endl;
+    }
+    // list.print_reverse();
+
     // cout << "New: "<< endl;
     // list.pop_front();
     // list.print();
