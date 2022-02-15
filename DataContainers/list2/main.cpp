@@ -39,7 +39,7 @@ public:
     {
         while (Head)
         {
-            pop_front();
+            pop_back();
         }
         cout << "Ldesctructor\t" << endl;
     }
@@ -84,7 +84,7 @@ public:
 
         for (T Data : list)
         {
-            push_front(Data);
+            push_back(Data);
         }
         // for (const T *it = list.begin(); it != list.end(); ++it)
         // {
@@ -117,7 +117,6 @@ public:
             return;
         }
         Element *new_element = new Element(Data);
-        new_element->pNext = nullptr;
         new_element->pPrev = Tail;
         Tail->pNext = new_element;
         Tail = new_element;
@@ -133,26 +132,23 @@ public:
 
         if (Head == Tail)
         {
+            delete Head;
             Head = Tail = nullptr;
             return;
         }
-        Element *Erased = Head;
         Head = Head->pNext;
+        delete Head->pPrev;
         Head->pPrev = nullptr;
-        delete Erased;
         size--;
     }
 
     void pop_back()
     {
-        if (Head == nullptr && Tail == nullptr)
-        {
-            return;
-        }
-        Element *Erased = Tail;
+        if (Head == Tail)
+            return pop_front();
         Tail = Tail->pPrev;
+        delete Tail->pNext;
         Tail->pNext = nullptr;
-        delete Erased;
         size--;
     }
 
@@ -167,41 +163,34 @@ public:
         {
             return push_front(data);
         }
-
         if (index == size)
         {
             return push_back(data);
         }
-
-        double newsize = size / 2;
         Element *newElement = new Element(data);
-        Element *outTemp = nullptr;
-        if (index <= newsize || size < 5)
+        Element *Temp;
+        if (index < size / 2)
         {
-            Element *Temp = Head;
+            Temp = Head;
             for (int i = 0; i < index; ++i)
             {
                 Temp = Temp->pNext;
             }
-            outTemp = Temp;
             size++;
-            cout << "Front" << endl;
         }
-        else if (index >= newsize)
+        else
         {
-            Element *Temp = Tail;
-            for (int i = 0; i < index; ++i)
+            Temp = Tail;
+            for (int i = 0; i < size - 1 - index; ++i)
             {
                 Temp = Temp->pPrev;
             }
-            outTemp = Temp;
             size++;
-            cout << "Back" << endl;
         }
-        newElement->pNext = outTemp;
-        newElement->pPrev = outTemp->pPrev;
-        outTemp->pPrev->pNext = newElement;
-        outTemp->pPrev = newElement;
+        newElement->pNext = Temp;
+        newElement->pPrev = Temp->pPrev;
+        Temp->pPrev->pNext = newElement;
+        Temp->pPrev = newElement;
     }
 
     void erase(int index)
@@ -213,41 +202,34 @@ public:
         }
         if (Head == nullptr && Tail == nullptr || index == 0)
         {
-            return pop_front(data);
+            return pop_front();
         }
         if (index == size)
         {
-            return pop_back(data);
+            return pop_back();
         }
-        double newsize = size / 2;
-        Element *outTemp = nullptr;
-        if (index <= newsize || size < 5)
+        Element *Temp;
+        if (index < size / 2)
         {
-            Element *Temp = Head;
+            Temp = Head;
             for (int i = 0; i < index; ++i)
             {
                 Temp = Temp->pNext;
             }
-            outTemp = Temp;
             size--;
-            cout << "Front" << endl;
         }
-        else if (index >= newsize)
+        else
         {
-            Element *Temp = Tail;
-            for (int i = 0; i < index; ++i)
+            Temp = Tail;
+            for (int i = 0; i < size - 1 - index; ++i)
             {
                 Temp = Temp->pPrev;
             }
-            outTemp = Temp;
             size--;
-            cout << "Back" << endl;
         }
-
-        Element *Erased = outTemp;
-        outTemp->pPrev->pNext = outTemp->pNext;
-        outTemp->pNext->pPrev = outTemp->pPrev;
-        delete Erased;
+        Temp->pPrev->pNext = Temp->pNext;
+        Temp->pNext->pPrev = Temp->pPrev;
+        delete Temp;
     }
 
     void print() const
@@ -268,16 +250,20 @@ public:
     }
 };
 
+#define BASE_CHECK
+
 int main()
 {
     srand(time(0));
+#ifdef BASE_CHECK
     List<string> list;
     list.push_back("H");
     list.push_back("E");
     list.push_back("L");
     list.push_back("L");
     list.push_back("O");
-    list.insert(5, "World");
+    // list.insert(5, "World");
+    list.erase(1);
     list.print();
     // cout << "New: "<< endl;
     // list.pop_front();
@@ -314,5 +300,6 @@ int main()
     // cin >> index;
     // list.erase(index);
     // list.print_reverse();
+#endif
     return 0;
 }
