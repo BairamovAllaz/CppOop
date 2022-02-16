@@ -25,6 +25,11 @@ class List
         friend class List;
     } * Head, *Tail;
 
+    // Element *Head;
+    // Element *Tail;
+    size_t size;
+
+public:
     class Iterator
     {
     private:
@@ -44,6 +49,20 @@ class List
             Temp = Temp->pNext;
             return Copy;
         }
+
+        Iterator operator--()
+        {
+            Temp = Temp->pPrev;
+            return *this;
+        }
+
+        Iterator operator--(int)
+        {
+            Element *Copy = *this;
+            Temp = Temp->pPrev;
+            return Copy;
+        }
+
         bool operator==(const Iterator &obj) const
         {
             return this->Temp == obj.Temp;
@@ -66,31 +85,46 @@ class List
         friend class List;
     };
 
-    class IteratorBack
+    class ReverseIterator
     {
     private:
         Element *Temp;
 
     public:
-        IteratorBack(Element *temp = nullptr) : Temp(temp) {}
-        ~IteratorBack() {}
-        IteratorBack &operator++()
+        ReverseIterator(Element *temp = nullptr) : Temp(temp) { cout << "Ritconstructor";}
+        ~ReverseIterator(){cout << "Ridesctructor";}
+
+        ReverseIterator &operator++()
         {
             Temp = Temp->pPrev;
             return *this;
         }
-        IteratorBack operator++(int)
+        ReverseIterator operator++(int)
         {
-            IteratorBack Copy = *this;
+            ReverseIterator Copy = *this;
             Temp = Temp->pPrev;
             return Copy;
         }
-        bool operator==(const IteratorBack &obj) const
+
+        ReverseIterator &operator--()
+        {
+            Temp = Temp->pNext;
+            return *this;
+        }
+
+        ReverseIterator operator--(int)
+        {
+            ReverseIterator Copy = *this;
+            Temp = Temp->pNext;
+            return Copy;
+        }
+
+        bool operator==(const ReverseIterator &obj) const
         {
             return this->Temp == obj.Temp;
         }
 
-        bool operator!=(const IteratorBack &obj) const
+        bool operator!=(const ReverseIterator &obj) const
         {
             return this->Temp != obj.Temp;
         }
@@ -104,14 +138,13 @@ class List
             return Temp->Data;
         }
 
+        operator bool()const { 
+            return Temp;
+        }
+
         friend class List;
     };
 
-    // Element *Head;
-    // Element *Tail;
-    size_t size;
-
-public:
     List()
     {
         Head = Tail = nullptr;
@@ -164,7 +197,6 @@ public:
 
     List(const std::initializer_list<T> &list) : List()
     {
-
         for (T Data : list)
         {
             push_back(Data);
@@ -368,6 +400,14 @@ public:
         return nullptr;
     }
 
+    ReverseIterator rbegin()
+    {
+        return Tail;
+    }
+    ReverseIterator rend()
+    {
+        return nullptr;
+    }
     void print() const
     {
         for (Iterator Temp = Head; Temp.Temp; ++Temp)
@@ -379,7 +419,12 @@ public:
 
     void print_reverse() const
     {
-        for (IteratorBack Temp = Tail; Temp.Temp; ++Temp)
+        // for (IteratorBack Temp = Tail; Temp.Temp; ++Temp)
+        // {
+        //     cout << *Temp << endl;
+        // }
+
+        for (Iterator Temp = Tail; Temp.Temp; --Temp)
         {
             cout << *Temp << endl;
         }
@@ -387,11 +432,20 @@ public:
     }
 };
 
-#define BASE_CHECK
-
+// #define BASE_CHECK
+#define RANGE_BASED_FOR
 int main()
 {
     srand(time(0));
+#ifdef RANGE_BASED_FOR
+    List<int> list = {2, 4, 5, 6};
+    for (List<int>::ReverseIterator it = list.rbegin(); it; ++it)
+    {
+        std::cout << *it << endl;
+    }
+
+#endif
+
 #ifdef BASE_CHECK
     // List<string> list;
     // list.push_back("H");
@@ -399,17 +453,16 @@ int main()
     // list.push_back("L");
     // list.push_back("L");
     // list.push_back("O");
-    // // list.insert(5, "World");
+    // list.insert(5, "World");
     // // list.erase(1);
     // list.insert(2, "T");
     // list.print();
     List<string> list = {"H", "E", "L", "L", "O", "O"};
-    for (string i : list)
-    {
-        cout << i << endl;
-    }
-    // list.print_reverse();
-
+    // for (string i : list)
+    // {
+    //     cout << i << endl;
+    // }
+    list.print_reverse();
     // cout << "New: "<< endl;
     // list.pop_front();
     // list.print();
