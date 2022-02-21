@@ -36,8 +36,8 @@ public:
         Element *Temp;
 
     public:
-        Base_Iterator(Element *Temp = nullptr) : Temp(Temp) { cout << "Baseconstructro\t" << this << endl; }
-        ~Base_Iterator() { cout << "BaseDesctructor\t" << this << endl; }
+        Base_Iterator(Element *Temp = nullptr) : Temp(Temp) {}
+        ~Base_Iterator() {}
 
         bool operator==(const Base_Iterator &obj) const
         {
@@ -68,8 +68,8 @@ public:
     class Iterator : public Base_Iterator
     {
     public:
-        Iterator(Element *temp = nullptr) : Base_Iterator(temp) { cout << "Iterator\t" << this << endl; }
-        ~Iterator() { cout << "Desctructor\t" << this << endl; }
+        Iterator(Element *temp = nullptr) : Base_Iterator(temp) {}
+        ~Iterator() {}
 
         Iterator &operator++()
         {
@@ -102,8 +102,8 @@ public:
     class ReverseIterator : public Base_Iterator
     {
     public:
-        ReverseIterator(Element *temp = nullptr) : Base_Iterator(temp) { cout << "Ritconstructor"; }
-        ~ReverseIterator() { cout << "Ridesctructor"; }
+        ReverseIterator(Element *temp = nullptr) : Base_Iterator(temp) { }
+        ~ReverseIterator() { }
 
         ReverseIterator &operator++()
         {
@@ -530,13 +530,15 @@ int main()
     // list.erase(index);
     // list.print_reverse();
 #endif
-
-    List<string> list = {"Allaz", "Bairamov"};
-
-    for (string i : list)
+    // List<string> list = {"Allaz", "Bairamov"};
+    // for (string i : list)
+    // {
+    //     cout << i << endl;
+    // }
+    List<double> list = {0.4,5.4,3.4,5.7};
+    for (double i : list)
     {
         cout << i << endl;
     }
-
     return 0;
 }
