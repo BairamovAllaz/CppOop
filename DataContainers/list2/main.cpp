@@ -456,7 +456,7 @@ public:
 };
 
 // #define BASE_CHECK
-#define RANGE_BASED_FOR
+// #define RANGE_BASED_FOR
 int main()
 {
     srand(time(0));
@@ -466,13 +466,17 @@ int main()
     // {
     //     std::cout << *it << endl;
     // }
-    for (List<int>::ConstIterator it = list.cbegin(); it != nullptr; ++it)
+    // for (List<int>::ConstIterator it = list.cbegin(); it != nullptr; ++it)
+    // {
+    //     std::cout << *it << endl;
+    // }
+
+    for (int i : list)
     {
-        std::cout << *it << endl;
+        cout << i << endl;
     }
 
 #endif
-
 #ifdef BASE_CHECK
     // List<string> list;
     // list.push_back("H");
@@ -526,5 +530,13 @@ int main()
     // list.erase(index);
     // list.print_reverse();
 #endif
+
+    List<string> list = {"Allaz", "Bairamov"};
+
+    for (string i : list)
+    {
+        cout << i << endl;
+    }
+
     return 0;
 }
