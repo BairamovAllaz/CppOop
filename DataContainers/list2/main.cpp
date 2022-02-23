@@ -1,8 +1,7 @@
 #include "stdrfx.h"
 #include "List.h"
 #include "ListMethods.cpp"
-#include "ElementMethods.cpp"
-#include "Iterators.cpp"
+
 
 // #define BASE_CHECK
 // #define RANGE_BASED_FOR
@@ -84,17 +83,26 @@ int main()
     // {
     //     cout << i << endl;
     // }
-    List<double> list = {0.4, 5.4, 3.4, 5.7};
-    for (double i : list)
-    {
+    // List<double> list = {0.4, 5.4, 3.4, 5.7};
+    // for (double i : list)
+    // {
+    //     cout << i << endl;
+    // }
+
+    // list.push_back(100.5);
+    // for (double i : list)
+    // {
+    //     cout << i << endl;
+    // }
+
+    List<string> list = {"Have","a","nice","day"}; 
+
+    for(string i:list) { 
         cout << i << endl;
     }
 
-    list.push_back(100.5);
-    for (double i : list)
-    {
-        cout << i << endl;
-    }
+    
+
 
     return 0;
 }
