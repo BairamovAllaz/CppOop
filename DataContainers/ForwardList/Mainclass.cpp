@@ -373,6 +373,77 @@ public:
     };
 
     friend Iterator;
+<<<<<<< Updated upstream
+=======
+    friend class Stack;
+};
+
+class Stack : public ForwardList
+{
+// private:
+//     Element *Top = nullptr;
+//     unsigned int size = 0;
+
+public:
+    // Stack()
+    // {
+    //     Top = nullptr;
+    //     this->size = 0;
+    //     cout << "Sconstructor\t" << this << endl;
+    // }
+    // ~Stack()
+    // {
+    //     while (Top)
+    //     {
+    //         pop();
+    //     }
+    //     cout << "Sdesctructor\t" << this << endl;
+    // }
+
+    void push(int data)
+    {
+        ForwardList::push_front(data);
+        // Element *new_element = new Element(data);
+        // new_element->pNext = Top;
+        // new_element->Data = data;
+        // Top = new_element;
+    }
+
+    void pop()
+    {
+        if (ForwardList::Head == nullptr)
+        {
+            cout << "Stack is underflow" << endl;
+            return;
+        }
+        ForwardList::pop_front();
+        // Element *Erases = Top;
+        // Top = Top->pNext;
+        // delete Erases;
+        size--;
+    }
+
+    int peek()
+    {
+        return ForwardList::Head->Data;
+    }
+
+    void print() const
+    {
+        // Element *Temp = Top;
+        if (ForwardList::Head == nullptr)
+        {
+            cout << "Stack is empty!" << endl;
+            return;
+        }
+        ForwardList::print();
+        // while (Temp)
+        // {
+        //     cout << "Data : " << Temp->Data << endl;
+        //     Temp = Temp->pNext;
+        // }
+    }
+>>>>>>> Stashed changes
 };
 
 // std::ostream &operator<<(std::ostream &in, const Element &obj)
