@@ -4,6 +4,8 @@
 using namespace std;
 
 template <typename T>
+class Queue;
+template <typename T>
 class List
 {
     class Element
@@ -23,6 +25,7 @@ class List
             cout << "Edesctructor\t" << this << endl;
         }
         friend class List;
+        friend class Queue<T>;
     } * Head, *Tail;
 
     // Element *Head;
@@ -453,10 +456,71 @@ public:
         }
         cout << "Size: " << size << endl;
     }
+
+    friend class Queue<T>;
+};
+
+template <typename T>
+class Queue : private List<T>
+{
+
+public:
+    Queue(const std::initializer_list<T> &list) : List<T>(list) {}
+
+    void enqueue(T data)
+    {
+        List<T>::push_back(data);
+    }
+
+    void dequeue()
+    {
+        List<T>::pop_front();
+    }
+
+    bool isEmpty()
+    {
+        if (List<T>::size == 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    int size()
+    {
+        return List<T>::size;
+    }
+
+    void print() const
+    {
+        List<T>::print();
+    }
+
+    typename List<T>::Iterator begin()
+    {
+        return List<T>::Head;
+    }
+
+    typename List<T>::Iterator end()
+    {
+        return nullptr;
+    }
+
+    typename List<T>::ConstIterator begin()const
+    {
+        return List<T>::Head;
+    }
+
+    typename List<T>::ConstIterator end() const
+    {
+        return nullptr;
+    }
 };
 
 // #define BASE_CHECK
-#define RANGE_BASED_FOR
+// #define RANGE_BASED_FOR
+#define QUEUE
 int main()
 {
     srand(time(0));
@@ -526,5 +590,22 @@ int main()
     // list.erase(index);
     // list.print_reverse();
 #endif
+
+#ifdef QUEUE
+
+    Queue<int> q = {1, 3, 4, 5, 6, 7, 8, 1, 2, 4, 5, 6};
+    // q.enqueue(100);
+    // for (int i = 0; i < 5; ++i)
+    // {
+    //     q.enqueue(i + 1);
+    // }
+
+    for (int i : q)
+    {
+        cout << i << endl;
+    }
+    // q.print();
+
+#endif // DEBUG
     return 0;
 }

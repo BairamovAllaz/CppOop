@@ -23,6 +23,7 @@ public:
     }
     friend class ForwardList;
     friend class Iterator;
+    friend class Stack;
     // friend std::ostream &operator<<(std::ostream &in, const Element &obj);
 };
 int Element::count = 0;
@@ -373,18 +374,19 @@ public:
     };
 
     friend Iterator;
-<<<<<<< Updated upstream
-=======
     friend class Stack;
 };
 
-class Stack : public ForwardList
+class Stack : private ForwardList
 {
-// private:
-//     Element *Top = nullptr;
-//     unsigned int size = 0;
+    // private:
+    //     Element *Top = nullptr;
+    //     unsigned int size = 0;
 
 public:
+    Stack(const initializer_list<int> &list) : ForwardList(list) {}
+    Stack(int size) : ForwardList(size) {}
+
     // Stack()
     // {
     //     Top = nullptr;
@@ -443,7 +445,16 @@ public:
         //     Temp = Temp->pNext;
         // }
     }
->>>>>>> Stashed changes
+
+    Iterator begin()
+    {
+        return ForwardList::Head;
+    }
+
+    Iterator end()
+    {
+        return nullptr;
+    }
 };
 
 // std::ostream &operator<<(std::ostream &in, const Element &obj)
@@ -561,12 +572,18 @@ int main()
     }
 #endif // DEBUG
 
-    ForwardList list = {666, 3, 4, 888, 7, 5, 999};
-    for (int c : list)
-    {
-        cout << c << endl;
-    }
+    // ForwardList list = {666, 3, 4, 888, 7, 5, 999};
+    // for (int c : list)
+    // {
+    //     cout << c << endl;
+    // }
 
+    Stack s = {1, 3, 4};
+    // s.print();
+    for (int i : s)
+    {
+        cout << i << endl;
+    }
     // ForwardList list = {666, 333, 4, 888, 7, 5, 999};
     // ForwardList list2 = std::move(list);
     // cout << "List: " << endl;
@@ -574,7 +591,6 @@ int main()
     // {
     //     cout << c << endl;
     // }
-
 
     // cout << "List2: " << endl;
 
