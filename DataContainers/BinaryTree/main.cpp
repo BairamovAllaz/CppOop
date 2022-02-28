@@ -77,36 +77,89 @@ public:
 
     /// https://www.algolist.net/Data_structures/Binary_search_tree/Removal
     // not done
-    //  void erase(Element *Temp,int Data) {
-    //      if(Temp == nullptr) {
-    //          return;
-    //      }
 
-    //     if(Data < Temp->data) {
-    //         //left if
-    //         if(Temp->data == Data) {
-    //             //delete element
-    //             if(Temp->left == nullptr && Temp->right == nullptr) {
-    //                 delete Temp;
-    //              }else if(Temp->right != nullptr) {
+    void DeleteElement(Element *Temp, int Data)
+    {
+        if (Temp == nullptr)
+        {
+            return;
+        }
 
-    //              }
-    //         }else{
-    //                 erase(Temp->left,Data);
-    //         }
-    //     }else{
-    //         //right
-    //         if(Temp->data == Data) {
-    //             //delete element
-    //              if(Temp->right == nullptr && Temp->left == nullptr) {
-    //                 delete Temp;
-    //              }
-    //         }else{
-    //                 erase(Temp->right,Data);
-    //         }
-    //     }
+        if (Data < Temp->data)
+        {
+            if (Temp->data == Data && Temp->right != nullptr && Temp->left != nullptr)
+            {
+                delete Temp;
+            }
+            else
+            {
+                DeleteElement(Temp->left, Data);
+            }
+        }
+        else
+        {
+            if (Temp->data == Data && Temp->right != nullptr && Temp->left != nullptr)
+            {
+                delete Temp;
+            }
+            else
+            {
+                DeleteElement(Temp->right, Data);
+            }
+        }
+    }
+    void erase(Element *Temp, int Data)
+    {
+        if (Temp == nullptr)
+        {
+            return;
+        }
 
-    // }
+        if (Data < Temp->data)
+        {
+            // left if
+            if (Temp->data == Data)
+            {
+                // delete element
+                if (Temp->left == nullptr && Temp->right == nullptr)
+                {
+                    delete Temp;
+                }
+                else if (Temp->right != nullptr && Temp->left != nullptr)
+                {
+                    int dataC = minValue();
+                    Temp->data = dataC;
+                    DeleteElement(root, dataC);
+                }
+            }
+            else
+            {
+                erase(Temp->left, Data);
+            }
+        }
+        else
+        {
+            // right
+            if (Temp->data == Data)
+            {
+                // delete element
+                if (Temp->right == nullptr && Temp->left == nullptr)
+                {
+                    delete Temp;
+                }
+                else if (Temp->right != nullptr && Temp->left != nullptr)
+                {
+                    int dataC = minValue();
+                    Temp->data = dataC;
+                    DeleteElement(root, dataC);
+                }
+            }
+            else
+            {
+                erase(Temp->right, Data);
+            }
+        }
+    }
 };
 
 void Tree::insert(int data, Element *Root)
@@ -163,6 +216,18 @@ void Tree::print(Element *Root) const
     cout << endl;
 }
 
+// void Tree::print(Element *Root,int i = 0) const
+// {
+//     if (Root == nullptr)
+//     {
+//         return;
+//     }
+
+//     print(Root->left,1);
+//     cout << Root->data << endl;
+//     print(Root->right,2);
+// }
+
 void Tree::print() const
 {
     Element *Temp = this->root;
@@ -210,11 +275,13 @@ int Tree::minValue()
 
 int Tree::size(Element *Root)
 {
-    if (Root == nullptr)
-    {
-        return 0;
-    }
-    return size(Root->left) + 1 + size(Root->right);
+    // if (Root == nullptr)
+    // {
+    //     return 0;
+    // }
+    // return size(Root->left) + 1 + size(Root->right);
+    
+    return Root == nullptr ? 0 : size(Root->left) + 1 + size(Root->right);
 }
 
 int Tree::size()
@@ -246,7 +313,6 @@ double Tree::avg()
 int main()
 {
     srand(time(0));
-
 #ifdef CHECK
     Tree tree = {2, 3, 5, 5, 7, 8};
     // for (int i = 0; i < n; i++)
@@ -255,12 +321,12 @@ int main()
     // }
 
     // tree.insert(44,tree.getRoot());
-    //  tree.insert(33,tree.getRoot());
-    //   tree.insert(22,tree.getRoot());
-    //   tree.insert(99,tree.getRoot());
-    //     tree.insert(21,tree.getRoot());
-    //      tree.insert(88,tree.getRoot());
-    //       tree.insert(35,tree.getRoot());
+    // tree.insert(33,tree.getRoot());
+    // tree.insert(22,tree.getRoot());
+    // tree.insert(99,tree.getRoot());
+    // tree.insert(21,tree.getRoot());
+    // tree.insert(88,tree.getRoot());
+    // tree.insert(35,tree.getRoot());
 
     // tree.insert(40);
     // tree.insert(25);
@@ -276,6 +342,12 @@ int main()
     cout << "Size of binary: " << tree.size() << endl;
     cout << "Sum of element: " << tree.sum() << endl;
     cout << "Average of numbers: " << tree.avg() << endl;
+
+    tree.erase(tree.getRoot(), 5);
+
+    cout << endl;
+
+    tree.print();
 
 #endif // DEBUG
 
