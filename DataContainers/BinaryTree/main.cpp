@@ -48,6 +48,7 @@ public:
         deleteNode(Temp->left);
         deleteNode(Temp->right);
         delete Temp;
+        delete root;
     }
     ~Tree()
     {
@@ -241,9 +242,12 @@ double Tree::avg()
     return sum(root) / size(root);
 }
 
+#define CHECK
 int main()
 {
     srand(time(0));
+
+#ifdef CHECK
     Tree tree = {2, 3, 5, 5, 7, 8};
     // for (int i = 0; i < n; i++)
     // {
@@ -272,6 +276,8 @@ int main()
     cout << "Size of binary: " << tree.size() << endl;
     cout << "Sum of element: " << tree.sum() << endl;
     cout << "Average of numbers: " << tree.avg() << endl;
+
+#endif // DEBUG
 
     return 0;
 }
