@@ -26,6 +26,7 @@ class Tree
     int minValue(Element *Root);
     int size(Element *Root);
     int sum(Element *Root);
+    void erase(Element *Temp, int Data);
 
 public:
     Element *getRoot()
@@ -37,6 +38,37 @@ public:
     {
         root = nullptr;
         cout << "Bconstructor\t" << endl;
+    }
+
+    void otherinsert(Element *Temp)
+    {
+        if (Temp == nullptr)
+        {
+            return;
+        }
+        otherinsert(Temp->left);
+        insert(Temp->data);
+        otherinsert(Temp->right);
+    }
+
+    explicit Tree(Tree &other)
+    {
+        if (&other == this)
+        {
+            return;
+        }
+        otherinsert(other.getRoot());
+        cout << "Copy constructor" << endl;
+    }
+
+    Tree &operator=(Tree &other)
+    {
+        if (&other == this)
+        {
+            return *this;
+        }
+        otherinsert(other.getRoot());
+        cout << "Copy Assigment" << endl;
     }
 
     Tree(const std::initializer_list<int> &datas) : Tree()
@@ -70,75 +102,70 @@ public:
     int size();
     int sum();
     double avg();
-    /// https://www.algolist.net/Data_structures/Binary_search_tree/Removal
-    // not done
-    // void DeleteElement(Element *Temp, int Data)
-    // {
-    //     if (Temp == nullptr)
-    //     {
-    //         return;
-    //     }
-
-    //     if (Data < Temp->data)
-    //     {
-    //         if (Temp->data == Data && Temp->right != nullptr && Temp->left != nullptr)
-    //         {
-    //             delete Temp;
-    //         }
-    //         else
-    //         {
-    //             DeleteElement(Temp->left, Data);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         if (Temp->data == Data && Temp->right != nullptr && Temp->left != nullptr)
-    //         {
-    //             delete Temp;
-    //         }
-    //         else
-    //         {
-    //             DeleteElement(Temp->right, Data);
-    //         }
-    //     }
-    // }
-    void erase(Element *Temp, int Data)
-    {
-        if (Temp == nullptr)
-        {
-            return;
-        }
-
-        if (Temp->data == Data)
-        {
-            if (Temp->left == nullptr && Temp->right == nullptr)
-            {
-                delete Temp;
-                return;
-            }
-            else if (Temp->left != nullptr && Temp->right != nullptr && Temp->data > root->data)
-            {                                // (Temp->data > root->data)To check is right or left side
-                int minElement = minValue(); // find max value
-                Temp->data = minElement;
-                erase(Temp->left, minElement); // to delete element
-            }
-            // else if(Temp->right != nullptr && Temp->left == nullptr) {
-            //     Element *Erased = Temp;
-            //     Temp = Temp->right;
-            //     delete Erased;
-            // }
-        }
-        else if (Data < Temp->data)
-        {
-            erase(Temp->left, Data);
-        }
-        else
-        {
-            erase(Temp->right, Data);
-        }
-    }
+    void erase(int Data);
     friend class UniqueTree;
 };
+
+/// https://www.algolist.net/Data_structures/Binary_search_tree/Removal
+void Tree::erase(Element *Temp, int Data)
+{
+    if (Temp == nullptr)
+    {
+        return;
+    }
+
+    if (Temp->data == Data)
+    {
+        if (Temp->left == nullptr && Temp->right == nullptr) // NO CHILD
+        {
+            delete Temp;
+            return;
+        }
+        /// left side
+        //TWO CHILD IN LEFT SIDE
+        else if (Temp->left != nullptr && Temp->right != nullptr && Temp->data > root->data)
+        {                                           // (Temp->data > root->data)To check is right or left side
+            int minElement = minValue(Temp->right); // find min value
+            Temp->data = minElement;
+            erase(Temp->right, minElement); // to delete element
+        }
+
+        // right side
+        //TWO CHILD IN RIGHT SIDE
+        else if (Temp->left != nullptr && Temp->right != nullptr && Temp->data < root->data)
+        {                                          // (Temp->data > root->data)To check is right or left side
+            int maxElement = maxValue(Temp->left); // find max value
+            Temp->data = maxElement;
+            erase(Temp->right, maxElement); // to delete element
+        }
+        //ONE RIGHT CHILD
+        else if (Temp->right != nullptr && Temp->left == nullptr)
+        {
+            // TODO:DONE DELETE ONE CHILD
+            /// one child is not done in progress...
+        }
+        //ONE LEFT CHILD
+        else if (Temp->left != nullptr && Temp->right == nullptr)
+        {
+            // TODO:DONE DELETE ONE CHILD
+            /// one child is not done in progress...
+        }
+    }
+    else if (Data < Temp->data)
+    {
+        erase(Temp->left, Data);
+    }
+    else
+    {
+        erase(Temp->right, Data);
+    }
+}
+
+void Tree::erase(int Data)
+{
+    Element *Temp = this->root;
+    erase(Temp, Data);
+}
 
 void Tree::insert(int data, Element *Root)
 {
@@ -334,7 +361,13 @@ int main()
 {
     srand(time(0));
 #ifdef CHECK
-    Tree tree = {50, 25, 80, 16, 32, 64, 85};
+    Tree tree;
+    tree.insert(99);
+    tree.insert(33);
+    tree.insert(23);
+    tree.insert(65);
+    Tree tree2(tree);
+    tree2.print();
     // for (int i = 0; i < n; i++)
     // {
     //     tree.insert(rand() % 20 + 1, tree.getRoot());
@@ -353,21 +386,19 @@ int main()
     // tree.insert(50);
     // tree.insert(30);
 
-    tree.print();
+    cout << endl;
+
+    // cout << "Max value: " << tree2.maxValue() << endl;
+    // cout << "Min value : " << tree2.minValue() << endl;
+    // cout << "Size of binary: " << tree2.size() << endl;
+    // cout << "Sum of element: " << tree2.sum() << endl;
+    // cout << "Average of numbers: " << tree2.avg() << endl;
+
+    // tree2.erase(tree.getRoot(), 70);
 
     cout << endl;
 
-    cout << "Max value: " << tree.maxValue() << endl;
-    cout << "Min value : " << tree.minValue() << endl;
-    cout << "Size of binary: " << tree.size() << endl;
-    cout << "Sum of element: " << tree.sum() << endl;
-    cout << "Average of numbers: " << tree.avg() << endl;
-
-    tree.erase(tree.getRoot(), 80);
-
-    cout << endl;
-
-    tree.print();
+    // tree2.print();
 
 #endif // DEBUG
 
