@@ -17,7 +17,15 @@ class Tree
         ~Element() { cout << "Edesctructor\t" << endl; }
 
         friend class Tree;
+        friend class UniqueTree;
     } * root;
+
+    void insert(int data, Element *Root);
+    void print(Element *Root) const;
+    int maxValue(Element *Root);
+    int minValue(Element *Root);
+    int size(Element *Root);
+    int sum(Element *Root);
 
 public:
     Element *getRoot()
@@ -48,66 +56,52 @@ public:
         deleteNode(Temp->left);
         deleteNode(Temp->right);
         delete Temp;
-        delete root;
+        // delete root; error!
     }
     ~Tree()
     {
         deleteNode(root);
         cout << "Bdesctructor\t" << endl;
     }
-
-    void insert(int data, Element *Root);
     void insert(int data);
-
-    void print(Element *Root) const;
     void print() const;
-
-    int maxValue(Element *Root);
     int maxValue();
-
-    int minValue(Element *Root);
     int minValue();
-    int size(Element *Root);
     int size();
-
-    int sum(Element *Root);
     int sum();
-
     double avg();
-
     /// https://www.algolist.net/Data_structures/Binary_search_tree/Removal
     // not done
+    // void DeleteElement(Element *Temp, int Data)
+    // {
+    //     if (Temp == nullptr)
+    //     {
+    //         return;
+    //     }
 
-    void DeleteElement(Element *Temp, int Data)
-    {
-        if (Temp == nullptr)
-        {
-            return;
-        }
-
-        if (Data < Temp->data)
-        {
-            if (Temp->data == Data && Temp->right != nullptr && Temp->left != nullptr)
-            {
-                delete Temp;
-            }
-            else
-            {
-                DeleteElement(Temp->left, Data);
-            }
-        }
-        else
-        {
-            if (Temp->data == Data && Temp->right != nullptr && Temp->left != nullptr)
-            {
-                delete Temp;
-            }
-            else
-            {
-                DeleteElement(Temp->right, Data);
-            }
-        }
-    }
+    //     if (Data < Temp->data)
+    //     {
+    //         if (Temp->data == Data && Temp->right != nullptr && Temp->left != nullptr)
+    //         {
+    //             delete Temp;
+    //         }
+    //         else
+    //         {
+    //             DeleteElement(Temp->left, Data);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (Temp->data == Data && Temp->right != nullptr && Temp->left != nullptr)
+    //         {
+    //             delete Temp;
+    //         }
+    //         else
+    //         {
+    //             DeleteElement(Temp->right, Data);
+    //         }
+    //     }
+    // }
     void erase(Element *Temp, int Data)
     {
         if (Temp == nullptr)
@@ -115,51 +109,35 @@ public:
             return;
         }
 
-        if (Data < Temp->data)
+        if (Temp->data == Data)
         {
-            // left if
-            if (Temp->data == Data)
+            if (Temp->left == nullptr && Temp->right == nullptr)
             {
-                // delete element
-                if (Temp->left == nullptr && Temp->right == nullptr)
-                {
-                    delete Temp;
-                }
-                else if (Temp->right != nullptr && Temp->left != nullptr)
-                {
-                    int dataC = minValue();
-                    Temp->data = dataC;
-                    DeleteElement(root, dataC);
-                }
+                delete Temp;
+                return;
             }
-            else
-            {
-                erase(Temp->left, Data);
+            else if (Temp->left != nullptr && Temp->right != nullptr && Temp->data > root->data)
+            {                                // (Temp->data > root->data)To check is right or left side
+                int minElement = minValue(); // find max value
+                Temp->data = minElement;
+                erase(Temp->left, minElement); // to delete element
             }
+            // else if(Temp->right != nullptr && Temp->left == nullptr) {
+            //     Element *Erased = Temp;
+            //     Temp = Temp->right;
+            //     delete Erased;
+            // }
+        }
+        else if (Data < Temp->data)
+        {
+            erase(Temp->left, Data);
         }
         else
         {
-            // right
-            if (Temp->data == Data)
-            {
-                // delete element
-                if (Temp->right == nullptr && Temp->left == nullptr)
-                {
-                    delete Temp;
-                }
-                else if (Temp->right != nullptr && Temp->left != nullptr)
-                {
-                    int dataC = minValue();
-                    Temp->data = dataC;
-                    DeleteElement(root, dataC);
-                }
-            }
-            else
-            {
-                erase(Temp->right, Data);
-            }
+            erase(Temp->right, Data);
         }
     }
+    friend class UniqueTree;
 };
 
 void Tree::insert(int data, Element *Root)
@@ -216,18 +194,6 @@ void Tree::print(Element *Root) const
     cout << endl;
 }
 
-// void Tree::print(Element *Root,int i = 0) const
-// {
-//     if (Root == nullptr)
-//     {
-//         return;
-//     }
-
-//     print(Root->left,1);
-//     cout << Root->data << endl;
-//     print(Root->right,2);
-// }
-
 void Tree::print() const
 {
     Element *Temp = this->root;
@@ -280,7 +246,7 @@ int Tree::size(Element *Root)
     //     return 0;
     // }
     // return size(Root->left) + 1 + size(Root->right);
-    
+
     return Root == nullptr ? 0 : size(Root->left) + 1 + size(Root->right);
 }
 
@@ -309,12 +275,66 @@ double Tree::avg()
     return sum(root) / size(root);
 }
 
+class UniqueTree : public Tree
+{
+private:
+    void insert(int data, Element *Root);
+
+public:
+    UniqueTree(const std::initializer_list<int> &datas) : Tree::Tree(datas) {}
+
+    void insert(int data);
+};
+
+//! unique tree
+
+void UniqueTree::insert(int data, Element *Root)
+{
+    if (this->root == nullptr)
+    {
+        this->root = new Element(data);
+        return;
+    }
+    if (Root == nullptr)
+    {
+        return;
+    }
+    if (data < Root->data)
+    {
+        if (Root->left == nullptr)
+        {
+            Root->left = new Element(data);
+        }
+        else
+        {
+            insert(data, Root->left);
+        }
+    }
+    else
+    {
+        if (Root->right == nullptr)
+        {
+            Root->right = new Element(data);
+        }
+        else
+        {
+            insert(data, Root->right);
+        }
+    }
+}
+
+void UniqueTree::insert(int data)
+{
+    Element *Temp = this->root;
+    insert(data, Temp);
+}
+
 #define CHECK
 int main()
 {
     srand(time(0));
 #ifdef CHECK
-    Tree tree = {2, 3, 5, 5, 7, 8};
+    Tree tree = {50, 25, 80, 16, 32, 64, 85};
     // for (int i = 0; i < n; i++)
     // {
     //     tree.insert(rand() % 20 + 1, tree.getRoot());
@@ -343,7 +363,7 @@ int main()
     cout << "Sum of element: " << tree.sum() << endl;
     cout << "Average of numbers: " << tree.avg() << endl;
 
-    tree.erase(tree.getRoot(), 5);
+    tree.erase(tree.getRoot(), 80);
 
     cout << endl;
 
