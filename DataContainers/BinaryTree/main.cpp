@@ -51,7 +51,7 @@ public:
         copy(Temp->right);
     }
 
-    Tree(Tree &other)
+    Tree(Tree &other) : Tree()
     {
         if (&other == this)
         {
