@@ -40,24 +40,24 @@ public:
         cout << "Bconstructor\t" << endl;
     }
 
-    void otherinsert(Element *Temp)
+    void copy(Element *Temp)
     {
         if (Temp == nullptr)
         {
             return;
         }
-        otherinsert(Temp->left);
         insert(Temp->data);
-        otherinsert(Temp->right);
+        copy(Temp->left);
+        copy(Temp->right);
     }
 
-    explicit Tree(Tree &other)
+    Tree(Tree &other)
     {
         if (&other == this)
         {
             return;
         }
-        otherinsert(other.getRoot());
+        copy(other.getRoot());
         cout << "Copy constructor" << endl;
     }
 
@@ -67,8 +67,9 @@ public:
         {
             return *this;
         }
-        otherinsert(other.getRoot());
+        copy(other.getRoot());
         cout << "Copy Assigment" << endl;
+        return *this;
     }
 
     Tree(const std::initializer_list<int> &datas) : Tree()
@@ -122,7 +123,7 @@ void Tree::erase(Element *Temp, int Data)
             return;
         }
         /// left side
-        //TWO CHILD IN LEFT SIDE
+        // TWO CHILD IN LEFT SIDE
         else if (Temp->left != nullptr && Temp->right != nullptr && Temp->data > root->data)
         {                                           // (Temp->data > root->data)To check is right or left side
             int minElement = minValue(Temp->right); // find min value
@@ -131,20 +132,20 @@ void Tree::erase(Element *Temp, int Data)
         }
 
         // right side
-        //TWO CHILD IN RIGHT SIDE
+        // TWO CHILD IN RIGHT SIDE
         else if (Temp->left != nullptr && Temp->right != nullptr && Temp->data < root->data)
         {                                          // (Temp->data > root->data)To check is right or left side
             int maxElement = maxValue(Temp->left); // find max value
             Temp->data = maxElement;
             erase(Temp->right, maxElement); // to delete element
         }
-        //ONE RIGHT CHILD
+        // ONE RIGHT CHILD
         else if (Temp->right != nullptr && Temp->left == nullptr)
         {
             // TODO:DONE DELETE ONE CHILD
             /// one child is not done in progress...
         }
-        //ONE LEFT CHILD
+        // ONE LEFT CHILD
         else if (Temp->left != nullptr && Temp->right == nullptr)
         {
             // TODO:DONE DELETE ONE CHILD
@@ -299,7 +300,7 @@ int Tree::sum()
 
 double Tree::avg()
 {
-    return sum(root) / size(root);
+    return (double)sum(root) / size(root);
 }
 
 class UniqueTree : public Tree
@@ -309,7 +310,7 @@ private:
 
 public:
     UniqueTree(const std::initializer_list<int> &datas) : Tree::Tree(datas) {}
-
+    UniqueTree() : Tree() {}
     void insert(int data);
 };
 
@@ -337,7 +338,7 @@ void UniqueTree::insert(int data, Element *Root)
             insert(data, Root->left);
         }
     }
-    else
+    else if (data > Root->data)
     {
         if (Root->right == nullptr)
         {
@@ -356,18 +357,18 @@ void UniqueTree::insert(int data)
     insert(data, Temp);
 }
 
-#define CHECK
+// #define CHECK
 int main()
 {
     srand(time(0));
 #ifdef CHECK
-    Tree tree;
+    UniqueTree tree;
     tree.insert(99);
     tree.insert(33);
     tree.insert(23);
     tree.insert(65);
-    Tree tree2(tree);
-    tree2.print();
+    tree.insert(65);
+    tree.print();
     // for (int i = 0; i < n; i++)
     // {
     //     tree.insert(rand() % 20 + 1, tree.getRoot());
@@ -401,6 +402,11 @@ int main()
     // tree2.print();
 
 #endif // DEBUG
+
+    Tree tree = {3, 5, 6, 34, 56, 7, 5, 44};
+    tree.print();
+    Tree tree2 = tree;
+    tree2.print();
 
     return 0;
 }
