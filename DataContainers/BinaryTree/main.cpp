@@ -115,16 +115,26 @@ void Tree::erase(Element *Temp, int Data)
         return;
     }
 
-    if (Temp->data == Data)
+    if (Temp->left != nullptr && Temp->left->left == nullptr && Temp->left->right == nullptr && Temp->left->data == Data) // NO CHILD
     {
-        if (Temp->left == nullptr && Temp->right == nullptr) // NO CHILD
-        {
-            delete Temp;
-            return;
-        }
+        Element *Erased = Temp->left;
+        Temp->left = Erased->left;
+        delete Erased;
+        return;
+    }
+    else if (Temp->right != nullptr && Temp->right->left == nullptr && Temp->right->right == nullptr && Temp->right->data == Data)
+    {
+        Element *Erased = Temp->right;
+        Temp->right = Erased->right;
+        delete Erased;
+        return;
+    }
+
+    if (Temp->left->data == 0 && Temp->right->data)
+    {
         /// left side
         // TWO CHILD IN LEFT SIDE
-        else if (Temp->left != nullptr && Temp->right != nullptr && Temp->data > root->data)
+        if (Temp->left != nullptr && Temp->right != nullptr && Temp->data > root->data)
         {                                           // (Temp->data > root->data)To check is right or left side
             int minElement = minValue(Temp->right); // find min value
             Temp->data = minElement;
@@ -403,10 +413,19 @@ int main()
 
 #endif // DEBUG
 
-    Tree tree = {3, 5, 6, 34, 56, 7, 5, 44};
+    Tree tree = {50, 25, 80, 16, 32, 64, 85};
     tree.print();
-    Tree tree2 = tree;
-    tree2.print();
+    cout << "Deleted: " << endl;
+    cout << endl;
+    tree.erase(16);
+    tree.erase(32);
+    tree.erase(85);
+    tree.erase(64);
+    // tree.erase(85);
+    // tree.erase(64);
+    cout << endl;
+
+    tree.print();
 
     return 0;
 }
