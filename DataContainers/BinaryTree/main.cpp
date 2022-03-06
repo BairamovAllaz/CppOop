@@ -15,7 +15,10 @@ class Tree
     public:
         Element(int data, Element *left = nullptr, Element *right = nullptr) : data(data), left(left), right(right) { cout << "Econstructor\t" << this << endl; }
         ~Element() { cout << "Edesctructor\t" << endl; }
-
+        bool isLeaf() const
+        {
+            return left == right;
+        }
         friend class Tree;
         friend class UniqueTree;
     } * root;
@@ -134,7 +137,7 @@ public:
     friend class UniqueTree;
 };
 
-/// https://www.algolist.net/Data_structures/Binary_search_tree/Removal\
+/// https://www.algolist.net/Data_structures/Binary_search_tree/Removal
 
 void Tree::erase(Element *&Temp, int Data)
 {
@@ -146,32 +149,50 @@ void Tree::erase(Element *&Temp, int Data)
     erase(Temp->right, Data);
     if (Temp->data == Data)
     {
-        if (Temp->left == nullptr && Temp->right == nullptr)
-        {
+        // if (Temp->left == nullptr && Temp->right == nullptr)
+        // {
+        //     delete Temp;
+        //     Temp = nullptr;
+        //     cout << "first" << endl;
+        // }
+        // else if (Temp->left == nullptr)
+        // {
+        //     Element *Erased = Temp->right;
+        //     delete Temp;
+        //     Temp = Erased;
+        //     cout << "second" << endl;
+        // }
+        // else if (Temp->right == nullptr)
+        // {
+        //     Element *Erased = Temp->left;
+        //     delete Temp;
+        //     Temp = Erased;
+        //     cout << "four" << endl;
+        // }
+        // else
+        // {
+        //     int minElement = minValue(Temp->right); // find min value
+        //     Temp->data = minElement;
+        //     erase(Temp->right, minElement); // to delete element
+        //     cout << "last" << endl;
+        // }
+        if (Temp->isLeaf())
+        { // Temp->left == nullptr && Temp->right == nullptr
             delete Temp;
             Temp = nullptr;
-            cout << "first" << endl;
-        }
-        else if (Temp->left == nullptr)
-        {
-            Element *Erased = Temp->right;
-            delete Temp;
-            Temp = Erased;
-            cout << "second" << endl;
-        }
-        else if (Temp->right == nullptr)
-        {
-            Element *Erased = Temp->left;
-            delete Temp;
-            Temp = Erased;
-            cout << "four" << endl;
         }
         else
         {
-            int minElement = minValue(Temp->right); // find min value
-            Temp->data = minElement;
-            erase(Temp->right, minElement); // to delete element
-            cout << "last" << endl;
+            if (size(Temp->left) > size(Temp->right))
+            {
+                Temp->data = maxValue(Temp->left);
+                erase(Temp->left,maxValue(Temp->left));
+            }
+            else
+            {
+                Temp->data = minValue(Temp->right);
+                erase(Temp->right, minValue(Temp->right));
+            }
         }
     }
 }
@@ -418,6 +439,7 @@ int main()
 #endif // DEBUG
 
     Tree tree = {50, 25, 80, 16, 32, 64, 85};
+    tree.print();
     // tree.print();
     // cout << "Deleted: " << endl;
     // cout << endl;
@@ -432,9 +454,14 @@ int main()
     // tree.erase(85);
     // tree.erase(64);
     // cout << endl;
+    int element;
+    cout << "Enter element to delete: "; cin >> element;
+    tree.erase(element);
+    cout << "Deleted" << endl;
 
-    Tree tree2;
-    tree2 = std::move(tree);
-    tree2.print();
+    tree.print();
+    // Tree tree2;
+    // tree2 = std::move(tree);
+    // tree2.print();
     return 0;
 }
