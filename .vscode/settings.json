@@ -47,7 +47,11 @@
     "vector": "cpp",
     "array": "cpp",
     "list": "cpp",
-    "forward_list": "cpp"
+    "forward_list": "cpp",
+    "set": "cpp",
+    "deque": "cpp",
+    "map": "cpp",
+    "xtree": "cpp"
   },
   "C_Cpp.errorSquiggles": "Disabled"
 }
