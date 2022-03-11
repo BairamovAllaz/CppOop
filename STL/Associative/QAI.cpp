@@ -3,65 +3,118 @@
 #include <cstring>
 #include <list>
 using namespace std;
-
-// void printResult(const int &node)
-// {
-//     cout << node.first << " " << node.second << endl;
-// }
-
+//this file only working in c++ version 17!
 int main()
 {
+
     std::map<int, std::list<double>> QAI;
-    int key, law;
+    int operation;
 
-    cout << "Enter a car number: ";
-    cin >> key;
-    cout << "Enter law: ";
-    cin >> law;
+    cout << "1: Insert Element , 2: Print Element, 3: Print singl element , 4 : Print diapozan, 5: print from index , 6 : Exit ";
+    cin >> operation;
 
-    // QAI.insert_or_assign(275, 635);
-    QAI.insert({3, {3, 5}});
-    QAI.insert({7, {6, 8}});
-    QAI.insert({9, {3, 2}});
-
-    for (const auto &node : QAI)
+    while (operation > 6)
     {
-        cout << node.first;
-        for (int i : node.second)
-        {
-            cout << i << endl;
-        }
-        cout << endl;
-    }
-    // std::list<double> it = {2,3,5,6};
-    // QAI.insert_or_assign(7,it);
-
-    std::map<int, std::list<double>>::iterator it = QAI.find(4);
-
-    cout << endl;
-
-    it->second.push_back(99);
-    for (const auto &i : it->second)
-    {
-        cout << i << endl;
+        cout << "Enter operation again" << endl;
     }
 
-    QAI.insert_or_assign(4, it->second);
-
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-
-    cout << endl;
-    for (const auto &node : QAI)
+    while (true)
     {
-        cout << node.first;
-        for (const auto &i : node.second)
+        if (operation == 6)
         {
-            cout << i << endl;
+            break;
         }
-        cout << endl;
+
+        switch (operation)
+        {
+        case 1:
+        {
+            int key, law;
+            cout << "Enter a car number: ";
+            cin >> key;
+            cout << "Enter law: ";
+            cin >> law;
+            std::map<int, std::list<double>>::iterator it = QAI.find(key);
+            std::list<double> mylist; 
+            if (it != QAI.end())
+            {
+                it->second.push_back(law);
+                mylist = it->second;
+            }
+            else
+            {
+                std::list<double> l;
+                l.push_back(law);
+                mylist = l;
+            }
+            
+            QAI.insert_or_assign(key, mylist);
+            
+            cout << endl;
+            break;
+        }
+        case 2:
+        {
+            for (const auto &node : QAI)
+            {
+                cout << node.first << " --- ";
+                for (double i : node.second)
+                {
+                    cout << i << " ";
+                }
+                cout << endl;
+            }
+            break;
+        }
+        case 3: { 
+            int key;
+            cout << "Enter a car number to print: "; cin >> key;
+            std::map<int, std::list<double>>::iterator it = QAI.find(key);
+            
+            if(it != QAI.end()) {
+                cout << it->first << " ----- ";
+                for(double i : it->second){
+                    cout << i << " ";
+                }
+                cout << endl;
+            }else{
+                cout << "There not car in this number" << endl;   
+            }
+            break;
+        }
+        
+        case 4: { 
+            int a,b;
+            cout << "Enter start element: ";cin >> a;
+            cout << "Enter end element: "; cin >> b; 
+            
+            for(std::map<int,std::list<double>>::iterator it = QAI.lower_bound(a);it != QAI.upper_bound(b);++it){
+                cout << it->first << " ----- ";
+                for(double i : it->second){ 
+                    cout << i << " ";    
+                }
+                cout << endl;
+            }
+        }
+        
+        case 5: { 
+            int index;
+            cout << "Enter a index: ";cin >> index; 
+            
+            for(std::map<int,std::list<double>>::iterator it = QAI.lower_bound(index);it != QAI.end();++it){
+                cout << it->first << " ----- ";
+                for(double i : it->second){ 
+                    cout << i << " ";    
+                }
+                cout << endl;
+            }
+        }
+        default:
+            break;
+        }
+
+        cout << "1: Insert Element , 2: Print Element, 3: Print singl element , 4 : Print diapozan, 5: print from index , 6 : Exit ";
+        cin >> operation;
     }
 
     return 0;
