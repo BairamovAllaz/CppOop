@@ -1,0 +1,4 @@
+a55ab:	4 Mystreet;
+a77km:	1 streetofrule, 2 nicestreet;
+y3:	1 errstreet;
+a5436: 2 fromfile, 3 test;

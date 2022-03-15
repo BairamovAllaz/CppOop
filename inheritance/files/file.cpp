@@ -18,8 +18,6 @@ int main()
 #endif // DEBUG
 
     #ifdef READ_FROM_FILE
-    
-        cerr << "Fuck you is true" << endl;
 
     // const int SIZE = 256;
     // char buffer[SIZE] = {};
