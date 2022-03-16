@@ -177,15 +177,13 @@ void load(std::map<std::string, std::list<Crime>> &base, const std::string &file
                     base[licence_plate].push_back(Crime(id, place));
                     buffer = strtok(NULL, ";");
                 }
-                delete[] dup;
             }
             else
             {
                 char *dup = strdup(crimes.c_str());
                 id = stoi(strtok(dup, " "));
                 place = strtok(dup, ";");
-                base[licence_plate].push_back(Crime(id, crimes));
-                delete[] dup;
+                base[licence_plate].push_back(Crime(id, place));
             }
         }
         fin.close();
