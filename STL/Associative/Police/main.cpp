@@ -30,6 +30,7 @@ int main()
     // std::map<std::string, std::list<Crime>> base;
     // std::string place = "est";
     // load(base, place);
+    //
     print(base);
     // add(base);
     cout << endl;
