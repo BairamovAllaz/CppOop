@@ -36,6 +36,15 @@ public:
     //     return times;
     // }
 
+    bool operator==(const Crime &other) const
+    {
+        return this->id == other.id && this->place == other.place;
+    }
+    bool operator!=(const Crime &other) const
+    {
+        return this->id != other.id && this->place != other.place;
+    }
+
     Crime(size_t id, std::string place) : id(id), place(place)
     {
         // time_t start = time(NULL);
