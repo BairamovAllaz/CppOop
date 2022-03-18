@@ -32,21 +32,21 @@ int main()
     // load(base, place);
     //
     print(base);
-    // add(base);
+    add(base);
     cout << endl;
     cout << endl;
     cout << endl;
-    int lawnumber;
-    cout << "Enter a law number: ";
-    cin >> lawnumber;
-    printLaws(base, lawnumber);
+    // int lawnumber;
+    // cout << "Enter a law number: ";
+    // cin >> lawnumber;
+    // printLaws(base, lawnumber);
 
     // std::string filename;
     // cout << "Enter a filename: " << endl;
     // cin.ignore();
     // std::getline(cin, filename);
     // printToFile(filename, base);
-    // print(base);
+    print(base);
     // cout << endl;
 
     // printDiapoz(base);

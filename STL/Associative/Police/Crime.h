@@ -18,7 +18,7 @@ class Crime
 private:
     size_t id;
     std::string place;
-    // char *times;
+    std::string times;
 
 public:
     size_t get_id() const
@@ -31,10 +31,10 @@ public:
         return place;
     }
 
-    // const char *getTimes() const
-    // {
-    //     return times;
-    // }
+    std::string getTimes() const
+    {
+        return times;
+    }
 
     bool operator==(const Crime &other) const
     {
@@ -47,19 +47,27 @@ public:
 
     Crime(size_t id, std::string place) : id(id), place(place)
     {
-        // time_t start = time(NULL);
-        // this->times = ctime(&start);
-    }
-    ~Crime() {}
-};
+        //! working!!
+        // time_t curr_time;
+        // curr_time = time(NULL);
+        // tm *tm_gmt = localtime(&curr_time);
+        // this->times = std::to_string(tm_gmt->tm_hour)  + ":" + std::to_string(tm_gmt->tm_min) + ":" + std::to_string(tm_gmt->tm_sec) << ":" + tm_gmts;
+        time_t rawtime;
+        struct tm *timeinfo;
 
-std::ostream &operator<<(std::ostream &os, const Crime &obj)
-{
-    // return os << crimes.at(obj.get_id()) << ", " << obj.get_place() << ", " << obj.getTimes();
-    return os << crimes.at(obj.get_id()) << ", " << obj.get_place();
-}
-std::ofstream &operator<<(std::ofstream &ofs, const Crime &obj)
-{
-    ofs << obj.get_id() << " " << obj.get_place();
-    return ofs;
-}
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+        this->times = std::to_string(timeinfo->tm_hour) + ":" + std::to_string(timeinfo->tm_min) + ":" + std::to_string(timeinfo->tm_sec) + ":" << std::to_string(timeinfo->tm_year);
+        ~Crime() {}
+    };
+
+    std::ostream &operator<<(std::ostream &os, const Crime &obj)
+    {
+        // return os << crimes.at(obj.get_id()) << ", " << obj.get_place() << ", " << obj.getTimes();
+        return os << crimes.at(obj.get_id()) << ", " << obj.get_place() << ", " << obj.getTimes();
+    }
+    std::ofstream &operator<<(std::ofstream &ofs, const Crime &obj)
+    {
+        ofs << obj.get_id() << " " << obj.get_place();
+        return ofs;
+    }
