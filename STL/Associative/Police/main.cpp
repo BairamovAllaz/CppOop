@@ -10,6 +10,9 @@
 #include <chrono>
 #include "Crime.h"
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 void print(const std::map<std::string, std::list<Crime>> &base);
 void printLaws(const std::map<std::string, std::list<Crime>> &base, size_t lawNum);
 void printToFile(std::string &filename, const std::map<std::string, std::list<Crime>> &base);
@@ -27,44 +30,90 @@ int main()
         {"a55ab", {Crime(4, "Mystreet")}},
         {"a52", {Crime(1, "Mystreet2")}},
     };
-    // std::map<std::string, std::list<Crime>> base;
-    // std::string place = "est";
-    // load(base, place);
-    //
-    print(base);
-    add(base);
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    // int lawnumber;
-    // cout << "Enter a law number: ";
-    // cin >> lawnumber;
-    // printLaws(base, lawnumber);
+    int operation;
+    cout << "1: Insert Element , 2: Print Element, 3: Print By Laws , 4 : Print diapozan,5: erase , 6 : write to file , 7  : Read from file! , 8 : exit ";
+    cin >> operation;
+    while (operation > 8)
+    {
+        cout << "Enter operation again" << endl;
+        cin >> operation;
+    }
 
-    // std::string filename;
-    // cout << "Enter a filename: " << endl;
-    // cin.ignore();
-    // std::getline(cin, filename);
-    // printToFile(filename, base);
-    print(base);
-    // cout << endl;
+    while (true)
+    {
+        if (operation == 8)
+        {
+            break;
+        }
 
-    // printDiapoz(base);
-    // print(base);
+        switch (operation)
+        {
+        case 1:
+        {
+            add(base);
+            break;
+        }
+        case 2:
+        {
+            print(base);
+            break;
+        }
+        case 3:
+        {
+            int lawnumber;
+            cout << "Enter a law number: ";
+            cin >> lawnumber;
+            printLaws(base, lawnumber);
+            break;
+        }
+        case 4:
+        {
+            printDiapoz(base);
+        }
+
+        case 5:
+        {
+            erase(base);
+            break;
+        }
+        case 6:
+        {
+            std::string filename;
+            cout << "Enter a filename: " << endl;
+            cin.ignore();
+            std::getline(cin, filename);
+            printToFile(filename, base);
+            break;
+        }
+        case 7:
+        {
+            std::string place;
+            cout << "Enter a filename:";
+            std::getline(cin, place);
+            load(base, place);
+            break;
+        }
+
+        default:
+            break;
+        }
+        cout << "1: Insert Element , 2: Print Element, 3: Print By Laws , 4 : Print diapozan,5: erase , 6 : write to file , 7  : Read from file! , 8 : exit ";
+        cin >> operation;
+    }
+
     return 0;
 }
 
 void print(const std::map<std::string, std::list<Crime>> &base)
 {
-
     for (std::map<std::string, std::list<Crime>>::const_iterator it = base.begin(); it != base.end(); ++it)
     {
-        cout << it->first + ":\n";
+        std::cout << it->first + ":\n";
         for (std::list<Crime>::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
         {
-            cout << "\t" << *jt << ";" << endl;
+            std::cout << "\t" << *jt << ";" << endl;
         }
-        cout << "\n------------------------------------\n";
+        std::cout << "\n------------------------------------\n";
     }
 }
 
@@ -76,10 +125,10 @@ void printLaws(const std::map<std::string, std::list<Crime>> &base, size_t lawNu
                                                                 { return crime.get_id() == lawNum; });
         if (findLaw != it->second.end())
         {
-            cout << it->first + ":\n";
+            std::cout << it->first + ":\n";
             for (std::list<Crime>::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
             {
-                cout << "\t" << *jt << ";" << endl;
+                std::cout << "\t" << *jt << ";" << std::endl;
             }
         }
     }
@@ -122,21 +171,21 @@ void printToFile(std::string &filename, const std::map<std::string, std::list<Cr
 void printDiapoz(const std::map<std::string, std::list<Crime>> &base)
 {
     std::string a, b;
-    cout << "Enter start element: ";
-    cin.ignore();
+    std::cout << "Enter start element: ";
+    std::cin.ignore();
     std::getline(cin, a);
-    cout << "Enter end element: ";
+    std::cout << "Enter end element: ";
     cin.ignore();
     std::getline(cin, b);
 
     for (std::map<std::string, std::list<Crime>>::const_iterator it = base.lower_bound(a); it != base.upper_bound(b); ++it)
     {
-        cout << it->first + ":/n";
+        std::cout << it->first + ":/n";
         for (std::list<Crime>::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
         {
-            cout << "\t" << *jt << ";" << endl;
+            std::cout << "\t" << *jt << ";" << endl;
         }
-        cout << endl;
+        std::cout << endl;
     }
 }
 
@@ -145,13 +194,13 @@ void add(std::map<std::string, std::list<Crime>> &base)
     int id;
     std::string licence_place;
     std::string place;
-    cout << "Enter number car : ";
+    std::cout << "Enter number car : ";
     cin.clear();
     cin.ignore();
     std::getline(cin, licence_place);
-    cout << "Enter nomer law ";
+    std::cout << "Enter nomer law ";
     cin >> id;
-    cout << "Enter place: ";
+    std::cout << "Enter place: ";
     cin.clear();
     cin.ignore();
     std::getline(cin, place);
@@ -161,7 +210,7 @@ void add(std::map<std::string, std::list<Crime>> &base)
 void erase(std::map<std::string, std::list<Crime>> &base)
 {
     std::string key;
-    cout << "Enter a car number to delete: ";
+    std::cout << "Enter a car number to delete: ";
     cin.clear();
     cin.ignore();
     std::getline(cin, key);

@@ -4,7 +4,7 @@
 #include <map>
 #include <ctime>
 #include <fstream>
-
+using namespace std;
 const std::map<size_t, std::string> crimes = {
     {1, "проезд на красный"},
     {2, "привышение скорости"},
@@ -47,27 +47,28 @@ public:
 
     Crime(size_t id, std::string place) : id(id), place(place)
     {
-        //! working!!
-        // time_t curr_time;
-        // curr_time = time(NULL);
-        // tm *tm_gmt = localtime(&curr_time);
-        // this->times = std::to_string(tm_gmt->tm_hour)  + ":" + std::to_string(tm_gmt->tm_min) + ":" + std::to_string(tm_gmt->tm_sec) << ":" + tm_gmts;
+        // https://en.cppreference.com/w/cpp/chrono/c/localtime
+        // https://en.cppreference.com/w/cpp/chrono/c/tm
         time_t rawtime;
         struct tm *timeinfo;
-
         time(&rawtime);
         timeinfo = localtime(&rawtime);
-        this->times = std::to_string(timeinfo->tm_hour) + ":" + std::to_string(timeinfo->tm_min) + ":" + std::to_string(timeinfo->tm_sec) + ":" << std::to_string(timeinfo->tm_year);
-        ~Crime() {}
-    };
+        this->times = std::to_string(timeinfo->tm_hour) +
+        ":" + std::to_string(timeinfo->tm_min) +
+        ":" + std::to_string(timeinfo->tm_sec) +
+        "-" + std::to_string(timeinfo->tm_mday) +
+        "-" + std::to_string(timeinfo->tm_mon + 1) +
+        "-" + std::to_string(timeinfo->tm_year);
+    }
+    ~Crime() {}
+};
 
-    std::ostream &operator<<(std::ostream &os, const Crime &obj)
-    {
-        // return os << crimes.at(obj.get_id()) << ", " << obj.get_place() << ", " << obj.getTimes();
-        return os << crimes.at(obj.get_id()) << ", " << obj.get_place() << ", " << obj.getTimes();
-    }
-    std::ofstream &operator<<(std::ofstream &ofs, const Crime &obj)
-    {
-        ofs << obj.get_id() << " " << obj.get_place();
-        return ofs;
-    }
+std::ostream &operator<<(std::ostream &os, const Crime &obj)
+{
+    return os << crimes.at(obj.get_id()) << ", " << obj.get_place() << ", " << obj.getTimes();
+}
+std::ofstream &operator<<(std::ofstream &ofs, const Crime &obj)
+{
+    ofs << obj.get_id() << " " << obj.get_place() << " " << obj.getTimes();
+    return ofs;
+}
