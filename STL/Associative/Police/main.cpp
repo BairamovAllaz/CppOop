@@ -30,6 +30,8 @@ int main()
         {"a55ab", {Crime(4, "Mystreet")}},
         {"a52", {Crime(1, "Mystreet2")}},
     };
+    // std::map<std::string, std::list<Crime>> base;
+    
     int operation;
     cout << "1: Insert Element , 2: Print Element, 3: Print By Laws , 4 : Print diapozan,5: erase , 6 : write to file , 7  : Read from file! , 8 : exit ";
     cin >> operation;
@@ -89,8 +91,10 @@ int main()
         {
             std::string place;
             cout << "Enter a filename:";
+            cin.ignore();
             std::getline(cin, place);
             load(base, place);
+            print(base);
             break;
         }
 
@@ -234,10 +238,11 @@ void erase(std::map<std::string, std::list<Crime>> &base)
 //     {
 //         while (!fin.eof())
 //         {
-//             std::string licence_plate;
 //             int id;
+//             std::string licence_plate;
 //             std::string place;
 //             std::string crimes;
+//             std::string date;
 //             char *buffer;
 //             std::getline(fin, licence_plate, ':');
 //             std::getline(fin, crimes);
@@ -247,22 +252,24 @@ void erase(std::map<std::string, std::list<Crime>> &base)
 //             }
 //             if (crimes.find(',') != std::string::npos)
 //             {
-//             char *dup = strdup(crimes.c_str());
-//             buffer = strtok(dup, ";");
-//             while (buffer != NULL)
-//             {
-//                 id = stoi(strtok(buffer, " "));
-//                 place = strtok(NULL, ",");
-//                 base[licence_plate].push_back(Crime(id, place));
-//                 buffer = strtok(NULL, ";");
-//             }
+//                 char *dup = strdup(crimes.c_str());
+//                 buffer = strtok(dup, ";");
+//                 while (buffer != NULL)
+//                 {
+//                     id = stoi(strtok(buffer, " "));
+//                     place = strtok(buffer, " ");
+//                     date = strtok(NULL, ",");
+//                     base[licence_plate].push_back(Crime(id, place));
+//                     buffer = strtok(NULL, ";");
+//                 }
 //             }
 //             else
 //             {
-//             char *dup = strdup(crimes.c_str());
-//             id = stoi(strtok(dup, " "));
-//             place = strtok(dup, ";");
-//             base[licence_plate].push_back(Crime(id, place));
+//                 char *dup = strdup(crimes.c_str());
+//                 id = stoi(strtok(dup, " "));
+//                 place = strtok(dup, " ");
+//                 date = strtok(dup, ";");
+//                 base[licence_plate].push_back(Crime(id, place));
 //             }
 //         }
 //         fin.close();
