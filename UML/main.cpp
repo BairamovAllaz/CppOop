@@ -10,6 +10,7 @@ using namespace std::chrono_literals;
 #define MIN_ENGINE_CONSUMPTION 3
 #define MAX_ENGINE_CONSUMPTION 25
 #define FKEYBOARD 'f'
+#define delimetr "\t\t\t\t"
 class Tank
 {
 private:
@@ -39,12 +40,9 @@ public:
         }
     }
 
-    double give_fuel(double amount)
-    {
-        if (fuel_level - amount > 0)
-            fuel_level -= amount;
-        else
-            fuel_level = 0;
+    double give_fuel(double amount) {
+        if (fuel_level - amount > 0)fuel_level -= amount;
+        else fuel_level = 0;
         return fuel_level;
     }
 
@@ -174,23 +172,19 @@ public:
                     get_in();
                 break;
             case 'I':
-            case 'i':
-                if (engine.started())
-                {
+            case 'i': 
+                if (engine.started()) {
                     stop_engine();
                 }
-                else
-                {
+                else {
                     start_engine();
                 }
                 break;
             case FKEYBOARD:
-                if (driver_inside)
-                {
+                if (driver_inside) {
                     cout << "You need to out car !!" << endl;
                 }
-                else
-                {
+                else {
                     double fuel;
                     cout << "Enter fuel level: ";
                     cin >> fuel;
@@ -202,6 +196,7 @@ public:
                 get_out();
                 break;
             default:
+                std::cout << "Try another key(F I ESCAPE ENTER)" << std::endl;
                 break;
             }
         } while (key != Escape);
@@ -213,18 +208,23 @@ public:
         {
             system("CLS");
             cout << "Fuel level: " << tank.get_fuel_level() << " liters\n";
+            if (tank.get_fuel_level() <= 5 ) {
+                std::cout << delimetr <<  "LOW FUEL" << delimetr << std::endl;
+            }
             cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
-            std::this_thread::sleep_for(2s);
+            std::this_thread::sleep_for(1s);
         }
     }
+    
 
-    void engine_idle()
+    void engine_idle() 
     {
         while (engine.started() && tank.give_fuel(engine.get_consumption_per_second()))
         {
             std::this_thread::sleep_for(1s);
         }
     }
+
 
     void get_in()
     {
@@ -236,28 +236,25 @@ public:
     void get_out()
     {
         this->driver_inside = false;
-        if (control.panel_thread.joinable())
-        {
+        if (control.panel_thread.joinable()) {
             control.panel_thread.join();
         }
         system("CLS");
         cout << "You are out of your car!!!" << endl;
     }
 
-    void start_engine()
-    {
+
+    void start_engine() {
         if (driver_inside && tank.get_fuel_level())
         {
             engine.start();
             control.engine_idle_thread = std::thread(&Car::engine_idle, this);
         }
-    }
+    } 
 
-    void stop_engine()
-    {
+    void stop_engine() {
         engine.stop();
-        if (control.engine_idle_thread.joinable())
-            control.engine_idle_thread.join();
+        if (control.engine_idle_thread.joinable())control.engine_idle_thread.join();
     }
 
     void info() const
