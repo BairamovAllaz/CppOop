@@ -1,6 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <thread>
+#include <Windows.h>
 using namespace std;
 using namespace std::chrono_literals;
 #define KEY_UP 72
@@ -13,6 +14,10 @@ using namespace std::chrono_literals;
 #define MAX_ENGINE_CONSUMPTION 25
 #define FKEYBOARD 'f'
 #define delimetr "\t\t\t\t"
+#define MAX_SPEED_LOW_LIMIT 150
+#define MAX_SPEED_HIGH_LIMIT 300
+#define DEFAULT_MAX_SPEED 250
+
 class Tank
 {
 private:
@@ -132,29 +137,26 @@ private:
     Engine engine;
     Tank tank;
     bool driver_inside;
-    double speed;
-    size_t max_speed;
-    double acceleration;
+    int speed; 
+    const int MAX_SPEED;
+    int accelleration;
     struct Control
     {
         std::thread panel_thread;
         std::thread engine_idle_thread;
         std::thread free_wheeling_thread;
-        std::thread speed_idle_thread;
-        std::thread speed_panel_thread;
     } control;
 
 public:
     Car(
         double engine_consumption,
         unsigned int tank_volume,
-        size_t maxspeed,
-        double acceleration
-        ) : engine(engine_consumption), tank(tank_volume)
+        int maxspeed = DEFAULT_MAX_SPEED,
+        int accelleration = 10
+    ) : engine(engine_consumption), tank(tank_volume),MAX_SPEED(maxspeed >= MAX_SPEED_LOW_LIMIT && maxspeed <= MAX_SPEED_HIGH_LIMIT ? maxspeed : DEFAULT_MAX_SPEED)
     {
-        set_acceleration(acceleration);
-        set_max_speed(maxspeed);
         this->speed = 0;
+        this->accelleration = accelleration >= 5 && accelleration <= 25 ? accelleration : 12; 
         this->driver_inside = false;
         cout << "Your car is ready" << endl;
     }
@@ -163,32 +165,6 @@ public:
         cout << "Your car is over" << endl;
     }
 
-
-    void speed_panel() {
-        while (driver_inside)
-        { 
-            system("cls");
-            std::cout << "Speed: " << this->speed << endl; 
-            std::cout << "Acceleration of the car: " << this->acceleration << std::endl; 
-            std::this_thread::sleep_for(2s);
-        }
-    }
-
-    void up_Speed() {
-        while (this->speed < this->max_speed && tank.get_fuel_level())
-        {
-            this->speed += acceleration;
-            std::this_thread::sleep_for(1s);
-        }
-    }
-
-    void down_Speed() {
-        while (this->speed > 0 && tank.get_fuel_level())
-        {
-            this->speed -= acceleration;
-            std::this_thread::sleep_for(1s);
-        }
-    }
 
     void control_car()
     {
@@ -214,22 +190,22 @@ public:
                     start_engine();
                 }
                 break;
-            case KEY_UP:
-            case KEY_DOWN:
-                if (key == KEY_UP) {
-                    control.speed_idle_thread = std::thread(&Car::up_Speed, this);
-                    control.speed_panel_thread = std::thread(&Car::speed_panel, this);
-                    if (control.speed_idle_thread.joinable())control.speed_idle_thread.join();
+            case 'W':
+            case 'w':
+                if (driver_inside && engine.started()) {
+                    if (speed < MAX_SPEED) {
+                        speed += accelleration;
+                    }
+                    if (!control.free_wheeling_thread.joinable())control.free_wheeling_thread = std::thread(&Car::free_wheeling,this);
+                    std::this_thread::sleep_for(1s);
                 }
-                //not working yet!
-               /* else if (key == KEY_DOWN) {
-                    control.speed_idle_thread = std::thread(&Car::down_Speed, this);
-                    control.speed_panel_thread = std::thread(&Car::speed_panel, this);
-                    if (control.speed_idle_thread.joinable())control.speed_idle_thread.join();
-                }*/
-                if (this->speed == max_speed) {
-                   
-                    if (control.speed_panel_thread.joinable())control.speed_panel_thread.join();
+                break;
+            case 'S':
+            case 's':
+                if (driver_inside && speed > 0) {
+                    speed -= accelleration;
+                    if (speed < 0) speed = 0;
+                    std::this_thread::sleep_for(1s);
                 }
                 break;
             case FKEYBOARD:
@@ -259,16 +235,33 @@ public:
         while (driver_inside)
         {
             system("CLS");
+            cout << "Speed\t" << speed << "km/h\n";
             cout << "Fuel level: " << tank.get_fuel_level() << " liters\n";
             if (tank.get_fuel_level() <= 5) {
-                std::cout << delimetr << "LOW FUEL" << delimetr << std::endl;
+                HANDLE hconsole = GetStdHandle(STD_OUTPUT_HANDLE);
+                SetConsoleTextAttribute(hconsole, 0xCF);
+                std::cout << "LOW FUEL";
+                SetConsoleTextAttribute(hconsole, 0x07);
+
             }
+            cout << endl;
             cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
-            std::this_thread::sleep_for(2s);
+            std::this_thread::sleep_for(1s);
         }
     }
 
-
+    void free_wheeling()
+    {
+        while (speed > 0) 
+        {
+            speed--; 
+            if (speed < 0) {
+                speed = 0; 
+            }
+            std::this_thread::sleep_for(1s);
+        }
+    }
+ 
     void engine_idle()
     {
         while (engine.started() && tank.give_fuel(engine.get_consumption_per_second()))
@@ -277,37 +270,12 @@ public:
         }
     }
 
-    void set_speed(double speed) {
+    void set_speed(int speed) {
         this->speed = speed;
     }
 
     double get_speed()const {
         return speed;
-    }
-
-    void set_max_speed(size_t maxspeed) {
-        if (maxspeed < 100) {
-            maxspeed = 100;
-        }
-        else if (maxspeed > 180) {
-            maxspeed = 180;
-        }
-        this->max_speed = maxspeed;
-    }
-
-    size_t get_max_speed()const {
-        return max_speed;
-    }
-
-    void set_acceleration(double acceleration) {
-        if (acceleration >= 5) {
-            acceleration = 10;
-        }
-        this->acceleration = acceleration;
-    }
-
-    double get_acceleration()const {
-        return acceleration;
     }
 
     void get_in()
@@ -334,7 +302,7 @@ public:
             engine.start();
             control.engine_idle_thread = std::thread(&Car::engine_idle, this);
         }
-    } 
+    }
 
     void stop_engine() {
         engine.stop();
@@ -374,7 +342,7 @@ int main()
 #endif // DEBUG
 
 #ifdef CAR_CHECK
-    Car bmw(12,60,140,14);
+    Car bmw(12, 60);
     bmw.control_car();
 #endif
 
