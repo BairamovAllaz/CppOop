@@ -1,15 +1,10 @@
 #include <Windows.h>
 #include "resource.h"
-
-
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMgs, WPARAM wParam, LPARAM lParam);
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT nCmdShow) 
 {
 	//int Value_Message_Box = MessageBox(NULL, "HelloWINAPI", "INFO", MB_OKCANCEL | MB_ICONHAND);
-
 	DialogBoxParam(hInstance, MAKEINTRESOURCE(id_1), NULL, (DLGPROC)DlgProc, 0);
-
-
 	return 0;
 }
 
