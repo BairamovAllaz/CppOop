@@ -97,6 +97,16 @@ public:
         this->consumption_per_second = this->consumption * 3e-5;
     }
 
+    void correct_consumption(int speed)
+    {
+        if (speed >= 1 && speed <= 60 || speed >= 101 && speed <= 140)
+            consumption_per_second = .002;
+        if (speed >= 61 && speed <= 100)consumption_per_second = .0014;
+        if (speed >= 141 && speed <= 200)consumption_per_second = .0025;
+        if (speed >= 201 && speed <= 250)consumption_per_second = 0.003;
+        if (speed == 0)consumption_per_second = .0003;
+    }
+
     void start()
     {
         is_started = true;
@@ -235,6 +245,8 @@ public:
         while (driver_inside)
         {
             system("CLS");
+            for (int i = 0; i < speed / 3; i++)cout << "|";
+            cout << endl;
             cout << "Speed\t" << speed << "km/h\n";
             cout << "Fuel level: " << tank.get_fuel_level() << " liters\n";
             if (tank.get_fuel_level() <= 5) {
@@ -246,6 +258,7 @@ public:
             }
             cout << endl;
             cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
+            if (engine.started())cout << "Consumption per second: " << engine.get_consumption_per_second() << " l/s\n";
             std::this_thread::sleep_for(1s);
         }
     }
@@ -259,6 +272,7 @@ public:
                 speed = 0; 
             }
             std::this_thread::sleep_for(1s);
+            engine.correct_consumption(speed);
         }
     }
  
@@ -287,6 +301,11 @@ public:
 
     void get_out()
     {
+        if (speed > 0)
+        {
+            cout << "Выход из машины во время движения может навредить Вашему здоровью" << endl;
+            return;
+        }
         this->driver_inside = false;
         if (control.panel_thread.joinable()) {
             control.panel_thread.join();
