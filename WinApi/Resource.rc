@@ -59,13 +59,19 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,205,80,50,14
 END
 
-id_1 DIALOGEX 120, 120, 241, 121
-STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CAPTION | WS_SYSMENU
+ID_CLOGIN DIALOGEX 120, 120, 241, 121
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_CAPTION | WS_SYSMENU
 CAPTION "Hello WinAPI"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "OK",IDOK,83,13,50,108
-    PUSHBUTTON      "Cancel",IDCANCEL,184,13,50,108
+    PUSHBUTTON      "OK",IDOK,133,103,47,15
+    PUSHBUTTON      "E&xit",IDCANCEL,184,103,50,16
+    EDITTEXT        IDC_LOGIN1,6,30,227,14,ES_CENTER | ES_AUTOHSCROLL,WS_EX_ACCEPTFILES
+    LTEXT           "Login:",IDC_STATICLOGIN,6,18,36,8
+    EDITTEXT        IDC_LOGIN2,6,66,228,14,ES_CENTER | ES_AUTOHSCROLL
+    LTEXT           "Password:",IDC_STATICPASSWORD,6,54,34,8
+    PUSHBUTTON      "Copy",IDC_COPYBUTTON,6,102,50,14
+    PUSHBUTTON      "Set Title",IDC_SET_TITLE_BUTTON,60,102,50,14
 END
 
 
@@ -84,7 +90,7 @@ BEGIN
         BOTTOMMARGIN, 94
     END
 
-    id_1, DIALOG
+    ID_CLOGIN, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 234
@@ -104,10 +110,20 @@ BEGIN
     0
 END
 
-id_1 AFX_DIALOG_LAYOUT
+ID_CLOGIN AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "sunny_sun_cloud_weather_cloudy_icon_194237.ico"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
