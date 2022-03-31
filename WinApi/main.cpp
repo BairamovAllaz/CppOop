@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <cstring>
+#include <fstream>
 #include "resource.h"
 using namespace std;
 CHAR sz_login_invitation[] = "Enter login";
@@ -7,7 +8,6 @@ CHAR sz_password_invitation[] = "Enter password";
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMgs, WPARAM wParam, LPARAM lParam);
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT nCmdShow) 
 {
-	//int Value_Message_Box = MessageBox(NULL, "HelloWINAPI", "INFO", MB_OKCANCEL | MB_ICONHAND);
 	DialogBoxParam(hInstance, MAKEINTRESOURCE(ID_CLOGIN), NULL, (DLGPROC)DlgProc, 0);
 	return 0;
 }
@@ -72,6 +72,38 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				default:
 					break;
 				}
+			}
+			break;
+			case IDC_BUTTONSIGNIN: {
+				CONST INT SIZE = 256;
+				CHAR sz_buffer_login[SIZE] = {};
+				CHAR sz_buffer_password[SIZE] = {};
+				HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN1);
+				SendMessage(hLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_login);
+				HWND hPassword = GetDlgItem(hwnd, IDC_LOGIN2);
+				SendMessage(hPassword, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_password);
+				
+				std::ofstream database; 
+				database.open("database.txt");
+				if (database.is_open()) {
+					if (
+						std::strcmp(sz_buffer_login, sz_login_invitation) == 0
+						|| std::strcmp(sz_buffer_password, sz_password_invitation) == 0
+						|| sz_buffer_login[0] == '\0'
+						|| sz_buffer_password[0] == '\0'
+					) {
+						SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"INPUTS CANT BE EMPTY");
+						MessageBox(NULL, "INPUTS CANT BE EMPTY", "ERROR", MB_ICONERROR);
+					}
+					else {
+						database << sz_buffer_login << endl;
+						database << sz_buffer_password << endl;
+					}
+					database.close();
+				}
+				else {
+					MessageBox(NULL, "FILE NOT FOUNDED", "ERROR", MB_ICONERROR);
+				}			
 			}
 			break;
 			case IDC_COPYBUTTON: {

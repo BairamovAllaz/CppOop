@@ -10,8 +10,11 @@
 #define IDC_STATICLOGIN                 1006
 #define IDC_STATICPASSWORD              1007
 #define IDC_COPYBUTTON                  1008
-#define IDC_BUTTON2                     1009
 #define IDC_SET_TITLE_BUTTON            1009
+#define IDC_BUTTONLOGIN                 1011
+#define IDC_BUTTON2                     1012
+#define IDC_BUTTONSIGNIN                1012
+#define IDC_STATICTEXTALERT             1013
 
 // Next default values for new objects
 // 
@@ -19,7 +22,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        106
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -1,1 +1,2 @@
-﻿  WinApi.vcxproj -> C:\Users\ellez\OneDrive\Programing\CppOop\WinApi\x64\Debug\WinApi.exe
+﻿LINK : fatal error LNK1168: cannot open C:\Users\ellez\OneDrive\Programing\CppOop\WinApi\x64\Debug\WinApi.exe for writing
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1087,5): error MSB6006: "link.exe" exited with code 1168.
