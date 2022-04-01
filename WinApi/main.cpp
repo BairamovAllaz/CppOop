@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <cstring>
+#include <string>
 #include <fstream>
 #include "resource.h"
 using namespace std;
@@ -98,12 +99,56 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					else {
 						database << sz_buffer_login << endl;
 						database << sz_buffer_password << endl;
+						SendMessage(GetDlgItem(hwnd, IDC_LOGIN1), WM_SETTEXT, 0, (LPARAM)sz_login_invitation);
+						SendMessage(GetDlgItem(hwnd, IDC_LOGIN2), WM_SETTEXT, 0, (LPARAM)sz_password_invitation);
+						SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"LETS LOGIN NOW!!");
 					}
 					database.close();
 				}
 				else {
+					SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"DATABASE NOT FOUNDED");
 					MessageBox(NULL, "FILE NOT FOUNDED", "ERROR", MB_ICONERROR);
 				}			
+			}
+			break;
+			case IDC_BUTTONLOGIN: {
+				CONST INT SIZE = 256;
+				CHAR sz_buffer_login[SIZE] = {};
+				CHAR sz_buffer_password[SIZE] = {};
+				HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN1);
+				SendMessage(hLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_login);
+				HWND hPassword = GetDlgItem(hwnd, IDC_LOGIN2);
+				SendMessage(hPassword, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_password);
+
+
+				std::ifstream database("database.txt");
+
+				if (database.is_open()) {
+					std::string login, password; 	
+					while (!database.eof()) {
+						std::getline(database,login,','); // get login from file to string 
+						std::getline(database,password, '\0'); //get password from file to string
+					}
+
+					SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)login.c_str());
+					if (std::strcmp(login.c_str(), sz_buffer_login) == 0 && std::strcmp(password.c_str(), sz_buffer_password) == 0) {
+						SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"WELCOME TO YOUR ACCOUNT");
+					}
+					else {
+						SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"WRONG LOGIN OR PASSWORD");
+						MessageBox(NULL, "WRONG LOGIN OR PASSWORD", "WRONG", MB_ICONERROR);
+					}
+
+					database.close();
+
+				}
+				else {
+					SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"DATABASE NOT FOUNDED");
+					MessageBox(NULL, "FILE NOT FOUNDED", "ERROR", MB_ICONERROR);
+				}
+
+
+
 			}
 			break;
 			case IDC_COPYBUTTON: {
