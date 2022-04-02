@@ -15,6 +15,14 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg)
 		{
+		case WM_CTLCOLORSTATIC: { //change color of static text
+			if ((HWND)lParam == GetDlgItem(hwnd, IDC_STATICTEXTALERT)) {
+				SetBkMode((HDC)wParam, TRANSPARENT);
+				SetTextColor((HDC)wParam, RGB(255, 0, 0)); 
+				return (BOOL)GetSysColorBrush(COLOR_MENU); 
+			}
+		}
+		break;
 		case WM_INITDIALOG: {
 			HICON hicon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));
 			SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hicon);
@@ -84,8 +92,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				HWND hPassword = GetDlgItem(hwnd, IDC_LOGIN2);
 				SendMessage(hPassword, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_password);
 				
-				std::ofstream database; 
-				database.open("database.txt");
+				std::ofstream database("database.txt");
 				if (database.is_open()) {
 					if (
 						std::strcmp(sz_buffer_login, sz_login_invitation) == 0
@@ -131,7 +138,9 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					}
 
 					SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)login.c_str());
-					if (std::strcmp(login.c_str(), sz_buffer_login) == 0 && std::strcmp(password.c_str(), sz_buffer_password) == 0) {
+					std::string stsz_buffer_login(sz_buffer_login);
+					std::string stsz_buffer_password(sz_buffer_password);
+					if (login == stsz_buffer_login && password == stsz_buffer_password) {
 						SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"WELCOME TO YOUR ACCOUNT");
 					}
 					else {
