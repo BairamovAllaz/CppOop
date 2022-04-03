@@ -31,26 +31,30 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		}
 		break;
 		case WM_COMMAND: {
+			CONST INT SIZE = 256;
+			CHAR sz_buffer[SIZE] = {};
+			HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN1);
+			HWND hPassword = GetDlgItem(hwnd, IDC_LOGIN2);
 			switch (LOWORD(wParam))
 			{
 			case IDC_LOGIN1: {
 				//get text from input to check
-				CONST INT SIZE = 256;
-				CHAR sz_buffer[SIZE] = {};
-				HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN1);
+
+				//HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN1);
 				SendMessage(hLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+				//HWND hEditLogin = GetDlgItem(hwnd, IDC_LOGIN1);
 				switch (HIWORD(wParam))
 				{
 					case EN_SETFOCUS: {
-						//if input is null then clear it else nothing it stay same
+						//if input is null then clear it els enothing it stay same
 						if (std::strcmp(sz_buffer, sz_login_invitation) == 0) {
-							SendMessage(GetDlgItem(hwnd, IDC_LOGIN1),WM_SETTEXT, 0, (LPARAM)"");
+							SendMessage(hLogin,WM_SETTEXT, 0, (LPARAM)"");
 						}
 					}
 					break;
 					case EN_KILLFOCUS: {
 						if (sz_buffer[0] == '\0') {
-							SendMessage(GetDlgItem(hwnd, IDC_LOGIN1), WM_SETTEXT, 0, (LPARAM)sz_login_invitation);
+							SendMessage(hLogin, WM_SETTEXT, 0, (LPARAM)sz_login_invitation);
 						}
 					}
 					break;
@@ -60,21 +64,18 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			}
 			break;
 			case IDC_LOGIN2: {
-				CONST INT SIZE = 256;
-				CHAR sz_buffer[SIZE] = {};
-				HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN2);
-				SendMessage(hLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+				SendMessage(hPassword, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
 				switch (HIWORD(wParam))
 				{
 				case EN_SETFOCUS: {
 					if (std::strcmp(sz_buffer, sz_password_invitation) == 0) {
-						SendMessage(GetDlgItem(hwnd, IDC_LOGIN2), WM_SETTEXT, 0, (LPARAM)"");
+						SendMessage(hPassword, WM_SETTEXT, 0, (LPARAM)"");
 					}
 				}
 				break;
 				case EN_KILLFOCUS: {
 					if (sz_buffer[0] == '\0') {
-						SendMessage(GetDlgItem(hwnd, IDC_LOGIN2), WM_SETTEXT, 0, (LPARAM)sz_password_invitation);
+						SendMessage(hPassword, WM_SETTEXT, 0, (LPARAM)sz_password_invitation);
 					}
 				}
 				break;
@@ -83,7 +84,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				}
 			}
 			break;
-			case IDC_BUTTONSIGNIN: {
+			/*case IDC_BUTTONSIGNIN: {
 				CONST INT SIZE = 256;
 				CHAR sz_buffer_login[SIZE] = {};
 				CHAR sz_buffer_password[SIZE] = {};
@@ -117,62 +118,41 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					MessageBox(NULL, "FILE NOT FOUNDED", "ERROR", MB_ICONERROR);
 				}			
 			}
-			break;
-			case IDC_BUTTONLOGIN: {
-				CONST INT SIZE = 256;
-				CHAR sz_buffer_login[SIZE] = {};
-				CHAR sz_buffer_password[SIZE] = {};
-				HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN1);
-				SendMessage(hLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_login);
-				HWND hPassword = GetDlgItem(hwnd, IDC_LOGIN2);
-				SendMessage(hPassword, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_password);
-
-
-				std::ifstream database("database.txt");
-
-				if (database.is_open()) {
-					std::string login, password; 	
-					while (!database.eof()) {
-						std::getline(database,login,','); // get login from file to string 
-						std::getline(database,password, '\0'); //get password from file to string
-					}
-
-					SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)login.c_str());
-					std::string stsz_buffer_login(sz_buffer_login);
-					std::string stsz_buffer_password(sz_buffer_password);
-					if (login == stsz_buffer_login && password == stsz_buffer_password) {
-						SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"WELCOME TO YOUR ACCOUNT");
-					}
-					else {
-						SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"WRONG LOGIN OR PASSWORD");
-						MessageBox(NULL, "WRONG LOGIN OR PASSWORD", "WRONG", MB_ICONERROR);
-					}
-
-					database.close();
-
-				}
-				else {
-					SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"DATABASE NOT FOUNDED");
-					MessageBox(NULL, "FILE NOT FOUNDED", "ERROR", MB_ICONERROR);
-				}
-
-
-
-			}
-			break;
+			break;*/
+			//case IDC_BUTTONLOGIN: {
+			//	CONST INT SIZE = 256;
+			//	CHAR sz_buffer_login[SIZE] = {};
+			//	CHAR sz_buffer_password[SIZE] = {};
+			//	HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN1);
+			//	SendMessage(hLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_login);
+			//	HWND hPassword = GetDlgItem(hwnd, IDC_LOGIN2);
+			//	SendMessage(hPassword, WM_GETTEXT, SIZE, (LPARAM)sz_buffer_password);
+			//	std::ifstream database("database.txt");
+			//		SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)login.c_str());
+			//		std::string stsz_buffer_login(sz_buffer_login);
+			//		std::string stsz_buffer_password(sz_buffer_password);
+			//		if (login == stsz_buffer_login && password == stsz_buffer_password) {
+			//			SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"WELCOME TO YOUR ACCOUNT");
+			//		}
+			//		else {
+			//			SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"WRONG LOGIN OR PASSWORD");
+			//			MessageBox(NULL, "WRONG LOGIN OR PASSWORD", "WRONG", MB_ICONERROR);
+			//		}
+			//		database.close();
+			//	}
+			//	else {
+			//		SendMessage(GetDlgItem(hwnd, IDC_STATICTEXTALERT), WM_SETTEXT, 0, (LPARAM)"DATABASE NOT FOUNDED");
+			//		MessageBox(NULL, "FILE NOT FOUNDED", "ERROR", MB_ICONERROR);
+			//	}
+			//}
+			//break;
 			case IDC_COPYBUTTON: {
-				CONST INT SIZE = 256;
-				CHAR sz_buffer[SIZE] = {}; 
-				HWND hLogin = GetDlgItem(hwnd, IDC_LOGIN1); 
 				SendMessage(hLogin, WM_GETTEXT,SIZE, (LPARAM)sz_buffer);
-				HWND hPassword = GetDlgItem(hwnd, IDC_LOGIN2);
 				SendMessage(hPassword, WM_SETTEXT, 0, (LPARAM)sz_buffer);
 			}
 			break;
 			case IDC_SET_TITLE_BUTTON: {
-				CONST INT SIZE = 256;
-				CHAR sz_buffer[SIZE] = {};
-				SendMessage(GetDlgItem(hwnd, IDC_LOGIN1), WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+				SendMessage(hLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
 				SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)sz_buffer); 
 			}
 			break;

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinApi", "WinApi.vcxproj", "{98C619A0-DCDB-461C-9689-7200A52B4D19}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ListBox", "..\ListBox\ListBox.vcxproj", "{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{98C619A0-DCDB-461C-9689-7200A52B4D19}.Release|x64.Build.0 = Release|x64
 		{98C619A0-DCDB-461C-9689-7200A52B4D19}.Release|x86.ActiveCfg = Release|Win32
 		{98C619A0-DCDB-461C-9689-7200A52B4D19}.Release|x86.Build.0 = Release|Win32
+		{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}.Debug|x64.ActiveCfg = Debug|x64
+		{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}.Debug|x64.Build.0 = Debug|x64
+		{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}.Debug|x86.ActiveCfg = Debug|Win32
+		{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}.Debug|x86.Build.0 = Debug|Win32
+		{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}.Release|x64.ActiveCfg = Release|x64
+		{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}.Release|x64.Build.0 = Release|x64
+		{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}.Release|x86.ActiveCfg = Release|Win32
+		{A1896A67-24CD-46CB-ACFA-B8CA0E9E2DC2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,8 +11,6 @@
 #define IDC_STATICPASSWORD              1007
 #define IDC_COPYBUTTON                  1008
 #define IDC_SET_TITLE_BUTTON            1009
-#define IDC_BUTTONLOGIN                 1011
-#define IDC_BUTTON2                     1012
 #define IDC_BUTTONSIGNIN                1012
 #define IDC_STATICTEXTALERT             1013
 
