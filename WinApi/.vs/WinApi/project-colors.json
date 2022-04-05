@@ -15,7 +15,12 @@
       "ProjectGuid": "a1896a67-24cd-46cb-acfa-b8ca0e9e2dc2",
       "DisplayName": "ListBox",
       "ColorIndex": 1
+    },
+    "55445c91-b777-4441-9d64-98784114d72c": {
+      "ProjectGuid": "55445c91-b777-4441-9d64-98784114d72c",
+      "DisplayName": "ComboBox",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 3
 }

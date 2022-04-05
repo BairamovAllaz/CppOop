@@ -51,13 +51,13 @@ END
 //
 
 IDD_DIALOG1 DIALOGEX 0, 0, 255, 145
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "ComboBox"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,145,124,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,198,124,50,14
-    COMBOBOX        IDC_COMBO1,7,7,241,108,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO1,7,7,241,108,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
 END
 
 
@@ -89,6 +89,16 @@ IDD_DIALOG1 AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "c_original_logo_icon_146611.ico"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
