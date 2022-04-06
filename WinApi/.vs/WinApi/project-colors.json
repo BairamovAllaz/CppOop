@@ -20,7 +20,12 @@
       "ProjectGuid": "55445c91-b777-4441-9d64-98784114d72c",
       "DisplayName": "ComboBox",
       "ColorIndex": 2
+    },
+    "e6c3ceff-a5fb-43ad-8745-dd7279dccef2": {
+      "ProjectGuid": "e6c3ceff-a5fb-43ad-8745-dd7279dccef2",
+      "DisplayName": "MainWindow",
+      "ColorIndex": 3
     }
   },
-  "NextColorIndex": 3
+  "NextColorIndex": 4
 }

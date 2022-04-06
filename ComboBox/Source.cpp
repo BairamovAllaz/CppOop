@@ -24,8 +24,6 @@ INT WINAPI WinMain(HINSTANCE hinstance,HINSTANCE hPrevinstance,LPSTR lpCmdLine,I
 	return 0;
 }
 
-
-
 BOOL CALLBACK DlgProg(HWND hwnd, UINT uMsg, WPARAM wparam, LPARAM lparam) {
 
 	switch (uMsg)
