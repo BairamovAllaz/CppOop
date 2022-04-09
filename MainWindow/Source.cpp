@@ -1,4 +1,7 @@
 ﻿#include<Windows.h>
+#include<cstring>
+#include<string>
+using namespace std;
 
 CONST CHAR g_szClassName[] = "My Window Class";
 //g  - global
@@ -34,9 +37,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
 	int width_screen = GetSystemMetrics(SM_CXSCREEN);
 
 
+
 	int window_width = width_screen / 2;  
 	int window_height = height_screen / 2; 
-
 	//2) Сохздание окна:
 	HWND hwnd = CreateWindowEx
 	(
@@ -59,6 +62,10 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
 	ShowWindow(hwnd, nCmdShow);	
 	UpdateWindow(hwnd);	
 
+
+
+
+
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0) > 0)
 	{
@@ -73,14 +80,27 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
-	case WM_CREATE:
-		break;
+	case WM_CREATE: {
+
+	}
+	break;
 	case WM_COMMAND:break;
-	case WM_CLOSE:
-		if (MessageBox(hwnd, "Вы действительно хотите закрыть окно?", "Шо, внатуре?", MB_YESNO | MB_ICONQUESTION) == IDYES)
+	case WM_CLOSE: {
+		/*int width, height;
+		RECT rect;
+		if (GetWindowRect(hwnd, &rect))
+		{
+			width = rect.right - rect.left;
+			height = rect.bottom - rect.top;
+		}
+		std::string tmp = std::to_string(width);
+		char const* num_char = tmp.c_str();
+		*/
+		if (MessageBox(hwnd,"Are you sure to close?", "Шо, внатуре?", MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			DestroyWindow(hwnd);
 		}
+	}
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
