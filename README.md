@@ -6,6 +6,7 @@ This project includes OOP with c++:
 * Polymorphism
 
 Also include: 
+* UML
 * Data Containers
 * Data Structure and Algorithms
 * STL
