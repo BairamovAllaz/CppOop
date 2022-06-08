@@ -4,6 +4,7 @@ This project includes OOP:
 * ENCAPSULATION
 * ABSTRACTION
 * POLIMORPHISIM
+
 Also include: 
 * Thread
 * WINAPI
