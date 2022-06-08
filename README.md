@@ -6,5 +6,8 @@ This project includes OOP with c++:
 * Polymorphism
 
 Also include: 
+* Data Containers
+* Data Structure and Algorithms
+* STL
 * Thread
 * WINAPI
